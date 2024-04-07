@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Vendors</title>
+</head>
+<body>
+<h1>Last 10 Entities</h1>
+<p><a href="/">Index Page</a></p>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Aliases</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="entity : ${vendors}">
+        <td th:text="${entity.id}"></td>
+        <td th:text="${entity.name}"></td>
+        <td th:text="${entity.aliases}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

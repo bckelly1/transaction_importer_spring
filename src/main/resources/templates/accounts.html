@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Accounts</title>
+</head>
+<body>
+<h1>Last 10 Entities</h1>
+<p><a href="/">Index Page</a></p>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+<!--        <th>Institution</th>-->
+        <th>Balance</th>
+        <th>Alias</th>
+        <th>Type</th>
+        <th>Last Updated</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="entity : ${accounts}">
+        <td th:text="${entity.id}"></td>
+        <td th:text="${entity.name}"></td>
+<!--        <td th:text="${entity.institution}"></td>-->
+        <td th:text="${entity.balance}"></td>
+        <td th:text="${entity.alias}"></td>
+        <td th:text="${entity.type}"></td>
+<!--        TODO last_updated column name wrong-->
+        <td th:text="${entity.last_updated}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,37 @@
+package com.brian.transaction_importer_spring.entity;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.sql.Timestamp;
+
+@Entity
+@Getter
+@Setter
+@Table(name = "account")
+public class Account {
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
+    private String name;
+
+
+    @ManyToOne(targetEntity = Institution.class, fetch = FetchType.LAZY)
+    private Institution institution; // TODO: Actually a FK
+    private Double balance;
+    private String alias;
+    private String type;
+    private Timestamp last_updated; // TODO: wrong field name
+
+    @Override
+    public String toString() {
+        return "{\"Id\": "+id+"," +
+                "\"Name\": \""+name+"\"," +
+                "\"Institution\": \""+institution+"\"," +
+                "\"Balance\": "+balance+"," +
+                "\"alias\": \""+alias+"\"," +
+                "\"alias\": \""+type+"\"," +
+                "\"last_update\": "+last_updated+"}";
+    }
+}

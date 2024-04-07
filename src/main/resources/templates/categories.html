@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Entities</title>
+</head>
+<body>
+<h1>Last 10 Entities</h1>
+<p><a href="/">Index Page</a></p>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Description</th>
+        <th>Parent Category</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="entity : ${categories}">
+        <td th:text="${entity.id}"></td>
+        <td th:text="${entity.name}"></td>
+<!--        TODO parent_category is the wrong name-->
+        <td th:text="${entity.parent_category}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
