@@ -21,11 +21,16 @@ public class Transaction {
     private String transactionType;
 
     @ManyToOne(targetEntity = Category.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private Category category; // TODO: FK
-//    @ManyToOne(targetEntity = Vendor.class, fetch = FetchType.EAGER)
-//    private int merchant; // TODO: FK
-//    @ManyToOne(targetEntity = Account.class, fetch = FetchType.EAGER)
-//    private int account; // TODO: FK
+
+    @ManyToOne(targetEntity = Vendor.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "vendor_id")
+    private Vendor merchant; // TODO: FK
+
+    @ManyToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private Account account; // TODO: FK
     private String mailMessageId;
     private String notes;
 

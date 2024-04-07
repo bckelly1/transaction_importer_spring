@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+# Actual one might have real values added by accident, best to be safe
+/src/main/resources/application.properties

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Select List</title>
+    <title>Select Category List</title>
 </head>
 <body>
-    <div th:fragment="selectList(currentValue)">
+    <div th:fragment="selectCategoriesList(currentValue)">
 <!--        For some reason id and name fields are required to make the list select the original value as default.-->
-        <select class="form-control" id="dropDownList" name="dropDownList">
+        <select class="form-control" id="categoriesDropDownList" name="categoriesDropDownList">
             <option th:each="option : ${categories}" th:value="${option.id}" th:selected="${currentValue == option.id}" th:text="${option.name}"></option>
         </select>
     </div>

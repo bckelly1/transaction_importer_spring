@@ -27,10 +27,10 @@ public class TransactionController {
 
     @GetMapping("/transactions")
     public String showEntities(Model model) {
-        model.addAttribute("accounts", accountRepository.findAll());
+//        model.addAttribute("accounts", accountRepository.findAll());
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("transactions", transactionRepository.findTop10ByOrderByIdDesc());
-        model.addAttribute("vendor", vendorRepository.findAll());
+//        model.addAttribute("vendors", vendorRepository.findAllOrderByIdDesc());
         return "transactions";
     }
 }
