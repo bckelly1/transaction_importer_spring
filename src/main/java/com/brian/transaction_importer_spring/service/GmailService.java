@@ -2,13 +2,7 @@ package com.brian.transaction_importer_spring.service;
 
 import com.brian.transaction_importer_spring.config.MailConfig;
 import com.brian.transaction_importer_spring.entity.MailMessage;
-import jakarta.mail.Flags;
-import jakarta.mail.Folder;
-import jakarta.mail.Header;
-import jakarta.mail.Message;
-import jakarta.mail.MessagingException;
-import jakarta.mail.Session;
-import jakarta.mail.Store;
+import jakarta.mail.*;
 import jakarta.mail.internet.MimeMultipart;
 import jakarta.mail.search.FlagTerm;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +21,7 @@ import java.util.Properties;
 public class GmailService {
     final MailConfig mailConfig;
 
-    public MailMessage[] getUnreadMessages(String labelName) {
+    public MailMessage[] getUnreadMessages() {
         // Gmail IMAP properties
         Properties properties = new Properties();
         properties.setProperty("mail.store.protocol", "imaps");
@@ -39,7 +33,7 @@ public class GmailService {
             store.connect(mailConfig.getHost(), mailConfig.getUsername(), mailConfig.getPassword());
 
             // Open inbox folder
-            Folder inbox = store.getFolder(labelName);
+            Folder inbox = store.getFolder(mailConfig.getLabel());
             inbox.open(Folder.READ_ONLY);
 
             // Fetch unread messages

@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ImportService {
-    final MailConfig mailConfig;
-
     @Autowired
     private GmailService gmailService;
 
@@ -18,12 +16,12 @@ public class ImportService {
     private TransactionParserService transactionParserService;
 
     public void beginTransactionImport(){
-        MailMessage[] unreadMessages = gmailService.getUnreadMessages(mailConfig.getLabel());
+        MailMessage[] unreadMessages = gmailService.getUnreadMessages();
         transactionParserService.parseTransactions(unreadMessages);
     }
 
     public void beginBalanceSummaryImport(){
-        MailMessage[] unreadMessages = gmailService.getUnreadMessages(mailConfig.getLabel());
+        MailMessage[] unreadMessages = gmailService.getUnreadMessages();
         transactionParserService.parseBalanceSummary(unreadMessages);
     }
 }
