@@ -2,9 +2,19 @@ package com.brian.transaction_importer_spring.service;
 
 import com.brian.transaction_importer_spring.config.MailConfig;
 import com.brian.transaction_importer_spring.entity.MailMessage;
-import jakarta.mail.*;
+import jakarta.mail.Flags;
+import jakarta.mail.Folder;
+import jakarta.mail.Header;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
+import jakarta.mail.Store;
 import jakarta.mail.internet.MimeMultipart;
+import jakarta.mail.search.AndTerm;
 import jakarta.mail.search.FlagTerm;
+import jakarta.mail.search.MessageIDTerm;
+import jakarta.mail.search.SearchTerm;
+import jakarta.mail.search.SubjectTerm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +31,7 @@ import java.util.Properties;
 public class GmailService {
     final MailConfig mailConfig;
 
-    public MailMessage[] getUnreadMessages() {
+    public MailMessage[] getUnreadMessages(String filter) {
         // Gmail IMAP properties
         Properties properties = new Properties();
         properties.setProperty("mail.store.protocol", "imaps");
@@ -36,8 +46,16 @@ public class GmailService {
             Folder inbox = store.getFolder(mailConfig.getLabel());
             inbox.open(Folder.READ_ONLY);
 
-            // Fetch unread messages
-            Message[] messages = inbox.search(new FlagTerm(new Flags(Flags.Flag.SEEN), false));
+            // Create a search term for unread messages
+            SearchTerm unreadTerm = new FlagTerm(new Flags(Flags.Flag.SEEN), false);
+
+            // Create a search term for messages with subject "filter"
+            SearchTerm subjectTerm = new SubjectTerm(filter);
+
+            // Combine the search terms using the AndTerm
+            SearchTerm searchTerm = new AndTerm(unreadTerm, subjectTerm);
+
+            Message[] messages = inbox.search(searchTerm);
             MailMessage[] mailMessages = parseMailMessages(messages);
 
             // Close resources
@@ -108,6 +126,32 @@ public class GmailService {
             }
         }
         return headers;
+    }
+
+    public void markAsRead(MailMessage mailMessage) {
+        // Gmail IMAP properties
+        Properties properties = new Properties();
+        properties.setProperty("mail.store.protocol", "imaps");
+
+        try {
+            // Create session and authenticate
+            Session session = Session.getInstance(properties, null);
+            Store store = session.getStore("imaps");
+            store.connect(mailConfig.getHost(), mailConfig.getUsername(), mailConfig.getPassword());
+
+            // Open inbox folder
+            Folder inbox = store.getFolder(mailConfig.getLabel());
+            inbox.open(Folder.READ_WRITE);
+
+            //Should only be one record
+            SearchTerm searchTerm = new MessageIDTerm(mailMessage.getMessageId());
+            Message[] findMessages = inbox.search(searchTerm);
+            for(Message message : findMessages) {
+                message.setFlag(Flags.Flag.SEEN, true);
+            }
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

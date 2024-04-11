@@ -69,7 +69,7 @@ public class FirstTechParser {
     //   Payment more as a transfer than as "money going out".  Let the rage debate commence.
     public boolean isCreditCardPayment(String title) {
         // Fidelity is a bit obnoxious about this. No email on payments. Have to infer it when the money goes out.
-        if (title.contains("CARDMEMBER SERV - WEB PYMT"))
+        if ((title.contains("CARDMEMBER SERV")) && title.contains("WEB PYMT"))
            return true;
         return false;
     }
@@ -85,6 +85,15 @@ public class FirstTechParser {
         return "Unknown Source Account";
     }
 
+    public String determineSourceAccount(boolean isTransfer, String transactionDetailsOriginal, String merchant) {
+        if(isTransfer) {
+            if(isCreditCardPayment(transactionDetailsOriginal)) {
+                return merchant;
+            }
+            return transfer_source_account(transactionDetailsOriginal);
+        }
+        return merchant;
+    }
 
     // Main handling of the transaction email. Read the transaction and extract transaction details from the text.
     public Transaction[] handleTransactionEmail(MailMessage mailMessage) {
@@ -93,40 +102,16 @@ public class FirstTechParser {
 
     public Transaction handleTransactionRow(Element element, MailMessage mailMessage) {
         Timestamp transactionDate = new Timestamp(Long.parseLong(mailMessage.getHeaders().get("Custom-Epoch")) * 1000L);
+        String messageId = mailMessage.getHeaders().get("Message-ID");
         String transactionDetailsOriginal = element.select("td.details").text().strip();
-
-        String[] transactionTokens = transactionDetailsOriginal.split(" ");
-        String merchant = String.join(" ", Arrays.copyOfRange(transactionTokens, 2, transactionTokens.length));
-
+        String description = extractDescription(transactionDetailsOriginal);
+        double amount = extractAmount(element);
+        String transactionType = extractTransactionType(element);
+        String merchant = extractMerchant(transactionDetailsOriginal);
         boolean transfer = isTransfer(transactionDetailsOriginal);
-        String sourceAccount = transfer ? transfer_source_account(transactionDetailsOriginal) : null;
+        String category = categoryInfererService.getCategory(transactionDetailsOriginal);
+        String sourceAccount = determineSourceAccount(transfer, transactionDetailsOriginal, merchant);
 
-        String transactionAmount = element.select("td.trans-amount").text().strip().replace("$", "").replace(",", "");
-        double amount;
-        String transactionType;
-        if (transactionAmount.contains("(")) {
-            amount = Double.parseDouble(transactionAmount.replace("(", "").replace(")", ""));
-            transactionType = "Debit";
-        }
-        else {
-            amount = Double.parseDouble(transactionAmount);
-            transactionType = "Credit";
-        }
-
-        String category = null;
-        if (transactionDetailsOriginal.contains("Transfer")) {
-            // Most likely this is a cross - account transfer, vendor / merchant is bank
-            merchant = "First Tech";
-            category = "Transfer";
-        } else if (transactionDetailsOriginal.contains("Dividend")) {
-            // Credit Dividend transaction, vendor / merchant is bank
-            merchant = "First Tech";
-            category = "Dividend";
-        }
-        else {
-            category = categoryInfererService.getCategory(transactionDetailsOriginal);
-//            category = Category.UNKNOWN; // TODO: Not necessary?
-        }
         log.info("Info:");
         log.info("\tDate: " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(transactionDate));
         log.info("\tDetail: " + merchant);
@@ -134,8 +119,8 @@ public class FirstTechParser {
 
         Transaction transaction = new Transaction();
         transaction.setDate(transactionDate);
-        transaction.setMailMessageId(mailMessage.getHeaders().get("Message-ID"));
-        transaction.setDescription(merchant);
+        transaction.setMailMessageId(messageId);
+        transaction.setDescription(description);
         transaction.setOriginalDescription(transactionDetailsOriginal);
         transaction.setAmount(amount);
         transaction.setTransactionType(transactionType);
@@ -227,4 +212,53 @@ public class FirstTechParser {
         private String balance;
     }
 
+    private double extractAmount(Element element) {
+        String transactionAmount = element.select("td.trans-amount").text().strip().replace("$", "").replace(",", "");
+        double amount;
+        String transactionType;
+        if (transactionAmount.contains("(")) {
+            amount = Double.parseDouble(transactionAmount.replace("(", "").replace(")", ""));
+            transactionType = "Debit";
+        }
+        else {
+            amount = Double.parseDouble(transactionAmount);
+            transactionType = "Credit";
+        }
+
+        return amount;
+    }
+
+    private String extractTransactionType(Element element) {
+        String transactionAmount = element.select("td.trans-amount").text().strip().replace("$", "").replace(",", "");
+        String transactionType;
+        if (transactionAmount.contains("(")) {
+            transactionType = "Debit";
+        }
+        else {
+            transactionType = "Credit";
+        }
+
+        return transactionType;
+    }
+
+    private String extractMerchant(String transactionDetailsOriginal) {
+        String merchant;
+        if (transactionDetailsOriginal.contains("Transfer") && transactionDetailsOriginal.contains("Dividend")
+        ) {
+            merchant = "First Tech";
+        } else if (transactionDetailsOriginal.contains("CARDMEMBER SERV")) {
+            merchant = "Fidelity";
+        } else{
+            String[] transactionTokens = transactionDetailsOriginal.split(" ");
+            merchant = String.join(" ", Arrays.copyOfRange(transactionTokens, 2, transactionTokens.length));
+        }
+
+        return merchant;
+    }
+
+    private String extractDescription(String transactionDetailsOriginal) {
+        String[] transactionTokens = transactionDetailsOriginal.split(" ");
+        String description = String.join(" ", Arrays.copyOfRange(transactionTokens, 2, transactionTokens.length));
+        return description;
+    }
 }

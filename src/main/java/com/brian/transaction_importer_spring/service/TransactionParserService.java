@@ -22,25 +22,26 @@ public class TransactionParserService {
     @Autowired
     private FirstTechParser firstTechParser;
 
-    public Transaction[] parseTransactions(MailMessage[] mailMessages) {
-        Transaction[] transactions = new Transaction[mailMessages.length];
-        for (int i = 0; i < mailMessages.length; i++) {
-            transactions[i] = parseTransaction(mailMessages[i]);
-        }
-        return transactions;
+    public Transaction[] parseTransactions(MailMessage mailMessages) {
+        return parseTransaction(mailMessages);
     }
 
-    private Transaction parseTransaction(MailMessage mailMessage) {
+    private Transaction[] parseTransaction(MailMessage mailMessage) {
         KnownInstitution knownInstitution = parseInstitution(mailMessage);
+        Transaction[] transactions = null;
         if(knownInstitution == KnownInstitution.FIDELITY) {
-            fidelityParser.handleTransaction(mailMessage);
+            Transaction transaction = fidelityParser.handleTransaction(mailMessage);
+            transactions = new Transaction[]{transaction};
         }
         else if (knownInstitution == KnownInstitution.FIRST_TECH) {
-            firstTechParser.handleTransactionEmail(mailMessage);
+            transactions = firstTechParser.handleTransactionEmail(mailMessage);
         }
 
-        return null;
-//        return transactionRepository.save(transaction);
+        assert transactions != null;
+        for(Transaction transaction : transactions) {
+            transactionRepository.save(transaction);
+        }
+        return transactions;
     }
 
     public void parseBalanceSummary(MailMessage[] mailMessages) {
