@@ -80,7 +80,8 @@ public class FirstTechParserTest {
         mailMessage.setBody(htmlContent);
         mailMessage.setHtml(htmlContent);
 
-        firstTechParser.handleTransactionEmail(mailMessage);
+        Transaction[] transactions = firstTechParser.handleTransactionEmail(mailMessage);
+        System.out.println();
     }
 
     @Test
