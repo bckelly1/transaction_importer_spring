@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 @Table(name = "transaction")
 public class Transaction {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Timestamp date;
     private String description;
