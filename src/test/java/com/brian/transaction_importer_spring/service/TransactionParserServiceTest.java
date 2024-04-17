@@ -1,8 +1,9 @@
-package com.brian.transaction_importer_spring.institution;
+package com.brian.transaction_importer_spring.service;
 
 import com.brian.transaction_importer_spring.entity.Account;
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;
+import com.brian.transaction_importer_spring.instituton.FidelityParser;
 import com.brian.transaction_importer_spring.instituton.FirstTechParser;
 import com.brian.transaction_importer_spring.repository.AccountRepository;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
@@ -21,12 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SpringBootTest
-public class FirstTechParserTest {
-    String transactionDepositEmail = String.join(File.separator, "examples", "first_tech_deposit_transaction.html");
-
-    String transactionSummaryEmail = String.join(File.separator, "examples", "first_tech_account_summary_example.html");
-
-    String transferEmail = String.join(File.separator, "examples", "first_tech_cross_account_transfer_transaction.html");
+public class TransactionParserServiceTest {
+    String firstTechTransactionSummaryEmail = String.join(File.separator, "examples", "first_tech_account_summary_example.html");
 
     @MockBean
     VendorRepository vendorRepository;
@@ -40,8 +37,14 @@ public class FirstTechParserTest {
     @MockBean
     TransactionRepository transactionRepository;
 
-    @Autowired
+    @MockBean
+    FidelityParser fidelityParser;
+
+    @MockBean
     FirstTechParser firstTechParser;
+
+    @Autowired
+    TransactionParserService transactionParserService;
 
     private String loadFileContents(String fileName) {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
@@ -65,50 +68,54 @@ public class FirstTechParserTest {
         String html = "";
         String messageId = "messageId";
         Map<String, String> headers = new HashMap<>();
-        headers.put("Custom-Epoch", "1712617137");
         return new MailMessage(to, from, subject, body, html, messageId, headers);
     }
 
     @Test
-    void firstTechTransactionParserTest() {
+    void parseInstitutionTest_parseFidelity() {
         Mockito.when(categoryRepository.findByName(Mockito.any())).thenReturn(null);
         Mockito.when(accountRepository.findByAlias(Mockito.any())).thenReturn(null);
         Mockito.when(vendorRepository.findOrCreate(Mockito.any())).thenReturn(null);
         Mockito.when(transactionRepository.save(Mockito.any(Transaction.class))).thenReturn(null);
+        Transaction transaction = new Transaction();
+        Mockito.when(fidelityParser.handleTransaction(Mockito.any())).thenReturn(transaction);
 
-        String htmlContent = loadFileContents(transactionDepositEmail);
         MailMessage mailMessage = createMockMailMessage();
-        mailMessage.setBody(htmlContent);
-        mailMessage.setHtml(htmlContent);
-
-        Transaction[] transactions = firstTechParser.handleTransactionEmail(mailMessage);
-        System.out.println();
+        mailMessage.getHeaders().put("From", "Fidelity Alerts");
+        transactionParserService.parseTransactions(mailMessage);
     }
 
     @Test
-    void firstTechBalanceSummaryImportParserTest() {
+    void parseInstitutionTest_parseFirstTech() {
+        Mockito.when(categoryRepository.findByName(Mockito.any())).thenReturn(null);
+        Mockito.when(accountRepository.findByAlias(Mockito.any())).thenReturn(null);
+        Mockito.when(vendorRepository.findOrCreate(Mockito.any())).thenReturn(null);
+        Mockito.when(transactionRepository.save(Mockito.any(Transaction.class))).thenReturn(null);
+        Transaction transaction = new Transaction();
+        Transaction[] transactions = new Transaction[1];
+        transactions[0] = transaction;
+        Mockito.when(firstTechParser.handleTransactionEmail(Mockito.any())).thenReturn(transactions);
+
+        MailMessage mailMessage = createMockMailMessage();
+        mailMessage.getHeaders().put("From", "First Tech Alerts");
+        transactionParserService.parseTransactions(mailMessage);
+    }
+
+    @Test
+    void parseBalanceSummaryTest() {
         Account account = new Account();
         account.setName("Test");
         account.setAlias("Test");
         Mockito.when(accountRepository.findByAlias(Mockito.any())).thenReturn(account);
         Mockito.when(accountRepository.save(Mockito.any())).thenReturn(account);
+        String fileContents = loadFileContents(firstTechTransactionSummaryEmail);
+        MailMessage mockMailMessage = createMockMailMessage();
+        mockMailMessage.setHtml(fileContents);
+        mockMailMessage.setBody(fileContents);
+        mockMailMessage.getHeaders().put("From", "First Tech Alerts");
+        MailMessage[] mailMessages = new MailMessage[1];
+        mailMessages[0] = mockMailMessage;
 
-        String htmlContent = loadFileContents(transactionSummaryEmail);
-        firstTechParser.handleBalanceSummary(htmlContent);
-    }
-
-    @Test
-    void firstTechTransferParserTest() {
-        Mockito.when(categoryRepository.findByName(Mockito.any())).thenReturn(null);
-        Mockito.when(accountRepository.findByAlias(Mockito.any())).thenReturn(null);
-        Mockito.when(vendorRepository.findOrCreate(Mockito.any())).thenReturn(null);
-        Mockito.when(transactionRepository.save(Mockito.any(Transaction.class))).thenReturn(null);
-
-        String htmlContent = loadFileContents(transferEmail);
-        MailMessage mailMessage = createMockMailMessage();
-        mailMessage.setBody(htmlContent);
-        mailMessage.setHtml(htmlContent);
-
-        firstTechParser.handleTransactionEmail(mailMessage);
+        transactionParserService.parseBalanceSummary(mailMessages);
     }
 }

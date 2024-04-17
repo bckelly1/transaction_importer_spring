@@ -1,5 +1,6 @@
 package com.brian.transaction_importer_spring.instituton;
 
+import com.brian.transaction_importer_spring.entity.Account;
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;
 import com.brian.transaction_importer_spring.repository.AccountRepository;
@@ -195,13 +196,18 @@ public class FirstTechParser {
         log.info("Account Number: {}", accountNumber);
         log.info("Balance: {}", balance);
 
-        return new MinimumAccount(accountName, accountNumber, balance);
+        return new MinimumAccount(accountName, accountNumber, Double.parseDouble(balance));
     }
 
     // Extract all account details from the balance summary email
-    public MinimumAccount[] handleBalanceSummary(String text) {
+    public void handleBalanceSummary(String text) {
         Document soup = Jsoup.parse(text);
-        return parseAccountInfo(soup);
+        MinimumAccount[] minimumAccounts = parseAccountInfo(soup);
+        for(MinimumAccount minimumAccount : minimumAccounts) {
+            Account account = accountRepository.findByAlias(minimumAccount.getNumber());
+            account.setBalance(minimumAccount.getBalance());
+            accountRepository.save(account);
+        }
     }
 
     @Getter
@@ -209,7 +215,7 @@ public class FirstTechParser {
     private class MinimumAccount {
         private String name;
         private String number;
-        private String balance;
+        private Double balance;
     }
 
     private double extractAmount(Element element) {

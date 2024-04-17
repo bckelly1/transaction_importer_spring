@@ -37,7 +37,7 @@ public class TransactionParserService {
             transactions = firstTechParser.handleTransactionEmail(mailMessage);
         }
 
-        assert transactions != null;
+        assert transactions != null && transactions.length > 0;
         for(Transaction transaction : transactions) {
             transactionRepository.save(transaction);
         }
