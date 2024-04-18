@@ -24,6 +24,8 @@ import java.util.Map;
 public class FirstTechParserTest {
     String transactionDepositEmail = String.join(File.separator, "examples", "first_tech_deposit_transaction.html");
 
+    String transactionPaymentEmail = String.join(File.separator, "examples", "first_tech_payment_transactions.html");
+
     String transactionSummaryEmail = String.join(File.separator, "examples", "first_tech_account_summary_example.html");
 
     String transferEmail = String.join(File.separator, "examples", "first_tech_cross_account_transfer_transaction.html");
@@ -70,7 +72,23 @@ public class FirstTechParserTest {
     }
 
     @Test
-    void firstTechTransactionParserTest() {
+    void firstTechTransactionParserPaymentTest() {
+        Mockito.when(categoryRepository.findByName(Mockito.any())).thenReturn(null);
+        Mockito.when(accountRepository.findByAlias(Mockito.any())).thenReturn(null);
+        Mockito.when(vendorRepository.findOrCreate(Mockito.any())).thenReturn(null);
+        Mockito.when(transactionRepository.save(Mockito.any(Transaction.class))).thenReturn(null);
+
+        String htmlContent = loadFileContents(transactionPaymentEmail);
+        MailMessage mailMessage = createMockMailMessage();
+        mailMessage.setBody(htmlContent);
+        mailMessage.setHtml(htmlContent);
+
+        Transaction[] transactions = firstTechParser.handleTransactionEmail(mailMessage);
+        System.out.println();
+    }
+
+    @Test
+    void firstTechTransactionParserDepositTest() {
         Mockito.when(categoryRepository.findByName(Mockito.any())).thenReturn(null);
         Mockito.when(accountRepository.findByAlias(Mockito.any())).thenReturn(null);
         Mockito.when(vendorRepository.findOrCreate(Mockito.any())).thenReturn(null);
