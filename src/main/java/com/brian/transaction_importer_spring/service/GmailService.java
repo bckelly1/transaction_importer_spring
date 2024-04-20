@@ -87,8 +87,8 @@ public class GmailService {
             String from = headers.get("From");
             String to = headers.get("To");
             String subject = headers.get("Subject");
-            String body = parseBody(message);
-            String html = body.contains("<html") ? body : null; // If we don't detect HTML in the body, assume it's not HTML
+            String body = getTextBody(message);
+            String html = getHtmlBody(message);
             String messageId = headers.get("Message-ID").replace("<", "").replace(">", "");
             MailMessage mailMessage = new MailMessage(from, to, subject, body, html, messageId, headers);
             return mailMessage;
@@ -99,12 +99,25 @@ public class GmailService {
         }
     }
 
-    private String parseBody(Message message) throws IOException, MessagingException {
+    private String getTextBody(Message message) throws IOException, MessagingException {
         if(message.getContent().getClass() == MimeMultipart.class) {
             MimeMultipart content = ((MimeMultipart) message.getContent());
             int length = content.getCount();
             for(int i = 0; i < length; i++) {
                 if(content.getBodyPart(i).isMimeType("text/plain")) {
+                    return content.getBodyPart(i).getContent().toString();
+                }
+            }
+        }
+        return message.getContent().toString();
+    }
+
+    private String getHtmlBody(Message message) throws IOException, MessagingException {
+        if(message.getContent().getClass() == MimeMultipart.class) {
+            MimeMultipart content = ((MimeMultipart) message.getContent());
+            int length = content.getCount();
+            for(int i = 0; i < length; i++) {
+                if(content.getBodyPart(i).isMimeType("text/html")) {
                     return content.getBodyPart(i).getContent().toString();
                 }
             }

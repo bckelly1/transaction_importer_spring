@@ -7,8 +7,12 @@ import com.brian.transaction_importer_spring.repository.CategoryRepository;
 import com.brian.transaction_importer_spring.repository.VendorRepository;
 import com.brian.transaction_importer_spring.service.CategoryInfererService;
 import lombok.extern.log4j.Log4j2;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 @Log4j2
@@ -39,13 +43,13 @@ public class FidelityParser {
     //   International transactions have a slightly different email template and has to be parsed differently.
     public Transaction handleTransaction(MailMessage mailMessage) {
         Transaction transaction = new Transaction();
-        String body = mailMessage.getBody();
-        String[] lines = body.split("\n");
+        ArrayList<String> lines = parseMailMessage(mailMessage);
 
-        String[] cardNumberSplit = lines[0].split(" ");
+        String[] cardNumberSplit = lines.get(0).split(" ");
         String cardNumber = cardNumberSplit[cardNumberSplit.length - 1].strip();
 
-        String originalDescription = lines[1].split("\\. ")[0].strip();
+        String joinedDescription = String.join(" ", lines.get(1), lines.get(2));
+        String originalDescription = joinedDescription.split("\\. ")[0].strip();
         String[] tokens = originalDescription.strip().split(" ");
         Double amount = Double.parseDouble(findCurrencyToken(tokens).replace("$", ""));  //TODO: Not super proud of this
         String merchant = originalDescription.split(" at ")[1];
@@ -65,6 +69,24 @@ public class FidelityParser {
         transaction.setNotes("Fidelity");
 
         return transaction;
+    }
+
+    public ArrayList<String> parseMailMessage(MailMessage mailMessage) {
+        String body = mailMessage.getBody();
+        Document document = Jsoup.parse(body);
+        String content = document.wholeText();
+        content = content.replace("\n\n", "\n");
+        String[] array = content.split("\n");
+
+        ArrayList<String> result = new ArrayList<>();
+        for (String s : array) {
+            String element = s.trim();
+            if (!element.equals("\n") && !element.isEmpty()) {
+                result.add(element);
+            }
+        }
+
+        return result;
     }
 
 }

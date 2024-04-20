@@ -21,7 +21,7 @@ import java.util.Map;
 
 @SpringBootTest
 class FidelityParserTest {
-    String transactionEmailText = String.join(File.separator, "examples", "fidelity_credit_card_transaction.txt");
+    String transactionEmailText = String.join(File.separator, "examples", "fidelity_credit_card_transaction.html");
 
     @MockBean
     VendorRepository vendorRepository;
