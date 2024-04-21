@@ -20,14 +20,14 @@
     </thead>
     <tbody>
     <tr th:each="entity : ${accounts}">
-        <td th:text="${entity.id}"></td>
-        <td th:text="${entity.name}"></td>
+        <td th:text="${entity.getId()}"></td>
+        <td th:text="${entity.getName()}"></td>
 <!--        <td th:text="${entity.institution}"></td>-->
-        <td th:text="${entity.balance}"></td>
-        <td th:text="${entity.alias}"></td>
-        <td th:text="${entity.type}"></td>
+        <td th:text="${entity.getBalance()}"></td>
+        <td th:text="${entity.getAlias()}"></td>
+        <td th:text="${entity.getType()}"></td>
 <!--        TODO last_updated column name wrong-->
-        <td th:text="${entity.last_updated}"></td>
+        <td th:text="${entity.getLast_updated()}"></td>
     </tr>
     </tbody>
 </table>

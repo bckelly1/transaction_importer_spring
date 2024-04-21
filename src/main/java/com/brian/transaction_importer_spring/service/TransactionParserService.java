@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 @Service
 @Slf4j
 public class TransactionParserService {
@@ -38,9 +40,7 @@ public class TransactionParserService {
         }
 
         assert transactions != null && transactions.length > 0;
-        for(Transaction transaction : transactions) {
-            transactionRepository.save(transaction);
-        }
+        transactionRepository.saveAll(Arrays.asList(transactions));
         return transactions;
     }
 

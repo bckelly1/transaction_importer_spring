@@ -16,10 +16,10 @@
     </thead>
     <tbody>
     <tr th:each="entity : ${categories}">
-        <td th:text="${entity.id}"></td>
-        <td th:text="${entity.name}"></td>
+        <td th:text="${entity.getId()}"></td>
+        <td th:text="${entity.getName()}"></td>
 <!--        TODO parent_category is the wrong name-->
-        <td th:text="${entity.parent_category}"></td>
+        <td th:text="${entity.getParent_category()}"></td>
     </tr>
     </tbody>
 </table>

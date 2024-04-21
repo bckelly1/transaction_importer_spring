@@ -16,9 +16,9 @@
     </thead>
     <tbody>
     <tr th:each="entity : ${vendors}">
-        <td th:text="${entity.id}"></td>
-        <td th:text="${entity.name}"></td>
-        <td th:text="${entity.aliases}"></td>
+        <td th:text="${entity.getId()}"></td>
+        <td th:text="${entity.getName()}"></td>
+        <td th:text="${entity.getAliases()}"></td>
     </tr>
     </tbody>
 </table>

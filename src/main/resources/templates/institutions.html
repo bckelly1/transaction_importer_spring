@@ -15,8 +15,8 @@
     </thead>
     <tbody>
     <tr th:each="entity : ${institutions}">
-        <td th:text="${entity.id}"></td>
-        <td th:text="${entity.name}"></td>
+        <td th:text="${entity.getId()}"></td>
+        <td th:text="${entity.getName()}"></td>
     </tr>
     </tbody>
 </table>

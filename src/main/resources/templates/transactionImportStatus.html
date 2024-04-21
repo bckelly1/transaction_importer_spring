@@ -24,15 +24,15 @@
     <tbody>
     <tr th:each="entity : ${transactions}">
 <!--        <td th:text="${entity.id}"></td>-->
-        <td th:text="${entity.date}"></td>
-        <td th:text="${entity.description}"></td>
-        <td th:text="${entity.amount}"></td>
-        <td th:text="${entity.transactionType}"></td>
-        <td th:include="categoryDropdownList :: selectCategoriesList(${entity.category.getId()})"></td>
-        <td th:text="${entity.merchant.getName()}"></td>
-        <td th:text="${entity.account.getName()}"></td>
-        <td th:text="${entity.mailMessageId}"></td>
-        <td th:text="${entity.notes}"></td>
+        <td th:text="${entity.getDate()}"></td>
+        <td th:text="${entity.getDescription()}"></td>
+        <td th:text="${entity.getAmount()}"></td>
+        <td th:text="${entity.getTransactionType()}"></td>
+        <td th:include="categoryDropdownList :: selectCategoriesList(${entity.getCategory().getId()})"></td>
+        <td th:text="${entity.getMerchant().getName()}"></td>
+        <td th:text="${entity.getAccount().getName()}"></td>
+        <td th:text="${entity.getMailMessageId()}"></td>
+        <td th:text="${entity.getNotes()}"></td>
     </tr>
     </tbody>
 </table>
