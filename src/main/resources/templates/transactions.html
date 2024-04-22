@@ -23,12 +23,12 @@
     </thead>
     <tbody>
     <tr th:each="entity : ${transactions}">
-        <td th:text="${entity.getId()}"></td>
+        <td><a th:href="@{/transaction/{id}/(id=${entity.getId()})}"><p th:text="${entity.getId()}"></p></a></td>
         <td th:text="${entity.getDate()}"></td>
         <td th:text="${entity.getDescription()}"></td>
         <td th:text="${entity.getAmount()}"></td>
         <td th:text="${entity.getTransactionType()}"></td>
-        <td th:include="categoryDropdownList :: selectCategoriesList(${entity.getCategory().getId()})"></td>
+        <td th:text="${entity.getCategory().getName()}"></td>
         <td th:text="${entity.getMerchant().getName()}"></td>
 <!--        <td th:text="${entity.getAccount().getName()}"></td>-->
         <td th:text="${entity.getMailMessageId()}"></td>

@@ -1,13 +1,13 @@
 package com.brian.transaction_importer_spring.controller;
 
+import com.brian.transaction_importer_spring.entity.Transaction;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
 import com.brian.transaction_importer_spring.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class TransactionController {
@@ -17,6 +17,14 @@ public class TransactionController {
     @Autowired
     private TransactionRepository transactionRepository;
 
+
+    @GetMapping("/transaction/{transactionId}/")
+    public String getTransaction(@PathVariable(value="transactionId") Long transactionId, Model model) {
+        model.addAttribute("categories", categoryRepository.findAll());
+        Transaction transaction = transactionRepository.findById(transactionId).get();
+        model.addAttribute("transaction", transaction);
+        return "transaction";
+    }
 
     @GetMapping("/transactions")
     public String showEntities(Model model) {

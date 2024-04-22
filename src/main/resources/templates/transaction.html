@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Transactions</title>
+</head>
+<body>
+<h1>Last 10 Transactions</h1>
+<p><a href="/">Index Page</a></p>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Transaction Type</th>
+        <th>Category</th>
+        <th>Vendor</th>
+<!--        <th>Account</th>-->
+        <th>Mail Message Id</th>
+        <th>Notes</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${transaction.getId()}"></td>
+        <td th:text="${transaction.getDate()}"></td>
+        <td th:text="${transaction.getDescription()}"></td>
+        <td th:text="${transaction.getAmount()}"></td>
+        <td th:text="${transaction.getTransactionType()}"></td>
+        <td th:include="categoryDropdownList :: selectCategoriesList(${transaction.getCategory().getId()})"></td>
+        <td th:text="${transaction.getMerchant().getName()}"></td>
+<!--        <td th:text="${transaction.getAccount().getName()}"></td>-->
+        <td th:text="${transaction.getMailMessageId()}"></td>
+        <td th:text="${transaction.getNotes()}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
