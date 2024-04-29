@@ -3,8 +3,8 @@ package com.brian.transaction_importer_spring.service;
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;
 import com.brian.transaction_importer_spring.enums.KnownInstitution;
-import com.brian.transaction_importer_spring.instituton.FidelityParser;
-import com.brian.transaction_importer_spring.instituton.FirstTechParser;
+import com.brian.transaction_importer_spring.instituton.fidelity.FidelityTransactionImporter;
+import com.brian.transaction_importer_spring.instituton.first_tech.FirstTechTransactionImporter;
 import com.brian.transaction_importer_spring.repository.TransactionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +16,16 @@ import java.util.Arrays;
 @Slf4j
 public class TransactionParserService {
     @Autowired
-    private FidelityParser fidelityParser;
+    private FidelityTransactionImporter fidelityParser;
 
     @Autowired
     private TransactionRepository transactionRepository;
 
     @Autowired
-    private FirstTechParser firstTechParser;
+    private FirstTechTransactionImporter firstTechTransactionImporter;
+
+    @Autowired
+    private BalanceImporterService balanceImporterService;
 
     public Transaction[] parseTransactions(MailMessage mailMessages) {
         return parseTransaction(mailMessages);
@@ -36,24 +39,12 @@ public class TransactionParserService {
             transactions = new Transaction[]{transaction};
         }
         else if (knownInstitution == KnownInstitution.FIRST_TECH) {
-            transactions = firstTechParser.handleTransactionEmail(mailMessage);
+            transactions = firstTechTransactionImporter.handleTransactionEmail(mailMessage);
         }
 
         assert transactions != null && transactions.length > 0;
         transactionRepository.saveAll(Arrays.asList(transactions));
         return transactions;
-    }
-
-    public void parseBalanceSummary(MailMessage[] mailMessages) {
-        for(MailMessage mailMessage : mailMessages) {
-            KnownInstitution knownInstitution = parseInstitution(mailMessage);
-            if(knownInstitution == KnownInstitution.FIDELITY) {
-                log.error("Fidelity Balance importer not implemented!");
-            }
-            else if (knownInstitution == KnownInstitution.FIRST_TECH) {
-                firstTechParser.handleBalanceSummary(mailMessage.getHtml());
-            }
-        }
     }
 
     private KnownInstitution parseInstitution(MailMessage mailMessage) {

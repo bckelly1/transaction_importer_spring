@@ -1,9 +1,10 @@
-package com.brian.transaction_importer_spring.institution;
+package com.brian.transaction_importer_spring.institution.first_tech;
 
 import com.brian.transaction_importer_spring.entity.Account;
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;
-import com.brian.transaction_importer_spring.instituton.FirstTechParser;
+import com.brian.transaction_importer_spring.instituton.first_tech.FirstTechAccountImporter;
+import com.brian.transaction_importer_spring.instituton.first_tech.FirstTechTransactionImporter;
 import com.brian.transaction_importer_spring.repository.AccountRepository;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
 import com.brian.transaction_importer_spring.repository.TransactionRepository;
@@ -21,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SpringBootTest
-public class FirstTechParserTest {
+public class FirstTechFidelityFirstTechTransactionImporterTest {
     String transactionDepositEmail = String.join(File.separator, "examples", "first_tech_deposit_transaction.html");
 
     String transactionPaymentEmail = String.join(File.separator, "examples", "first_tech_payment_transactions.html");
@@ -43,7 +44,10 @@ public class FirstTechParserTest {
     TransactionRepository transactionRepository;
 
     @Autowired
-    FirstTechParser firstTechParser;
+    FirstTechTransactionImporter firstTechTransactionImporter;
+
+    @Autowired
+    FirstTechAccountImporter firstTechAccountImporter;
 
     private String loadFileContents(String fileName) {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
@@ -83,7 +87,7 @@ public class FirstTechParserTest {
         mailMessage.setBody(htmlContent);
         mailMessage.setHtml(htmlContent);
 
-        Transaction[] transactions = firstTechParser.handleTransactionEmail(mailMessage);
+        Transaction[] transactions = firstTechTransactionImporter.handleTransactionEmail(mailMessage);
         System.out.println();
     }
 
@@ -99,7 +103,7 @@ public class FirstTechParserTest {
         mailMessage.setBody(htmlContent);
         mailMessage.setHtml(htmlContent);
 
-        Transaction[] transactions = firstTechParser.handleTransactionEmail(mailMessage);
+        Transaction[] transactions = firstTechTransactionImporter.handleTransactionEmail(mailMessage);
         System.out.println();
     }
 
@@ -112,7 +116,7 @@ public class FirstTechParserTest {
         Mockito.when(accountRepository.save(Mockito.any())).thenReturn(account);
 
         String htmlContent = loadFileContents(transactionSummaryEmail);
-        firstTechParser.handleBalanceSummary(htmlContent);
+        firstTechAccountImporter.handleBalanceSummary(htmlContent);
     }
 
     @Test
@@ -127,6 +131,6 @@ public class FirstTechParserTest {
         mailMessage.setBody(htmlContent);
         mailMessage.setHtml(htmlContent);
 
-        firstTechParser.handleTransactionEmail(mailMessage);
+        firstTechTransactionImporter.handleTransactionEmail(mailMessage);
     }
 }

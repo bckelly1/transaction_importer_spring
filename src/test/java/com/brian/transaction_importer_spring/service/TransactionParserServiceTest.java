@@ -3,8 +3,8 @@ package com.brian.transaction_importer_spring.service;
 import com.brian.transaction_importer_spring.entity.Account;
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;
-import com.brian.transaction_importer_spring.instituton.FidelityParser;
-import com.brian.transaction_importer_spring.instituton.FirstTechParser;
+import com.brian.transaction_importer_spring.instituton.fidelity.FidelityTransactionImporter;
+import com.brian.transaction_importer_spring.instituton.first_tech.FirstTechTransactionImporter;
 import com.brian.transaction_importer_spring.repository.AccountRepository;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
 import com.brian.transaction_importer_spring.repository.TransactionRepository;
@@ -38,13 +38,16 @@ public class TransactionParserServiceTest {
     TransactionRepository transactionRepository;
 
     @MockBean
-    FidelityParser fidelityParser;
+    FidelityTransactionImporter fidelityParser;
 
     @MockBean
-    FirstTechParser firstTechParser;
+    FirstTechTransactionImporter firstTechTransactionImporter;
 
     @Autowired
     TransactionParserService transactionParserService;
+
+    @Autowired
+    BalanceImporterService balanceImporterService;
 
     private String loadFileContents(String fileName) {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
@@ -94,7 +97,7 @@ public class TransactionParserServiceTest {
         Transaction transaction = new Transaction();
         Transaction[] transactions = new Transaction[1];
         transactions[0] = transaction;
-        Mockito.when(firstTechParser.handleTransactionEmail(Mockito.any())).thenReturn(transactions);
+        Mockito.when(firstTechTransactionImporter.handleTransactionEmail(Mockito.any())).thenReturn(transactions);
 
         MailMessage mailMessage = createMockMailMessage();
         mailMessage.getHeaders().put("From", "First Tech Alerts");
@@ -116,6 +119,6 @@ public class TransactionParserServiceTest {
         MailMessage[] mailMessages = new MailMessage[1];
         mailMessages[0] = mockMailMessage;
 
-        transactionParserService.parseBalanceSummary(mailMessages);
+        balanceImporterService.parseBalanceSummary(mailMessages);
     }
 }

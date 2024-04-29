@@ -18,6 +18,9 @@ public class ImportService {
     @Autowired
     private TransactionParserService transactionParserService;
 
+    @Autowired
+    private BalanceImporterService balanceImporterService;
+
     public List<Transaction> beginTransactionImport(){
         MailMessage[] unreadMessages = gmailService.getUnreadMessages("Transaction");
 
@@ -32,7 +35,10 @@ public class ImportService {
     }
 
     public void beginBalanceSummaryImport(){
-        MailMessage[] unreadMessages = gmailService.getUnreadMessages("Balance Summary Alert");
-        transactionParserService.parseBalanceSummary(unreadMessages);
+        MailMessage[] firstTechMessages = gmailService.getUnreadMessages("Balance Summary Alert");
+        balanceImporterService.parseBalanceSummary(firstTechMessages);
+
+        MailMessage[] fidelityMessages = gmailService.getUnreadMessages("Daily Balance");
+        balanceImporterService.parseBalanceSummary(fidelityMessages);
     }
 }

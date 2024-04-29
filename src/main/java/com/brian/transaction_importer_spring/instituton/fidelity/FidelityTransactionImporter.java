@@ -1,4 +1,4 @@
-package com.brian.transaction_importer_spring.instituton;
+package com.brian.transaction_importer_spring.instituton.fidelity;
 
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 @Service
 @Log4j2
-public class FidelityParser {
+public class FidelityTransactionImporter {
     @Autowired
     private CategoryInfererService categoryInfererService;
 

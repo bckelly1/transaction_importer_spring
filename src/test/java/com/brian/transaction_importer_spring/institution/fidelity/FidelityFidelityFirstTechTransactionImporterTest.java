@@ -1,12 +1,16 @@
-package com.brian.transaction_importer_spring.institution;
+package com.brian.transaction_importer_spring.institution.fidelity;
 
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;
-import com.brian.transaction_importer_spring.instituton.FidelityParser;
+import com.brian.transaction_importer_spring.instituton.fidelity.FidelityTransactionImporter;
 import com.brian.transaction_importer_spring.repository.AccountRepository;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
 import com.brian.transaction_importer_spring.repository.TransactionRepository;
 import com.brian.transaction_importer_spring.repository.VendorRepository;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +24,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SpringBootTest
-class FidelityParserTest {
+class FidelityFidelityFirstTechTransactionImporterTest {
     String transactionEmailText = String.join(File.separator, "examples", "fidelity_credit_card_transaction.html");
+
+    String summaryEmailText = String.join(File.separator, "examples", "fidelity_balance_summary_alert.html");
 
     @MockBean
     VendorRepository vendorRepository;
@@ -36,7 +42,7 @@ class FidelityParserTest {
     TransactionRepository transactionRepository;
 
     @Autowired
-    FidelityParser fidelityParser;
+    FidelityTransactionImporter fidelityParser;
 
     private String loadFileContents(String fileName) {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
@@ -76,5 +82,22 @@ class FidelityParserTest {
         mailMessage.setHtml(null);
 
         fidelityParser.handleTransaction(mailMessage);
+    }
+
+    @Test
+    void fidelitySummaryParseTest() throws IOException {
+
+        String contents = loadFileContents(summaryEmailText);
+        Document document = Jsoup.parse(contents);
+        Elements elements = document.select("td:contains(XXXXX)");
+        Element element = elements.getLast();
+        String text = element.text();
+
+        String[] tokens = text.split(" ");
+        String account = tokens[1].replaceAll("X", "");
+        double balance = Double.parseDouble(tokens[6].replace("$", "").replace(",", ""));
+        String date = tokens[tokens.length - 1].replace(".", "");
+
+        System.out.println();
     }
 }
