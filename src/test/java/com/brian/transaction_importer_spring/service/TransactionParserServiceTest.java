@@ -85,7 +85,7 @@ public class TransactionParserServiceTest {
 
         MailMessage mailMessage = createMockMailMessage();
         mailMessage.getHeaders().put("From", "Fidelity Alerts");
-        transactionParserService.parseTransactions(mailMessage);
+        transactionParserService.parseTransaction(mailMessage);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class TransactionParserServiceTest {
 
         MailMessage mailMessage = createMockMailMessage();
         mailMessage.getHeaders().put("From", "First Tech Alerts");
-        transactionParserService.parseTransactions(mailMessage);
+        transactionParserService.parseTransaction(mailMessage);
     }
 
     @Test

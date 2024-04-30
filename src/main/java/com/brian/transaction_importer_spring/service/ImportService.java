@@ -27,7 +27,7 @@ public class ImportService {
         List<Transaction> transactionList = new ArrayList<>();
         for(int i = 0; i < unreadMessages.length; i++){
             MailMessage unreadMessage = unreadMessages[i];
-            Transaction[] transactions = transactionParserService.parseTransactions(unreadMessage);
+            Transaction[] transactions = transactionParserService.parseTransaction(unreadMessage);
             gmailService.markAsRead(unreadMessage);
             transactionList.addAll(List.of(transactions));
         }

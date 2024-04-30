@@ -24,14 +24,8 @@ public class TransactionParserService {
     @Autowired
     private FirstTechTransactionImporter firstTechTransactionImporter;
 
-    @Autowired
-    private BalanceImporterService balanceImporterService;
 
-    public Transaction[] parseTransactions(MailMessage mailMessages) {
-        return parseTransaction(mailMessages);
-    }
-
-    private Transaction[] parseTransaction(MailMessage mailMessage) {
+    public Transaction[] parseTransaction(MailMessage mailMessage) {
         KnownInstitution knownInstitution = parseInstitution(mailMessage);
         Transaction[] transactions = null;
         if(knownInstitution == KnownInstitution.FIDELITY) {
