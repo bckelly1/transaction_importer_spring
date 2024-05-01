@@ -48,7 +48,7 @@ public class ImportRequestControllerTest extends TestBaseUtils {
 
     @Test
     void importBalanceSummaryRequest() {
-        String uri = "http://localhost:8080" + "/import-balance-summary";
+        String uri = "http://localhost:" + port + "/import-balance-summary";
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
