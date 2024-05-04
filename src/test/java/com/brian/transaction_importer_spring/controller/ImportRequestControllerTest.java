@@ -43,11 +43,71 @@ public class ImportRequestControllerTest extends TestBaseUtils {
 
         String forObject = this.restTemplate.getForObject(uri, String.class);
         System.out.println();
+    }
 
+    @Test
+    void importFirstTechPaymentTransactionRequestTest() {
+        String fidelityTransactionEmail = loadFileContents(String.join(File.separator, "examples", "first_tech_payment_transactions.html"));
+        MailMessage mailMessage = createMockMailMessage();
+        mailMessage.setHtml(fidelityTransactionEmail);
+        mailMessage.setFrom("firsttech@firsttech.com");
+
+        MailMessage[] mailMessages = new MailMessage[]{mailMessage};
+        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString())).thenReturn(mailMessages);
+        String uri = "http://localhost:" + port + "/import-transactions";
+
+        String forObject = this.restTemplate.getForObject(uri, String.class);
+        System.out.println();
+    }
+
+    @Test
+    void importFirstTechDepositTransactionRequestTest() {
+        String fidelityTransactionEmail = loadFileContents(String.join(File.separator, "examples", "first_tech_deposit_transaction.html"));
+        MailMessage mailMessage = createMockMailMessage();
+        mailMessage.setHtml(fidelityTransactionEmail);
+        mailMessage.setFrom("firsttech@firsttech.com");
+
+        MailMessage[] mailMessages = new MailMessage[]{mailMessage};
+        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString())).thenReturn(mailMessages);
+        String uri = "http://localhost:" + port + "/import-transactions";
+
+        String forObject = this.restTemplate.getForObject(uri, String.class);
+        System.out.println();
+    }
+
+    @Test
+    void importFirstTechTransferTransactionRequestTest() {
+        String fidelityTransactionEmail = loadFileContents(String.join(File.separator, "examples", "first_tech_cross_account_transfer_transaction.html"));
+        MailMessage mailMessage = createMockMailMessage();
+        mailMessage.setHtml(fidelityTransactionEmail);
+        mailMessage.setFrom("firsttech@firsttech.com");
+
+        MailMessage[] mailMessages = new MailMessage[]{mailMessage};
+        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString())).thenReturn(mailMessages);
+        String uri = "http://localhost:" + port + "/import-transactions";
+
+        String forObject = this.restTemplate.getForObject(uri, String.class);
+        System.out.println();
     }
 
     @Test
     void importBalanceSummaryRequest() {
+        String firstTechTransactionEmail = loadFileContents(String.join(File.separator, "examples", "first_tech_account_summary_example.html"));
+        MailMessage firstTechMailMessage = createMockMailMessage();
+        firstTechMailMessage.setHtml(firstTechTransactionEmail);
+        firstTechMailMessage.setFrom("firsttech@firsttech.com");
+
+        MailMessage[] mailMessages = new MailMessage[]{firstTechMailMessage};
+        Mockito.when(gmailService.getUnreadMessages("Balance Summary Alert")).thenReturn(mailMessages);
+
+        String fidelityTransactionEmail = loadFileContents(String.join(File.separator, "examples", "fidelity_balance_summary_alert.html"));
+        MailMessage fidelityMailMessage = createMockMailMessage();
+        fidelityMailMessage.setHtml(fidelityTransactionEmail);
+        fidelityMailMessage.setFrom("firsttech@firsttech.com");
+
+        MailMessage[] fidelityMailMessages = new MailMessage[]{fidelityMailMessage};
+        Mockito.when(gmailService.getUnreadMessages("Daily Balance")).thenReturn(fidelityMailMessages);
+
         String uri = "http://localhost:" + port + "/import-balance-summary";
 
         OkHttpClient client = new OkHttpClient();

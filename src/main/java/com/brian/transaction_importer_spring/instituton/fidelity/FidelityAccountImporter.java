@@ -3,6 +3,7 @@ package com.brian.transaction_importer_spring.instituton.fidelity;
 import com.brian.transaction_importer_spring.entity.Account;
 import com.brian.transaction_importer_spring.repository.AccountRepository;
 import lombok.extern.log4j.Log4j2;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -10,6 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @Service
 @Log4j2
@@ -18,7 +24,7 @@ public class FidelityAccountImporter {
     private AccountRepository accountRepository;
 
     public void handleBalanceSummary(String summaryEmailText) {
-        Document document = org.jsoup.Jsoup.parse(summaryEmailText);
+        Document document = Jsoup.parse(summaryEmailText);
         Elements elements = document.select("td:contains(XXXXX)");
         Element element = elements.getLast();
         String text = element.text();
@@ -26,11 +32,26 @@ public class FidelityAccountImporter {
         String[] tokens = text.split(" ");
         String accountNumber = tokens[1].replaceAll("X", "");
         double balance = Double.parseDouble(tokens[6].replace("$", "").replace(",", ""));
-        String date = tokens[tokens.length - 1].replace(".", "");
+        String dateString = tokens[tokens.length - 1].replace(".", "");
 
         Account account = accountRepository.findByAlias(accountNumber);
         account.setBalance(balance);
-        account.setLast_updated(Timestamp.valueOf(date));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        Timestamp timestamp = null;
+        try {
+            LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
+            System.out.println("Parsed date: " + dateTime);
+            // Specify the time zone (adjust if necessary)
+            ZoneId zoneId = ZoneId.systemDefault(); // You can specify any ZoneId
+
+            // Convert LocalDateTime to java.sql.Timestamp
+            timestamp = Timestamp.valueOf(dateTime.atZone(zoneId).toLocalDateTime());
+        } catch (DateTimeParseException e) {
+            System.err.println("Error parsing the date: " + e.getMessage());
+        }
+
+        account.setLast_updated(timestamp);
         accountRepository.save(account);
     }
 }
