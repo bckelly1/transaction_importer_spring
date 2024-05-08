@@ -12,6 +12,8 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+
 @Service
 @Log4j2
 public class FirstTechAccountImporter {
@@ -54,6 +56,7 @@ public class FirstTechAccountImporter {
         for(MinimumAccount minimumAccount : minimumAccounts) {
             Account account = accountRepository.findByAlias(minimumAccount.getNumber());
             account.setBalance(minimumAccount.getBalance());
+            account.setLast_updated(new Timestamp(System.currentTimeMillis()));
             accountRepository.save(account);
         }
     }

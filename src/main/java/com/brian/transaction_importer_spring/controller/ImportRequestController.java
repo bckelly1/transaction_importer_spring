@@ -1,6 +1,7 @@
 package com.brian.transaction_importer_spring.controller;
 
 import com.brian.transaction_importer_spring.entity.Transaction;
+import com.brian.transaction_importer_spring.repository.AccountRepository;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
 import com.brian.transaction_importer_spring.service.ImportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class ImportRequestController {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
     @GetMapping("/import-transactions")
     public String importTransactionsRequest(Model model) {
         List<Transaction> transactions = importService.beginTransactionImport();
@@ -27,7 +31,9 @@ public class ImportRequestController {
     }
 
     @GetMapping("/import-balance-summary")
-    public void importBalanceSummaryRequest() {
+    public String importBalanceSummaryRequest(Model model) {
         importService.beginBalanceSummaryImport();
+        model.addAttribute("accounts", accountRepository.findAll());
+        return "accounts";
     }
 }

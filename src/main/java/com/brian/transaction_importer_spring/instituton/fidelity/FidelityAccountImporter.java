@@ -40,13 +40,11 @@ public class FidelityAccountImporter {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         Timestamp timestamp = null;
         try {
-            LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
+            LocalDate dateTime = LocalDate.parse(dateString, formatter);
             System.out.println("Parsed date: " + dateTime);
-            // Specify the time zone (adjust if necessary)
-            ZoneId zoneId = ZoneId.systemDefault(); // You can specify any ZoneId
 
-            // Convert LocalDateTime to java.sql.Timestamp
-            timestamp = Timestamp.valueOf(dateTime.atZone(zoneId).toLocalDateTime());
+            // Convert LocalDate to java.sql.Timestamp
+            timestamp = Timestamp.valueOf(dateTime.atStartOfDay());
         } catch (DateTimeParseException e) {
             System.err.println("Error parsing the date: " + e.getMessage());
         }
