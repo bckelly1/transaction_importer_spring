@@ -11,7 +11,7 @@ public class AccountController {
     @Autowired
     private AccountRepository accountRepository;
 
-    @GetMapping("/accounts")
+    @GetMapping("/accounts/")
     public String showAccounts(Model model) {
         model.addAttribute("accounts", accountRepository.findAll());
         return "accounts";
