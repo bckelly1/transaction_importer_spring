@@ -37,8 +37,16 @@ public class ImportService {
     public void beginBalanceSummaryImport(){
         MailMessage[] firstTechMessages = gmailService.getUnreadMessages("Balance Summary Alert");
         balanceImporterService.parseBalanceSummary(firstTechMessages);
+        markRead(firstTechMessages);
 
         MailMessage[] fidelityMessages = gmailService.getUnreadMessages("Daily Balance");
         balanceImporterService.parseBalanceSummary(fidelityMessages);
+        markRead(fidelityMessages);
+    }
+
+    private void markRead(MailMessage[] mailMessages) {
+        for(MailMessage mailMessage : mailMessages) {
+            gmailService.markAsRead(mailMessage);
+        }
     }
 }

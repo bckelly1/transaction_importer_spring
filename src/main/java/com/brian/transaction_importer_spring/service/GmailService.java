@@ -56,7 +56,7 @@ public class GmailService {
             SearchTerm searchTerm = new AndTerm(unreadTerm, subjectTerm);
 
             Message[] messages = inbox.search(searchTerm);
-            MailMessage[] mailMessages = parseMailMessages(messages);
+            MailMessage[] mailMessages = parseMailMessages(messages, mailConfig.getLabel());
 
             // Close resources
             inbox.close(false);
@@ -72,16 +72,16 @@ public class GmailService {
 
     // When store.close() is called, the messages in the array are no longer accessible. We need to copy out (or process)
     //   the messages, so we can work on them independently.
-    private MailMessage[] parseMailMessages(Message[] messages) {
+    private MailMessage[] parseMailMessages(Message[] messages, String label) {
         MailMessage[] mailMessages = new MailMessage[messages.length];
         for (int i = 0; i < messages.length; i++) {
-            MailMessage mailMessage = parseMailMessage(messages[i]);
+            MailMessage mailMessage = parseMailMessage(messages[i], label);
             mailMessages[i] = mailMessage;
         }
         return mailMessages;
     }
 
-    private MailMessage parseMailMessage(Message message) {
+    private MailMessage parseMailMessage(Message message, String label) {
         try {
             Map<String, String> headers = parseHeaders(message);
             String from = headers.get("From");
@@ -90,7 +90,7 @@ public class GmailService {
             String body = getTextBody(message);
             String html = getHtmlBody(message);
             String messageId = headers.get("Message-ID").replace("<", "").replace(">", "");
-            MailMessage mailMessage = new MailMessage(from, to, subject, body, html, messageId, headers);
+            MailMessage mailMessage = new MailMessage(from, to, subject, body, html, messageId, label, headers);
             return mailMessage;
         }
         catch (IOException | MessagingException e) {
@@ -153,7 +153,7 @@ public class GmailService {
             store.connect(mailConfig.getHost(), mailConfig.getUsername(), mailConfig.getPassword());
 
             // Open inbox folder
-            Folder inbox = store.getFolder(mailConfig.getLabel());
+            Folder inbox = store.getFolder(mailMessage.getLabel());
             inbox.open(Folder.READ_WRITE);
 
             //Should only be one record

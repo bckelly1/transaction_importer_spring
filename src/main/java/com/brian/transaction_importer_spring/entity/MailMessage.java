@@ -17,5 +17,6 @@ public class MailMessage {
     private String body;
     private String html;
     private String messageId;
+    private String label;
     private Map<String, String> headers;
 }
