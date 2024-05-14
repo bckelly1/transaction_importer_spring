@@ -65,8 +65,9 @@ class FidelityFidelityFirstTechTransactionImporterTest {
         String body = "";
         String html = "";
         String messageId = "messageId";
+        String label = "";
         Map<String, String> headers = new HashMap<>();
-        return new MailMessage(to, from, subject, body, html, messageId, headers);
+        return new MailMessage(to, from, subject, body, html, messageId, label, headers);
     }
 
     @Test

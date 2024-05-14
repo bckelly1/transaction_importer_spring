@@ -28,8 +28,9 @@ public class TestBaseUtils {
         String subject = "subject";
         String body = "";
         String html = "";
+        String label = "";
         String messageId = "messageId";
         Map<String, String> headers = new HashMap<>();
-        return new MailMessage(to, from, subject, body, html, messageId, headers);
+        return new MailMessage(to, from, subject, body, html, messageId, label, headers);
     }
 }

@@ -69,10 +69,11 @@ public class FirstTechFidelityFirstTechTransactionImporterTest {
         String subject = "subject";
         String body = "";
         String html = "";
+        String label = "";
         String messageId = "messageId";
         Map<String, String> headers = new HashMap<>();
         headers.put("Custom-Epoch", "1712617137");
-        return new MailMessage(to, from, subject, body, html, messageId, headers);
+        return new MailMessage(to, from, subject, body, html, messageId, label, headers);
     }
 
     @Test
