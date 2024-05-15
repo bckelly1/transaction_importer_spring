@@ -1,6 +1,9 @@
 package com.brian.transaction_importer_spring.instituton.fidelity;
 
+import com.brian.transaction_importer_spring.dto.AccountToAccountHistory;
 import com.brian.transaction_importer_spring.entity.Account;
+import com.brian.transaction_importer_spring.entity.AccountHistory;
+import com.brian.transaction_importer_spring.repository.AccountHistoryRepository;
 import com.brian.transaction_importer_spring.repository.AccountRepository;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
@@ -22,6 +25,9 @@ import java.time.format.DateTimeParseException;
 public class FidelityAccountImporter {
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private AccountHistoryRepository accountHistoryRepository;
 
     public void handleBalanceSummary(String summaryEmailText) {
         Document document = Jsoup.parse(summaryEmailText);
@@ -51,5 +57,8 @@ public class FidelityAccountImporter {
 
         account.setLast_updated(timestamp);
         accountRepository.save(account);
+
+        AccountHistory accountHistory = AccountToAccountHistory.parse(account);
+        accountHistoryRepository.save(accountHistory);
     }
 }
