@@ -37,7 +37,7 @@ public class ImportRequestControllerTest extends TestBaseUtils {
         mailMessage.setFrom("Fidelity@fidelity.com");
 
         MailMessage[] mailMessages = new MailMessage[]{mailMessage};
-        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString())).thenReturn(mailMessages);
+        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString(), Mockito.anyString())).thenReturn(mailMessages);
         String uri = "http://localhost:" + port + "/import-transactions";
 
         String forObject = this.restTemplate.getForObject(uri, String.class);
@@ -52,7 +52,7 @@ public class ImportRequestControllerTest extends TestBaseUtils {
         mailMessage.setFrom("firsttech@firsttech.com");
 
         MailMessage[] mailMessages = new MailMessage[]{mailMessage};
-        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString())).thenReturn(mailMessages);
+        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString(), Mockito.anyString())).thenReturn(mailMessages);
         String uri = "http://localhost:" + port + "/import-transactions";
 
         String forObject = this.restTemplate.getForObject(uri, String.class);
@@ -67,7 +67,7 @@ public class ImportRequestControllerTest extends TestBaseUtils {
         mailMessage.setFrom("firsttech@firsttech.com");
 
         MailMessage[] mailMessages = new MailMessage[]{mailMessage};
-        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString())).thenReturn(mailMessages);
+        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString(), Mockito.anyString())).thenReturn(mailMessages);
         String uri = "http://localhost:" + port + "/import-transactions";
 
         String forObject = this.restTemplate.getForObject(uri, String.class);
@@ -82,7 +82,7 @@ public class ImportRequestControllerTest extends TestBaseUtils {
         mailMessage.setFrom("firsttech@firsttech.com");
 
         MailMessage[] mailMessages = new MailMessage[]{mailMessage};
-        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString())).thenReturn(mailMessages);
+        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString(), Mockito.anyString())).thenReturn(mailMessages);
         String uri = "http://localhost:" + port + "/import-transactions";
 
         String forObject = this.restTemplate.getForObject(uri, String.class);
@@ -97,7 +97,7 @@ public class ImportRequestControllerTest extends TestBaseUtils {
         firstTechMailMessage.setFrom("firsttech@firsttech.com");
 
         MailMessage[] mailMessages = new MailMessage[]{firstTechMailMessage};
-        Mockito.when(gmailService.getUnreadMessages("Balance Summary Alert")).thenReturn(mailMessages);
+        Mockito.when(gmailService.getUnreadMessages("Balance Summary Alert", Mockito.anyString())).thenReturn(mailMessages);
 
         String fidelityTransactionEmail = loadFileContents(String.join(File.separator, "examples", "fidelity_balance_summary_alert.html"));
         MailMessage fidelityMailMessage = createMockMailMessage();
@@ -105,7 +105,7 @@ public class ImportRequestControllerTest extends TestBaseUtils {
         fidelityMailMessage.setFrom("firsttech@firsttech.com");
 
         MailMessage[] fidelityMailMessages = new MailMessage[]{fidelityMailMessage};
-        Mockito.when(gmailService.getUnreadMessages("Daily Balance")).thenReturn(fidelityMailMessages);
+        Mockito.when(gmailService.getUnreadMessages("Daily Balance", Mockito.anyString())).thenReturn(fidelityMailMessages);
 
         String uri = "http://localhost:" + port + "/import-balance-summary";
 

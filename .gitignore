@@ -33,3 +33,4 @@ build/
 .vscode/
 # Actual one might have real values added by accident, best to be safe
 /src/main/resources/application.yaml
+.env

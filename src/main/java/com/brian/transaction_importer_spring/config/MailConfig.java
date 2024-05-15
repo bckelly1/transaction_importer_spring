@@ -13,5 +13,6 @@ public class MailConfig {
     private String host;
     private String username;
     private String password;
-    private String label;
+    private String transactionLabel;
+    private String balanceLabel;
 }
