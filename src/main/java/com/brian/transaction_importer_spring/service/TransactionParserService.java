@@ -5,6 +5,7 @@ import com.brian.transaction_importer_spring.entity.Transaction;
 import com.brian.transaction_importer_spring.enums.KnownInstitution;
 import com.brian.transaction_importer_spring.instituton.fidelity.FidelityTransactionImporter;
 import com.brian.transaction_importer_spring.instituton.first_tech.FirstTechTransactionImporter;
+import com.brian.transaction_importer_spring.instituton.usbank.USBankTransactionImporter;
 import com.brian.transaction_importer_spring.repository.TransactionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class TransactionParserService {
     @Autowired
     private FirstTechTransactionImporter firstTechTransactionImporter;
 
+    @Autowired
+    private USBankTransactionImporter usBankTransactionImporter;
+
 
     public Transaction[] parseTransaction(MailMessage mailMessage) {
         KnownInstitution knownInstitution = parseInstitution(mailMessage);
@@ -34,6 +38,9 @@ public class TransactionParserService {
         }
         else if (knownInstitution == KnownInstitution.FIRST_TECH) {
             transactions = firstTechTransactionImporter.handleTransactionEmail(mailMessage);
+        } else if (knownInstitution == KnownInstitution.US_BANK) {
+            Transaction transaction = usBankTransactionImporter.handleTransactionEmail(mailMessage);
+            transactions = new Transaction[]{transaction};
         }
 
         assert transactions != null && transactions.length > 0;
