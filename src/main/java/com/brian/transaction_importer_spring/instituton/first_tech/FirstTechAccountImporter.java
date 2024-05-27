@@ -1,6 +1,9 @@
 package com.brian.transaction_importer_spring.instituton.first_tech;
 
+import com.brian.transaction_importer_spring.dto.AccountToAccountHistory;
 import com.brian.transaction_importer_spring.entity.Account;
+import com.brian.transaction_importer_spring.entity.AccountHistory;
+import com.brian.transaction_importer_spring.repository.AccountHistoryRepository;
 import com.brian.transaction_importer_spring.repository.AccountRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +22,9 @@ import java.sql.Timestamp;
 public class FirstTechAccountImporter {
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private AccountHistoryRepository accountHistoryRepository;
 
     // In the main body of the email, figure out which account we are extracting the balance of.
     public MinimumAccount[] parseAccountInfo(Document document) {
@@ -58,6 +64,9 @@ public class FirstTechAccountImporter {
             account.setBalance(minimumAccount.getBalance());
             account.setLast_updated(new Timestamp(System.currentTimeMillis()));
             accountRepository.save(account);
+
+            AccountHistory accountHistory = AccountToAccountHistory.parse(account);
+            accountHistoryRepository.save(accountHistory);
         }
     }
 

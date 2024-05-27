@@ -1,8 +1,6 @@
 FROM maven:3.9.6
-#FROM openjdk:21
 
 COPY . /usr/src/transactions/
-#COPY ./target/*.jar /usr/src/transactions/application.jar
 
 WORKDIR /usr/src/transactions
 

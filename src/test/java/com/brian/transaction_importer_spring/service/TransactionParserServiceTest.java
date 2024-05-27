@@ -5,6 +5,7 @@ import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;
 import com.brian.transaction_importer_spring.instituton.fidelity.FidelityTransactionImporter;
 import com.brian.transaction_importer_spring.instituton.first_tech.FirstTechTransactionImporter;
+import com.brian.transaction_importer_spring.repository.AccountHistoryRepository;
 import com.brian.transaction_importer_spring.repository.AccountRepository;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
 import com.brian.transaction_importer_spring.repository.TransactionRepository;
@@ -33,6 +34,9 @@ public class TransactionParserServiceTest {
 
     @MockBean
     AccountRepository accountRepository;
+
+    @MockBean
+    AccountHistoryRepository accountHistoryRepository;
 
     @MockBean
     TransactionRepository transactionRepository;
@@ -111,6 +115,7 @@ public class TransactionParserServiceTest {
         account.setName("Test");
         account.setAlias("Test");
         Mockito.when(accountRepository.findByAlias(Mockito.any())).thenReturn(account);
+        Mockito.when(accountHistoryRepository.save(Mockito.any())).thenReturn(null);
         Mockito.when(accountRepository.save(Mockito.any())).thenReturn(account);
         String fileContents = loadFileContents(firstTechTransactionSummaryEmail);
         MailMessage mockMailMessage = createMockMailMessage();

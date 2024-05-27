@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SpringBootTest
-class FidelityFidelityFirstTechTransactionImporterTest {
+class FidelityTransactionImporterTest {
     String transactionEmailText = String.join(File.separator, "examples", "fidelity_credit_card_transaction.html");
 
     String summaryEmailText = String.join(File.separator, "examples", "fidelity_balance_summary_alert.html");

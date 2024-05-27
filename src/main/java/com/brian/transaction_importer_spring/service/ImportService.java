@@ -1,5 +1,6 @@
 package com.brian.transaction_importer_spring.service;
 
+import com.brian.transaction_importer_spring.config.MailConfig;
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +17,16 @@ public class ImportService {
     private GmailService gmailService;
 
     @Autowired
+    private MailConfig mailConfig;
+
+    @Autowired
     private TransactionParserService transactionParserService;
 
     @Autowired
     private BalanceImporterService balanceImporterService;
 
     public List<Transaction> beginTransactionImport(){
-        MailMessage[] unreadMessages = gmailService.getUnreadMessages("Transaction");
+        MailMessage[] unreadMessages = gmailService.getUnreadMessages("Transaction", mailConfig.getTransactionLabel());
 
         List<Transaction> transactionList = new ArrayList<>();
         for(int i = 0; i < unreadMessages.length; i++){
@@ -35,11 +39,11 @@ public class ImportService {
     }
 
     public void beginBalanceSummaryImport(){
-        MailMessage[] firstTechMessages = gmailService.getUnreadMessages("Balance Summary Alert");
+        MailMessage[] firstTechMessages = gmailService.getUnreadMessages("Balance Summary Alert", mailConfig.getBalanceLabel());
         balanceImporterService.parseBalanceSummary(firstTechMessages);
         markRead(firstTechMessages);
 
-        MailMessage[] fidelityMessages = gmailService.getUnreadMessages("Daily Balance");
+        MailMessage[] fidelityMessages = gmailService.getUnreadMessages("Daily Balance", mailConfig.getBalanceLabel());
         balanceImporterService.parseBalanceSummary(fidelityMessages);
         markRead(fidelityMessages);
     }

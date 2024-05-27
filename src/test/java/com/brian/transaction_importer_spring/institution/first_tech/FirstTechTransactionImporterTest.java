@@ -5,10 +5,7 @@ import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;
 import com.brian.transaction_importer_spring.instituton.first_tech.FirstTechAccountImporter;
 import com.brian.transaction_importer_spring.instituton.first_tech.FirstTechTransactionImporter;
-import com.brian.transaction_importer_spring.repository.AccountRepository;
-import com.brian.transaction_importer_spring.repository.CategoryRepository;
-import com.brian.transaction_importer_spring.repository.TransactionRepository;
-import com.brian.transaction_importer_spring.repository.VendorRepository;
+import com.brian.transaction_importer_spring.repository.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SpringBootTest
-public class FirstTechFidelityFirstTechTransactionImporterTest {
+public class FirstTechTransactionImporterTest {
     String transactionDepositEmail = String.join(File.separator, "examples", "first_tech_deposit_transaction.html");
 
     String transactionPaymentEmail = String.join(File.separator, "examples", "first_tech_payment_transactions.html");
@@ -39,6 +36,9 @@ public class FirstTechFidelityFirstTechTransactionImporterTest {
 
     @MockBean
     AccountRepository accountRepository;
+
+    @MockBean
+    AccountHistoryRepository accountHistoryRepository;
 
     @MockBean
     TransactionRepository transactionRepository;
@@ -80,6 +80,7 @@ public class FirstTechFidelityFirstTechTransactionImporterTest {
     void firstTechTransactionParserPaymentTest() {
         Mockito.when(categoryRepository.findByName(Mockito.any())).thenReturn(null);
         Mockito.when(accountRepository.findByAlias(Mockito.any())).thenReturn(null);
+        Mockito.when(accountHistoryRepository.save(Mockito.any())).thenReturn(null);
         Mockito.when(vendorRepository.findOrCreate(Mockito.any())).thenReturn(null);
         Mockito.when(transactionRepository.save(Mockito.any(Transaction.class))).thenReturn(null);
 
@@ -96,6 +97,7 @@ public class FirstTechFidelityFirstTechTransactionImporterTest {
     void firstTechTransactionParserDepositTest() {
         Mockito.when(categoryRepository.findByName(Mockito.any())).thenReturn(null);
         Mockito.when(accountRepository.findByAlias(Mockito.any())).thenReturn(null);
+        Mockito.when(accountHistoryRepository.save(Mockito.any())).thenReturn(null);
         Mockito.when(vendorRepository.findOrCreate(Mockito.any())).thenReturn(null);
         Mockito.when(transactionRepository.save(Mockito.any(Transaction.class))).thenReturn(null);
 
@@ -124,6 +126,7 @@ public class FirstTechFidelityFirstTechTransactionImporterTest {
     void firstTechTransferParserTest() {
         Mockito.when(categoryRepository.findByName(Mockito.any())).thenReturn(null);
         Mockito.when(accountRepository.findByAlias(Mockito.any())).thenReturn(null);
+        Mockito.when(accountHistoryRepository.save(Mockito.any())).thenReturn(null);
         Mockito.when(vendorRepository.findOrCreate(Mockito.any())).thenReturn(null);
         Mockito.when(transactionRepository.save(Mockito.any(Transaction.class))).thenReturn(null);
 

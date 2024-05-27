@@ -1,6 +1,7 @@
 package com.brian.transaction_importer_spring.controller;
 
 import com.brian.transaction_importer_spring.TestBaseUtils;
+import com.brian.transaction_importer_spring.config.MailConfig;
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.service.GmailService;
 import jakarta.transaction.Transactional;
@@ -26,6 +27,9 @@ public class ImportRequestControllerTest extends TestBaseUtils {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private MailConfig mailConfig;
+
     @Mock
     GmailService gmailService;
 
@@ -37,7 +41,7 @@ public class ImportRequestControllerTest extends TestBaseUtils {
         mailMessage.setFrom("Fidelity@fidelity.com");
 
         MailMessage[] mailMessages = new MailMessage[]{mailMessage};
-        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString())).thenReturn(mailMessages);
+        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString(), Mockito.anyString())).thenReturn(mailMessages);
         String uri = "http://localhost:" + port + "/import-transactions";
 
         String forObject = this.restTemplate.getForObject(uri, String.class);
@@ -52,7 +56,7 @@ public class ImportRequestControllerTest extends TestBaseUtils {
         mailMessage.setFrom("firsttech@firsttech.com");
 
         MailMessage[] mailMessages = new MailMessage[]{mailMessage};
-        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString())).thenReturn(mailMessages);
+        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString(), Mockito.anyString())).thenReturn(mailMessages);
         String uri = "http://localhost:" + port + "/import-transactions";
 
         String forObject = this.restTemplate.getForObject(uri, String.class);
@@ -67,7 +71,7 @@ public class ImportRequestControllerTest extends TestBaseUtils {
         mailMessage.setFrom("firsttech@firsttech.com");
 
         MailMessage[] mailMessages = new MailMessage[]{mailMessage};
-        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString())).thenReturn(mailMessages);
+        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString(), Mockito.anyString())).thenReturn(mailMessages);
         String uri = "http://localhost:" + port + "/import-transactions";
 
         String forObject = this.restTemplate.getForObject(uri, String.class);
@@ -82,7 +86,7 @@ public class ImportRequestControllerTest extends TestBaseUtils {
         mailMessage.setFrom("firsttech@firsttech.com");
 
         MailMessage[] mailMessages = new MailMessage[]{mailMessage};
-        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString())).thenReturn(mailMessages);
+        Mockito.when(gmailService.getUnreadMessages(Mockito.anyString(), Mockito.anyString())).thenReturn(mailMessages);
         String uri = "http://localhost:" + port + "/import-transactions";
 
         String forObject = this.restTemplate.getForObject(uri, String.class);
@@ -97,7 +101,7 @@ public class ImportRequestControllerTest extends TestBaseUtils {
         firstTechMailMessage.setFrom("firsttech@firsttech.com");
 
         MailMessage[] mailMessages = new MailMessage[]{firstTechMailMessage};
-        Mockito.when(gmailService.getUnreadMessages("Balance Summary Alert")).thenReturn(mailMessages);
+        Mockito.when(gmailService.getUnreadMessages("Balance Summary Alert", mailConfig.getBalanceLabel())).thenReturn(mailMessages);
 
         String fidelityTransactionEmail = loadFileContents(String.join(File.separator, "examples", "fidelity_balance_summary_alert.html"));
         MailMessage fidelityMailMessage = createMockMailMessage();
@@ -105,7 +109,7 @@ public class ImportRequestControllerTest extends TestBaseUtils {
         fidelityMailMessage.setFrom("firsttech@firsttech.com");
 
         MailMessage[] fidelityMailMessages = new MailMessage[]{fidelityMailMessage};
-        Mockito.when(gmailService.getUnreadMessages("Daily Balance")).thenReturn(fidelityMailMessages);
+        Mockito.when(gmailService.getUnreadMessages("Daily Balance", mailConfig.getBalanceLabel())).thenReturn(fidelityMailMessages);
 
         String uri = "http://localhost:" + port + "/import-balance-summary";
 
