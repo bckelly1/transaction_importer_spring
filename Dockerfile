@@ -8,3 +8,4 @@ RUN mvn clean install
 RUN mv /usr/src/transactions/target/*.jar /usr/src/transactions/application.jar
 
 CMD ["java", "-jar", "/usr/src/transactions/application.jar"]
+

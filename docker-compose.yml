@@ -1,16 +1,20 @@
 services:
   transaction_importer:
-    image: transaction_importer_spring
+    #image: transaction_importer_spring
+    build: .
     container_name: transaction_importer_spring
     environment:
-#      - SPRING_DATASOURCE_URL=jdbc://
-#      - SPRING_DATASOURCE_USERNAME=
-#      - SPRING_DATASOURCE_PASSWORD=
-#      - MAIL_USERNAME=
-#      - MAIL_PASSWORD=
-#      - MAIL_LABEL=
-#      - SERVER_PORT=8080
-      - EXAMPLE=test
+      #- SPRING_DATASOURCE_URL=jdbc://
+      #- SPRING_DATASOURCE_USERNAME=
+      #- SPRING_DATASOURCE_PASSWORD=
+      #- MAIL_USERNAME=
+      #- MAIL_PASSWORD=
+      #- MAIL_LABEL=
+      #- SERVER_PORT=8080
+      - EXAMPLE=
+    restart: unless-stopped
+    ports:
+      - 8180:8080
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=$DEFAULT_NETWORK"
@@ -23,3 +27,4 @@ networks:
   traefik_net:
     name: $DEFAULT_NETWORK
     external: true
+
