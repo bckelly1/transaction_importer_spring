@@ -12,6 +12,7 @@ import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 @Service
@@ -51,15 +52,18 @@ public class FidelityTransactionImporter {
         String joinedDescription = String.join(" ", lines.get(1), lines.get(2));
         String originalDescription = joinedDescription.split("\\. ")[0].strip();
         String[] tokens = originalDescription.strip().split(" ");
+        Timestamp date = new Timestamp(Long.parseLong(mailMessage.getHeaders().get("Custom-Epoch")) * 1000L);
         Double amount = Double.parseDouble(findCurrencyToken(tokens).replace("$", ""));  //TODO: Not super proud of this
         String merchant = originalDescription.split(" at ")[1];
         String category = categoryInfererService.getCategory(merchant);
 
         log.info("Card Number: {}", cardNumber);
         log.info("amount: {}", amount);
+        log.info("date: {}", date);
         log.info("detail: {}\n", originalDescription);
 
         transaction.setDescription(merchant);
+        transaction.setDate(date);
         transaction.setOriginalDescription(originalDescription);
         transaction.setAmount(amount);
         transaction.setTransactionType("debit");
