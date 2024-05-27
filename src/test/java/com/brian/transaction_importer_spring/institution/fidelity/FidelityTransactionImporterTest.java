@@ -67,6 +67,7 @@ class FidelityTransactionImporterTest {
         String messageId = "messageId";
         String label = "";
         Map<String, String> headers = new HashMap<>();
+        headers.put("Custom-Epoch", "1712617137");
         return new MailMessage(to, from, subject, body, html, messageId, label, headers);
     }
 
