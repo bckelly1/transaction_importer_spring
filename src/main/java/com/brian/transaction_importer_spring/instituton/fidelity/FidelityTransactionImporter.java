@@ -52,6 +52,7 @@ public class FidelityTransactionImporter {
         String joinedDescription = String.join(" ", lines.get(1), lines.get(2));
         String originalDescription = joinedDescription.split("\\. ")[0].strip();
         String[] tokens = originalDescription.strip().split(" ");
+        String messageId = mailMessage.getHeaders().get("Message-ID");
         Timestamp date = new Timestamp(Long.parseLong(mailMessage.getHeaders().get("Custom-Epoch")) * 1000L);
         Double amount = Double.parseDouble(findCurrencyToken(tokens).replace("$", ""));  //TODO: Not super proud of this
         String merchant = originalDescription.split(" at ")[1];
@@ -71,6 +72,7 @@ public class FidelityTransactionImporter {
         transaction.setCategory(categoryRepository.findByName(category));
         transaction.setAccount(accountRepository.findByAlias(cardNumber));
         transaction.setNotes("Fidelity");
+        transaction.setMailMessageId(messageId);
 
         return transaction;
     }
