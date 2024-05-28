@@ -9,8 +9,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
+@ToString
 @Getter
 @Setter
 @Table(name = "category")
@@ -29,9 +31,9 @@ public class Category {
 //    @ManyToOne(targetEntity = Transaction.class, fetch = FetchType.LAZY)
 //    private Transaction[] transactions;
 
-    @Override
-    public String toString() {
-        return "{\"Name\": \""+name+"\"," +
-                "\"Id\": "+id+"}";
-    }
+//    @Override
+//    public String toString() {
+//        return "{\"Name\": \""+name+"\"," +
+//                "\"Id\": "+id+"}";
+//    }
 }

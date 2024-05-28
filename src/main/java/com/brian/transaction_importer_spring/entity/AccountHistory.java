@@ -10,10 +10,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 
 @Entity
+@ToString
 @Getter
 @Setter
 @Table(name = "account_history")
@@ -29,10 +31,10 @@ public class AccountHistory {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @Override
-    public String toString() {
-        return "{\"Id\": "+id+"," +
-                "\"Balance\": "+balance+"," +
-                "\"timestamp\": "+timestamp+"}";
-    }
+//    @Override
+//    public String toString() {
+//        return "{\"Id\": "+id+"," +
+//                "\"Balance\": "+balance+"," +
+//                "\"timestamp\": "+timestamp+"}";
+//    }
 }

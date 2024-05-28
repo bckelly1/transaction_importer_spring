@@ -10,10 +10,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 
 @Entity
+@ToString
 @Getter
 @Setter
 @Table(name = "transaction")
@@ -41,12 +43,12 @@ public class Transaction {
     private String mailMessageId;
     private String notes;
 
-    @Override
-    public String toString() {
-        return "{\"Id\": "+id+"," +
-                "\"Description\": \""+description+"\"," +
-                "\"Original Description\": \""+originalDescription+"\"," +
-                "\"Amount\": "+amount+"," +
-                "\"Transaction Type\": \""+transactionType+"\"}";
-    }
+//    @Override
+//    public String toString() {
+//        return "{\"Id\": "+id+"," +
+//                "\"Description\": \""+description+"\"," +
+//                "\"Original Description\": \""+originalDescription+"\"," +
+//                "\"Amount\": "+amount+"," +
+//                "\"Transaction Type\": \""+transactionType+"\"}";
+//    }
 }

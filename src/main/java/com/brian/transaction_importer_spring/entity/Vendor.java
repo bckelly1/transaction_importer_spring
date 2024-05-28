@@ -7,8 +7,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
+@ToString
 @Getter
 @Setter
 @Table(name = "vendor")
@@ -19,10 +21,10 @@ public class Vendor {
     private String name;
     private String aliases;
 
-    @Override
-    public String toString() {
-        return "{\"Id\": "+id+"," +
-                "\"Name\": \""+name+"\"," +
-                "\"Aliases\": \""+aliases+"\"}";
-    }
+//    @Override
+//    public String toString() {
+//        return "{\"Id\": "+id+"," +
+//                "\"Name\": \""+name+"\"," +
+//                "\"Aliases\": \""+aliases+"\"}";
+//    }
 }

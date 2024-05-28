@@ -74,6 +74,8 @@ public class FidelityTransactionImporter {
         transaction.setNotes("Fidelity");
         transaction.setMailMessageId(messageId);
 
+        log.info(transaction);
+
         return transaction;
     }
 
