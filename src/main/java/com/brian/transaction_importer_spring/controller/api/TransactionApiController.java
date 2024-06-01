@@ -17,13 +17,13 @@ public class TransactionApiController {
     private TransactionRepository transactionRepository;
 
     @GetMapping("/transaction/")
-    public Object[] listTransactions() {
+    public List<Transaction> listTransactions() {
         List<Transaction> transactions = transactionRepository.findTop10ByOrderByIdDesc();
         if (transactions.isEmpty()) {
             return null;
         }
 
-        return transactions.toArray();
+        return transactions;
     }
 
     @GetMapping("/transaction/{id}")
