@@ -1,6 +1,6 @@
 package com.brian.transaction_importer_spring.controller.api;
 
-import com.brian.transaction_importer_spring.dto.InstitutionJson;
+import com.brian.transaction_importer_spring.dto.InstitutionDTO;
 import com.brian.transaction_importer_spring.entity.Institution;
 import com.brian.transaction_importer_spring.repository.InstitutionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +14,13 @@ public class InstitutionApiController {
     private InstitutionRepository institutionRepository;
 
     @GetMapping("/institution/{id}")
-    public InstitutionJson findInstitutionJsonById(@PathVariable Long id) {
+    public InstitutionDTO findInstitutionJsonById(@PathVariable Long id) {
         Institution institution = institutionRepository.findById(id).get();
         if (institution == null) {
             return null;
         }
 
-        return new InstitutionJson(institution);
+        return new InstitutionDTO(institution);
     }
 }
 

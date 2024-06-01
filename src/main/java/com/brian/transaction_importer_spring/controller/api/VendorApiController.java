@@ -1,6 +1,6 @@
 package com.brian.transaction_importer_spring.controller.api;
 
-import com.brian.transaction_importer_spring.dto.VendorJson;
+import com.brian.transaction_importer_spring.dto.VendorDTO;
 import com.brian.transaction_importer_spring.entity.Vendor;
 import com.brian.transaction_importer_spring.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +14,12 @@ public class VendorApiController {
     private VendorRepository vendorRepository;
 
     @GetMapping("/vendor/{id}")
-    public VendorJson findTransactionJsonById(@PathVariable Long id) {
+    public VendorDTO findTransactionJsonById(@PathVariable Long id) {
         Vendor vendor = vendorRepository.findById(id).get();
         if (vendor == null) {
             return null;
         }
 
-        return new VendorJson(vendor);
+        return new VendorDTO(vendor);
     }
 }

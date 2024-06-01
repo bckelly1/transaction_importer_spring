@@ -7,16 +7,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.sql.Timestamp;
 
 @Entity
-@ToString
-@Getter
-@Setter
+@Data
 @Table(name = "account")
 public class Account {
     @Id
@@ -32,14 +28,4 @@ public class Account {
     private String type;
     private Timestamp last_updated; // TODO: wrong field name
 
-//    @Override
-//    public String toString() {
-//        return "{\"Id\": "+id+"," +
-//                "\"Name\": \""+name+"\"," +
-//                "\"Institution\": \""+institution+"\"," +
-//                "\"Balance\": "+balance+"," +
-//                "\"alias\": \""+alias+"\"," +
-//                "\"alias\": \""+type+"\"," +
-//                "\"last_update\": "+last_updated+"}";
-//    }
 }

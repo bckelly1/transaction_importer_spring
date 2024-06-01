@@ -10,22 +10,23 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL) // Only include non-null fields in the JSON
-public class AccountJson {
-    public AccountJson(Account account) {
+public class AccountDTO {
+    private Long id;
+    private String name;
+
+    private String institutionName;
+    private Double balance;
+    private String alias;
+    private String type;
+    private Timestamp last_updated; // TODO: wrong field name
+
+    public AccountDTO(Account account) {
         this.id = account.getId();
         this.name = account.getName();
         this.balance = account.getBalance();
         this.alias  = account.getAlias();
         this.type = account.getType();
+        this.institutionName = account.getInstitution().getName();
         this.last_updated = account.getLast_updated();
     }
-    
-    private Long id;
-    private String name;
-
-//    private Institution institution; // TODO: Actually a FK
-    private Double balance;
-    private String alias;
-    private String type;
-    private Timestamp last_updated; // TODO: wrong field name
 }

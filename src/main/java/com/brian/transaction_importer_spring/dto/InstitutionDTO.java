@@ -8,12 +8,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL) // Only include non-null fields in the JSON
-public class InstitutionJson {
-    public InstitutionJson(Institution institution) {
+public class InstitutionDTO {
+    private Long id;
+    private String name;
+
+    public InstitutionDTO(Institution institution) {
         this.id = institution.getId();
         this.name = institution.getName();
     }
-
-    private Long id;
-    private String name;
 }

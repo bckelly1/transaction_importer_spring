@@ -8,15 +8,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL) // Only include non-null fields in the JSON
-public class VendorJson {
-    public VendorJson(Vendor vendor) {
-        this.id = vendor.getId();
-        this.name = vendor.getName();
-        this.aliases = vendor.getAliases();
-    }
-
+public class VendorDTO {
     private Long id;
     private String name;
     private String aliases;
 
+    public VendorDTO(Vendor vendor) {
+        this.id = vendor.getId();
+        this.name = vendor.getName();
+        this.aliases = vendor.getAliases();
+    }
 }
