@@ -38,13 +38,4 @@ public class Transaction {
     private Account account; // TODO: FK
     private String mailMessageId;
     private String notes;
-
-//    @Override
-//    public String toString() {
-//        return "{\"Id\": "+id+"," +
-//                "\"Description\": \""+description+"\"," +
-//                "\"Original Description\": \""+originalDescription+"\"," +
-//                "\"Amount\": "+amount+"," +
-//                "\"Transaction Type\": \""+transactionType+"\"}";
-//    }
 }

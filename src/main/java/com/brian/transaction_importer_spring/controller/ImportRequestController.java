@@ -4,6 +4,7 @@ import com.brian.transaction_importer_spring.entity.Transaction;
 import com.brian.transaction_importer_spring.repository.AccountRepository;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
 import com.brian.transaction_importer_spring.service.ImportService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,15 +13,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class ImportRequestController {
-    @Autowired
-    private ImportService importService;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final ImportService importService;
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final CategoryRepository categoryRepository;
+
+    private final AccountRepository accountRepository;
 
     @GetMapping("/import-transactions")
     public String importTransactionsRequest(Model model) {

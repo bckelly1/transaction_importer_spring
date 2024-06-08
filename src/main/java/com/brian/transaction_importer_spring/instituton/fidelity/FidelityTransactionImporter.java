@@ -6,6 +6,7 @@ import com.brian.transaction_importer_spring.repository.AccountRepository;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
 import com.brian.transaction_importer_spring.repository.VendorRepository;
 import com.brian.transaction_importer_spring.service.CategoryInfererService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,18 +18,16 @@ import java.util.ArrayList;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class FidelityTransactionImporter {
-    @Autowired
-    private CategoryInfererService categoryInfererService;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryInfererService categoryInfererService;
 
-    @Autowired
-    private VendorRepository vendorRepository;
+    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final VendorRepository vendorRepository;
+
+    private final AccountRepository accountRepository;
 
     private String findCurrencyToken(String[] description) {
         for(String word : description) {

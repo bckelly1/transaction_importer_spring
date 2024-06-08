@@ -6,12 +6,12 @@ import com.brian.transaction_importer_spring.repository.AccountRepository;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
 import com.brian.transaction_importer_spring.repository.VendorRepository;
 import com.brian.transaction_importer_spring.service.CategoryInfererService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -21,18 +21,16 @@ import java.util.Objects;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class FirstTechTransactionImporter {
-    @Autowired
-    private CategoryInfererService categoryInfererService;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryInfererService categoryInfererService;
 
-    @Autowired
-    private VendorRepository vendorRepository;
+    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final VendorRepository vendorRepository;
+
+    private final AccountRepository accountRepository;
 
     // With Bank accounts, you have to determine if the money is going in (credit) or going out (debit)
     //    For First Tech, you can either determine that by looking for the parentheses () or the Credit/Debit label
@@ -56,9 +54,7 @@ public class FirstTechTransactionImporter {
            return false;
         else if (title.contains("Transfer"))
             return true;
-        else if (isCreditCardPayment(title))
-            return true;
-        return false;
+        else return isCreditCardPayment(title);
     }
 
 
@@ -67,9 +63,7 @@ public class FirstTechTransactionImporter {
     //   Payment more as a transfer than as "money going out".  Let the rage debate commence.
     public boolean isCreditCardPayment(String title) {
         // Fidelity is a bit obnoxious about this. No email on payments. Have to infer it when the money goes out.
-        if ((title.contains("CARDMEMBER SERV")) && title.contains("WEB PYMT"))
-           return true;
-        return false;
+        return (title.contains("CARDMEMBER SERV")) && title.contains("WEB PYMT");
     }
 
     // Example input: Deposit Transfer From ******1234
@@ -111,9 +105,9 @@ public class FirstTechTransactionImporter {
         String sourceAccount = determineSourceAccount(transfer, transactionDetailsOriginal, merchant);
 
         log.info("Info:");
-        log.info("\tDate: " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(transactionDate));
-        log.info("\tDetail: " + merchant);
-        log.info("\tAmount: " + amount);
+        log.info("\tDate: {}", new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(transactionDate));
+        log.info("\tDetail: {}", merchant);
+        log.info("\tAmount: {}", amount);
 
         Transaction transaction = new Transaction();
         transaction.setDate(transactionDate);
@@ -212,7 +206,6 @@ public class FirstTechTransactionImporter {
 
     private String extractDescription(String transactionDetailsOriginal) {
         String[] transactionTokens = transactionDetailsOriginal.split(" ");
-        String description = String.join(" ", Arrays.copyOfRange(transactionTokens, 2, transactionTokens.length));
-        return description;
+        return String.join(" ", Arrays.copyOfRange(transactionTokens, 2, transactionTokens.length));
     }
 }

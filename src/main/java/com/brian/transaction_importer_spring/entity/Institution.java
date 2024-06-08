@@ -17,10 +17,4 @@ public class Institution {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-
-//    @Override
-//    public String toString() {
-//        return "{\"Id\": "+id+"," +
-//                "\"Name\": \""+name+"\"}";
-//    }
 }

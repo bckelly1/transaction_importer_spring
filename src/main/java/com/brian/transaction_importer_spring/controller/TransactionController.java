@@ -3,19 +3,19 @@ package com.brian.transaction_importer_spring.controller;
 import com.brian.transaction_importer_spring.entity.Transaction;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
 import com.brian.transaction_importer_spring.repository.TransactionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
+@RequiredArgsConstructor
 public class TransactionController {
-    @Autowired
-    private CategoryRepository categoryRepository;
 
-    @Autowired
-    private TransactionRepository transactionRepository;
+    private final CategoryRepository categoryRepository;
+
+    private final TransactionRepository transactionRepository;
 
 
     @GetMapping("/transaction/{transactionId}/")

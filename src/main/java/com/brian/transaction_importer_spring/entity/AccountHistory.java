@@ -26,11 +26,4 @@ public class AccountHistory {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account;
-
-//    @Override
-//    public String toString() {
-//        return "{\"Id\": "+id+"," +
-//                "\"Balance\": "+balance+"," +
-//                "\"timestamp\": "+timestamp+"}";
-//    }
 }

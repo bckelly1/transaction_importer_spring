@@ -24,7 +24,7 @@ import java.util.Map;
 
 @SpringBootTest
 public class TransactionParserServiceTest {
-    String firstTechTransactionSummaryEmail = String.join(File.separator, "examples", "first_tech_account_summary_example.html");
+    private static final String firstTechTransactionSummaryEmail = String.join(File.separator, "examples", "first_tech_account_summary_example.html");
 
     @MockBean
     VendorRepository vendorRepository;

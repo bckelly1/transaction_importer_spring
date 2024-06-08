@@ -63,9 +63,9 @@ public class GmailService {
             store.close();
 
             return mailMessages;
-        } catch (Exception e) {
+        } catch (MessagingException e) {
             // Handle exceptions
-            e.printStackTrace();
+            log.error("Error getting unread messages", e);
             return new MailMessage[0];
         }
     }
@@ -90,11 +90,10 @@ public class GmailService {
             String body = getTextBody(message);
             String html = getHtmlBody(message);
             String messageId = headers.get("Message-ID").replace("<", "").replace(">", "");
-            MailMessage mailMessage = new MailMessage(from, to, subject, body, html, messageId, label, headers);
-            return mailMessage;
+            return new MailMessage(from, to, subject, body, html, messageId, label, headers);
         }
         catch (IOException | MessagingException e) {
-            e.printStackTrace();
+            log.error("Error parsing mail message", e);
             return null;
         }
     }

@@ -20,13 +20,13 @@ import java.util.Map;
 
 @SpringBootTest
 public class FirstTechTransactionImporterTest {
-    String transactionDepositEmail = String.join(File.separator, "examples", "first_tech_deposit_transaction.html");
+    private static final String transactionDepositEmail = String.join(File.separator, "examples", "first_tech_deposit_transaction.html");
 
-    String transactionPaymentEmail = String.join(File.separator, "examples", "first_tech_payment_transactions.html");
+    private static final String transactionPaymentEmail = String.join(File.separator, "examples", "first_tech_payment_transactions.html");
 
-    String transactionSummaryEmail = String.join(File.separator, "examples", "first_tech_account_summary_example.html");
+    private static final String transactionSummaryEmail = String.join(File.separator, "examples", "first_tech_account_summary_example.html");
 
-    String transferEmail = String.join(File.separator, "examples", "first_tech_cross_account_transfer_transaction.html");
+    private static final String transferEmail = String.join(File.separator, "examples", "first_tech_cross_account_transfer_transaction.html");
 
     @MockBean
     VendorRepository vendorRepository;

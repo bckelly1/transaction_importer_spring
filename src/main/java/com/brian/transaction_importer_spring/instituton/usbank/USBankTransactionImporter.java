@@ -6,25 +6,23 @@ import com.brian.transaction_importer_spring.repository.AccountRepository;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
 import com.brian.transaction_importer_spring.repository.VendorRepository;
 import com.brian.transaction_importer_spring.service.CategoryInfererService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class USBankTransactionImporter {
-    @Autowired
-    private CategoryInfererService categoryInfererService;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryInfererService categoryInfererService;
 
-    @Autowired
-    private VendorRepository vendorRepository;
+    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final VendorRepository vendorRepository;
+
+    private final AccountRepository accountRepository;
 
     public Transaction handleTransactionEmail(MailMessage mailMessage) {
         return handleTransactions(mailMessage);
@@ -52,9 +50,9 @@ public class USBankTransactionImporter {
         }
         String category = categoryInfererService.getCategory(originalDescription);
 
-        log.info("Card Number: " + cardNumber);
-        log.info("amount: " + amount);
-        log.info("detail: " + originalDescription + "\n");
+        log.info("Card Number: {}", cardNumber);
+        log.info("amount: {}", amount);
+        log.info("detail: {}\n", originalDescription);
 
         Transaction transaction = new Transaction();
         transaction.setDate(new Timestamp(Long.parseLong(mailMessage.getHeaders().get("Custom-Epoch")) * 1000L));

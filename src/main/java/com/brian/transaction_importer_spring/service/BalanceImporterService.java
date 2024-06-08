@@ -4,18 +4,18 @@ import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.enums.KnownInstitution;
 import com.brian.transaction_importer_spring.instituton.fidelity.FidelityAccountImporter;
 import com.brian.transaction_importer_spring.instituton.first_tech.FirstTechAccountImporter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class BalanceImporterService {
-    @Autowired
-    private FirstTechAccountImporter firstTechAccountImporter;
 
-    @Autowired
-    private FidelityAccountImporter fidelityAccountImporter;
+    private final FirstTechAccountImporter firstTechAccountImporter;
+
+    private final FidelityAccountImporter fidelityAccountImporter;
 
 
 

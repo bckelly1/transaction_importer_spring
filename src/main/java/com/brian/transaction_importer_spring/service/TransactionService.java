@@ -2,15 +2,16 @@ package com.brian.transaction_importer_spring.service;
 
 import com.brian.transaction_importer_spring.entity.Transaction;
 import com.brian.transaction_importer_spring.repository.TransactionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TransactionService {
-    @Autowired
-    private TransactionRepository transactionRepository;
+
+    private final TransactionRepository transactionRepository;
 
     public List<Transaction> getAllTransactions() {
         return transactionRepository.findAll();

@@ -7,6 +7,7 @@ import com.brian.transaction_importer_spring.repository.AccountHistoryRepository
 import com.brian.transaction_importer_spring.repository.AccountRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,12 +20,13 @@ import java.sql.Timestamp;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class FirstTechAccountImporter {
-    @Autowired
-    private AccountRepository accountRepository;
 
-    @Autowired
-    private AccountHistoryRepository accountHistoryRepository;
+    private final AccountRepository accountRepository;
+
+
+    private final AccountHistoryRepository accountHistoryRepository;
 
     // In the main body of the email, figure out which account we are extracting the balance of.
     public MinimumAccount[] parseAccountInfo(Document document) {
@@ -72,7 +74,7 @@ public class FirstTechAccountImporter {
 
     @Getter
     @AllArgsConstructor
-    private class MinimumAccount {
+    private static class MinimumAccount {
         private String name;
         private String number;
         private Double balance;

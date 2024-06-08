@@ -7,26 +7,24 @@ import com.brian.transaction_importer_spring.instituton.fidelity.FidelityTransac
 import com.brian.transaction_importer_spring.instituton.first_tech.FirstTechTransactionImporter;
 import com.brian.transaction_importer_spring.instituton.usbank.USBankTransactionImporter;
 import com.brian.transaction_importer_spring.repository.TransactionRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class TransactionParserService {
-    @Autowired
-    private FidelityTransactionImporter fidelityParser;
 
-    @Autowired
-    private TransactionRepository transactionRepository;
+    private final FidelityTransactionImporter fidelityParser;
 
-    @Autowired
-    private FirstTechTransactionImporter firstTechTransactionImporter;
+    private final TransactionRepository transactionRepository;
 
-    @Autowired
-    private USBankTransactionImporter usBankTransactionImporter;
+    private final FirstTechTransactionImporter firstTechTransactionImporter;
+
+    private final USBankTransactionImporter usBankTransactionImporter;
 
 
     public Transaction[] parseTransaction(MailMessage mailMessage) {

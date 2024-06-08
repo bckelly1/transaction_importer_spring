@@ -8,9 +8,6 @@ import com.brian.transaction_importer_spring.repository.CategoryRepository;
 import com.brian.transaction_importer_spring.repository.TransactionRepository;
 import com.brian.transaction_importer_spring.repository.VendorRepository;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +22,7 @@ import java.util.Map;
 
 @SpringBootTest
 class USBankTransactionImporterTest {
-    String transactionEmailText = String.join(File.separator, "examples", "us_bank_transaction.html");
+    private static final String transactionEmailText = String.join(File.separator, "examples", "us_bank_transaction.html");
 
     @MockBean
     VendorRepository vendorRepository;

@@ -35,11 +35,6 @@ public class Category {
     @OneToMany(mappedBy = "parent")
     private List<Category> children;
 
-
-    // reverse relationship
-//    @ManyToOne(targetEntity = Transaction.class, fetch = FetchType.LAZY)
-//    private Transaction[] transactions;
-
     @Override
     public String toString() {
         return "{\"Name\": \""+name+"\"," +

@@ -25,9 +25,9 @@ import java.util.Map;
 
 @SpringBootTest
 class FidelityTransactionImporterTest {
-    String transactionEmailText = String.join(File.separator, "examples", "fidelity_credit_card_transaction.html");
+    private static final String transactionEmailText = String.join(File.separator, "examples", "fidelity_credit_card_transaction.html");
 
-    String summaryEmailText = String.join(File.separator, "examples", "fidelity_balance_summary_alert.html");
+    private static final String summaryEmailText = String.join(File.separator, "examples", "fidelity_balance_summary_alert.html");
 
     @MockBean
     VendorRepository vendorRepository;
@@ -72,7 +72,7 @@ class FidelityTransactionImporterTest {
     }
 
     @Test
-    void fidelityTransactionParseTest() throws IOException {
+    void fidelityTransactionParseTest() {
         Mockito.when(categoryRepository.findByName(Mockito.any())).thenReturn(null);
         Mockito.when(accountRepository.findByAlias(Mockito.any())).thenReturn(null);
         Mockito.when(vendorRepository.findOrCreate(Mockito.any())).thenReturn(null);
@@ -87,7 +87,7 @@ class FidelityTransactionImporterTest {
     }
 
     @Test
-    void fidelitySummaryParseTest() throws IOException {
+    void fidelitySummaryParseTest() {
 
         String contents = loadFileContents(summaryEmailText);
         Document document = Jsoup.parse(contents);

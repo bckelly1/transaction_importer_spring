@@ -3,15 +3,16 @@ package com.brian.transaction_importer_spring.controller.api;
 import com.brian.transaction_importer_spring.dto.CategoryDTO;
 import com.brian.transaction_importer_spring.entity.Category;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class CategoryApiController {
-    @Autowired
-    private CategoryRepository categoryRepository;
+
+    private final CategoryRepository categoryRepository;
 
     @GetMapping("/category/{id}")
     public CategoryDTO findAccountJsonById(@PathVariable Long id) {

@@ -13,24 +13,20 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ImportService {
-    @Autowired
-    private GmailService gmailService;
 
-    @Autowired
-    private MailConfig mailConfig;
+    private final GmailService gmailService;
 
-    @Autowired
-    private TransactionParserService transactionParserService;
+    private final MailConfig mailConfig;
 
-    @Autowired
-    private BalanceImporterService balanceImporterService;
+    private final TransactionParserService transactionParserService;
+
+    private final BalanceImporterService balanceImporterService;
 
     public List<Transaction> beginTransactionImport(){
         MailMessage[] unreadMessages = gmailService.getUnreadMessages("Transaction", mailConfig.getTransactionLabel());
 
         List<Transaction> transactionList = new ArrayList<>();
-        for(int i = 0; i < unreadMessages.length; i++){
-            MailMessage unreadMessage = unreadMessages[i];
+        for (MailMessage unreadMessage : unreadMessages) {
             Transaction[] transactions = transactionParserService.parseTransaction(unreadMessage);
             gmailService.markAsRead(unreadMessage);
             transactionList.addAll(List.of(transactions));
