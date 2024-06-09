@@ -126,7 +126,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT\n  date AS \"time\",\n  description,\n  transaction_type,\n  -(amount) as debit\nFROM finance_transactions\nwhere transaction_type = 'debit'\nAND $__timeFilter(date)\nORDER BY date",
+          "rawSql": "SELECT\n  date AS \"time\",\n  description,\n  transaction_type,\n  -(amount) as debit\nFROM transaction\nwhere transaction_type = 'debit'\nAND $__timeFilter(date)\nORDER BY date",
           "refId": "A",
           "sql": {
             "columns": [
@@ -156,7 +156,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT\n  date AS \"time\",\n  description,\n  transaction_type,\n  amount as credit\nFROM finance_transactions\nwhere transaction_type = 'credit'\nAND $__timeFilter(date)\nORDER BY date",
+          "rawSql": "SELECT\n  date AS \"time\",\n  description,\n  transaction_type,\n  amount as credit\nFROM transaction\nwhere transaction_type = 'credit'\nAND $__timeFilter(date)\nORDER BY date",
           "refId": "B",
           "sql": {
             "columns": [
@@ -247,7 +247,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\r\nSUM(IF(finance_accounts.type = 'mortgage' OR finance_accounts.type = 'credit card', -finance_accounts.balance, finance_accounts.balance)) \"Net Worth\"\r\nfrom finance_accounts\r\nJOIN finance_institutions ON finance_accounts.institution = finance_institutions.id",
+          "rawSql": "SELECT\r\nSUM(IF(account.type = 'mortgage' OR account.type = 'credit card', -account.balance, account.balance)) \"Net Worth\"\r\nfrom account\r\nJOIN institution ON account.institution_id = institution.id",
           "refId": "A",
           "sql": {
             "columns": [
@@ -331,7 +331,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \namount as \"Amount\"\nfrom finance_transactions\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\nwhere $__timeFilter(date)\nand transaction_type = 'credit'\nand (finance_categories.name = 'Income'\nor finance_categories.parent_category = 71)",
+          "rawSql": "SELECT \namount as \"Amount\"\nfrom transaction\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nand transaction_type = 'credit'\nand (category.name = 'Income'\nor category.parent_id = 71)",
           "refId": "B",
           "sql": {
             "columns": [
@@ -416,7 +416,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \namount as \"Amount\"\nfrom finance_transactions\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\nwhere $__timeFilter(date)\nand transaction_type = 'debit'\nand finance_categories.name != 'Transfer'\nand finance_categories.name != 'Credit Card Payment'",
+          "rawSql": "SELECT \namount as \"Amount\"\nfrom transaction\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nand transaction_type = 'debit'\nand category.name != 'Transfer'\nand category.name != 'Credit Card Payment'",
           "refId": "B",
           "sql": {
             "columns": [
@@ -507,7 +507,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\r\nSUM(IF(finance_accounts.type = 'mortgage' OR finance_accounts.type = 'credit card', -finance_accounts.balance, finance_accounts.balance)) \"Net Worth\"\r\nfrom finance_accounts\r\nJOIN finance_institutions ON finance_accounts.institution = finance_institutions.id\r\nwhere finance_accounts.type != 'property'",
+          "rawSql": "SELECT\r\nSUM(IF(account.type = 'mortgage' OR account.type = 'credit card', -account.balance, account.balance)) \"Net Worth\"\r\nfrom account\r\nJOIN institution ON account.institution_id = institution.id\r\nwhere account.type != 'property'",
           "refId": "A",
           "sql": {
             "columns": [
@@ -654,7 +654,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \ndate as \"time\",\n-(amount) as \"Amount\",\ndescription as Description,\nfinance_accounts.name \"Account Name\",\nfinance_categories.name as \"Category\",\nfinance_institutions.name \"Institution\"\nfrom finance_transactions\nJOIN finance_vendors ON finance_transactions.merchant = finance_vendors.id\nJOIN finance_accounts ON finance_transactions.account = finance_accounts.id\nJOIN finance_institutions ON finance_accounts.institution = finance_institutions.id\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\nwhere $__timeFilter(date)\nand transaction_type IN('debit', 'Debit')\nand finance_categories.name != 'Transfer'\norder by date desc",
+          "rawSql": "SELECT \ndate as \"time\",\n-(amount) as \"Amount\",\ndescription as Description,\naccount.name \"Account Name\",\ncategory.name as \"Category\",\ninstitution.name \"Institution\"\nfrom transaction\nJOIN vendor ON transaction.vendor_id = vendor.id\nJOIN account ON transaction.account_id = account.id\nJOIN institution ON account.institution_id = institution.id\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nand transaction_type IN('debit', 'Debit')\nand category.name != 'Transfer'\norder by date desc",
           "refId": "B",
           "sql": {
             "columns": [
@@ -816,7 +816,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \ndate as \"time\",\namount as \"Amount\",\ndescription as Description,\n#finance_vendors.name as \"Merchant\",\nfinance_accounts.name \"Account Name\",\nfinance_categories.name \"Category\",\nfinance_institutions.name \"Institution\"\nfrom finance_transactions\nJOIN finance_vendors ON finance_transactions.merchant = finance_vendors.id\nJOIN finance_accounts ON finance_transactions.account = finance_accounts.id\nJOIN finance_institutions ON finance_accounts.institution = finance_institutions.id\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\nwhere $__timeFilter(date)\nand (finance_categories.name = 'Income' OR finance_categories.parent_category = 71)\norder by date desc",
+          "rawSql": "SELECT \ndate as \"time\",\namount as \"Amount\",\ndescription as Description,\n#vendor.name as \"Merchant\",\naccount.name \"Account Name\",\ncategory.name \"Category\",\ninstitution.name \"Institution\"\nfrom transaction\nJOIN vendor ON transaction.vendor_id = vendor.id\nJOIN account ON transaction.account_id = account.id\nJOIN institution ON account.institution_id = institution.id\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nand (category.name = 'Income' OR category.parent_id = 71)\norder by date desc",
           "refId": "B",
           "sql": {
             "columns": [
@@ -915,7 +915,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \n  finance_categories.name AS \"Category\",\n  sum(\n    if(transaction_type = 'debit', -(amount), amount)\n    ) as \"Total\"\nfrom finance_transactions\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\nwhere $__timeFilter(date)\nand finance_transactions.transaction_type in ('debit', 'Debit')\nGROUP BY finance_categories.name\norder by amount desc",
+          "rawSql": "SELECT \n  category.name AS \"Category\",\n  sum(\n    if(transaction_type = 'debit', -(amount), amount)\n    ) as \"Total\"\nfrom transaction\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nand transaction.transaction_type in ('debit', 'Debit')\nGROUP BY category.name\norder by amount desc",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1062,7 +1062,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \n  date as \"time\",\n  sum(\n    if(transaction_type = 'debit', -(amount), amount)\n    ) as \"Total\",\n  finance_vendors.name AS \"Merchant\"\nfrom finance_transactions\n  JOIN finance_vendors ON finance_transactions.merchant = finance_vendors.id\nwhere $__timeFilter(date)\nand finance_transactions.transaction_type in ('debit', 'Debit')\nGROUP BY finance_vendors.name\norder by amount desc",
+          "rawSql": "SELECT \n  date as \"time\",\n  sum(\n    if(transaction_type = 'debit', -(amount), amount)\n    ) as \"Total\",\n  vendor.name AS \"Merchant\"\nfrom transaction\n  JOIN vendor ON transaction.vendor_id = vendor.id\nwhere $__timeFilter(date)\nand transaction.transaction_type in ('debit', 'Debit')\nGROUP BY vendor.name\norder by amount desc",
           "refId": "B",
           "sql": {
             "columns": [
@@ -1150,7 +1150,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\r\nfinance_accounts.name \"Account Name\",\r\nIF(finance_accounts.type = 'mortgage' OR finance_accounts.type = 'credit card', -finance_accounts.balance, finance_accounts.balance) \"Balance\",\r\nfinance_accounts.type \"Type\",\r\nfinance_institutions.name \"Institution\",\r\nfinance_accounts.last_updated \"Last Updated\"\r\nfrom finance_accounts\r\nJOIN finance_institutions ON finance_accounts.institution = finance_institutions.id\r\norder by finance_accounts.name ",
+          "rawSql": "SELECT\r\naccount.name \"Account Name\",\r\nIF(account.type = 'mortgage' OR account.type = 'credit card', -account.balance, account.balance) \"Balance\",\r\naccount.type \"Type\",\r\ninstitution.name \"Institution\",\r\naccount.last_updated \"Last Updated\"\r\nfrom account\r\nJOIN institution ON account.institution_id = institution.id\r\norder by account.name ",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1268,7 +1268,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \n  finance_categories.name AS \"Category\",\n  sum(amount) as \"Total\"\nfrom finance_transactions\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\nwhere $__timeFilter(date)\nAND finance_transactions.transaction_type IN ('debit', 'Debit')\nAND finance_categories.name != 'Transfer'\nAND finance_categories.name != 'Credit Card Payment'\nGROUP BY finance_categories.name\norder by amount desc",
+          "rawSql": "SELECT \n  category.name AS \"Category\",\n  sum(amount) as \"Total\"\nfrom transaction\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nAND transaction.transaction_type IN ('debit', 'Debit')\nAND category.name != 'Transfer'\nAND category.name != 'Credit Card Payment'\nGROUP BY category.name\norder by amount desc",
           "refId": "B",
           "sql": {
             "columns": [
@@ -1410,7 +1410,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \n  date as \"time\",\n  description as \"Description\",\n  amount as \"Amount\"\nfrom finance_transactions\n  JOIN finance_categories ON finance_categories.id = finance_transactions.category\nwhere $__timeFilter(date)\nAND finance_categories.name = 'Unknown'",
+          "rawSql": "SELECT \n  date as \"time\",\n  description as \"Description\",\n  amount as \"Amount\"\nfrom transaction\n  JOIN category ON category.id = transaction.category_id\nwhere $__timeFilter(date)\nAND category.name = 'Unknown'",
           "refId": "B",
           "sql": {
             "columns": [

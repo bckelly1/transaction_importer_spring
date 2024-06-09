@@ -153,7 +153,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  finance_categories.name as \"Income\",\r\n  sum(amount) as \"Total\"\r\nfrom finance_transactions\r\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\r\nwhere $__timeFilter(date)\r\nand (finance_categories.name = 'Income' or parent_category = 71)",
+          "rawSql": "SELECT \r\n  category.name as \"Income\",\r\n  sum(amount) as \"Total\"\r\nfrom transaction\r\nJOIN category ON transaction.category_id = category.id\r\nwhere $__timeFilter(date)\r\nand (category.name = 'Income' or parent_id = 71)",
           "refId": "A",
           "sql": {
             "columns": [
@@ -291,7 +291,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  finance_categories.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom finance_transactions\r\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\r\nwhere $__timeFilter(date)\r\nand (finance_categories.name = 'Lawn & Garden')",
+          "rawSql": "SELECT \r\n  category.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom transaction\r\nJOIN category ON transaction.category_id = category.id\r\nwhere $__timeFilter(date)\r\nand (category.name = 'Lawn & Garden')",
           "refId": "A",
           "sql": {
             "columns": [
@@ -416,7 +416,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  finance_categories.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom finance_transactions\r\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\r\nwhere $__timeFilter(date)\r\nand (finance_categories.name = 'Pet Food & Supplies')",
+          "rawSql": "SELECT \r\n  category.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom transaction\r\nJOIN category ON transaction.category_id = category.id\r\nwhere $__timeFilter(date)\r\nand (category.name = 'Pet Food & Supplies')",
           "refId": "A",
           "sql": {
             "columns": [
@@ -541,7 +541,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  finance_categories.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom finance_transactions\r\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\r\nwhere $__timeFilter(date)\r\nand (finance_categories.name = 'Restaurants')",
+          "rawSql": "SELECT \r\n  category.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom transaction\r\nJOIN category ON transaction.category_id = category.id\r\nwhere $__timeFilter(date)\r\nand (category.name = 'Restaurants')",
           "refId": "A",
           "sql": {
             "columns": [
@@ -666,7 +666,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  finance_categories.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom finance_transactions\r\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\r\nwhere $__timeFilter(date)\r\nand (finance_categories.name = 'Fast Food')",
+          "rawSql": "SELECT \r\n  category.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom transaction\r\nJOIN category ON transaction.category_id = category.id\r\nwhere $__timeFilter(date)\r\nand (category.name = 'Fast Food')",
           "refId": "A",
           "sql": {
             "columns": [
@@ -791,7 +791,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  finance_categories.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom finance_transactions\r\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\r\nwhere $__timeFilter(date)\r\nand (finance_categories.name = 'Groceries')",
+          "rawSql": "SELECT \r\n  category.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom transaction\r\nJOIN category ON transaction.category_id = category.id\r\nwhere $__timeFilter(date)\r\nand (category.name = 'Groceries')",
           "refId": "A",
           "sql": {
             "columns": [
@@ -929,7 +929,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  finance_categories.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom finance_transactions\r\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\r\nwhere $__timeFilter(date)\r\nand (finance_categories.name = 'Babysitter & Daycare')",
+          "rawSql": "SELECT \r\n  category.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom transaction\r\nJOIN category ON transaction.category_id = category.id\r\nwhere $__timeFilter(date)\r\nand (category.name = 'Babysitter & Daycare')",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1054,7 +1054,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  finance_categories.name as \"Mortgage\",\r\n  sum(amount) as \"Total\"\r\nfrom finance_transactions\r\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\r\nwhere $__timeFilter(date)\r\nand (finance_categories.name = 'Mortgage & Rent')",
+          "rawSql": "SELECT \r\n  category.name as \"Mortgage\",\r\n  sum(amount) as \"Total\"\r\nfrom transaction\r\nJOIN category ON transaction.category_id = category.id\r\nwhere $__timeFilter(date)\r\nand (category.name = 'Mortgage & Rent')",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1179,7 +1179,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  finance_categories.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom finance_transactions\r\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\r\nwhere $__timeFilter(date)\r\nand (finance_categories.name = 'Life Insurance')",
+          "rawSql": "SELECT \r\n  category.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom transaction\r\nJOIN category ON transaction.category_id = category.id\r\nwhere $__timeFilter(date)\r\nand (category.name = 'Life Insurance')",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1304,7 +1304,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  finance_categories.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom finance_transactions\r\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\r\nwhere $__timeFilter(date)\r\nand (finance_categories.name = 'Auto Payment')",
+          "rawSql": "SELECT \r\n  category.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom transaction\r\nJOIN category ON transaction.category_id = category.id\r\nwhere $__timeFilter(date)\r\nand (category.name = 'Auto Payment')",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1429,7 +1429,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  finance_categories.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom finance_transactions\r\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\r\nwhere $__timeFilter(date)\r\nand (finance_categories.name = 'Bills & Utilities' OR finance_categories.parent_category = 10)",
+          "rawSql": "SELECT \r\n  category.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom transaction\r\nJOIN category ON transaction.category_id = category.id\r\nwhere $__timeFilter(date)\r\nand (category.name = 'Bills & Utilities' OR category.parent_id = 10)",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1554,7 +1554,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  finance_categories.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom finance_transactions\r\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\r\nwhere $__timeFilter(date)\r\nand (finance_categories.name = 'Home Owners Assoc')",
+          "rawSql": "SELECT \r\n  category.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom transaction\r\nJOIN category ON transaction.category_id = category.id\r\nwhere $__timeFilter(date)\r\nand (category.name = 'Home Owners Assoc')",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1678,7 +1678,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  finance_categories.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom finance_transactions\r\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\r\nwhere $__timeFilter(date)\r\nand (finance_categories.name = 'Auto Insurance')",
+          "rawSql": "SELECT \r\n  category.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom transaction\r\nJOIN category ON transaction.category_id = category.id\r\nwhere $__timeFilter(date)\r\nand (category.name = 'Auto Insurance')",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1802,7 +1802,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  finance_categories.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom finance_transactions\r\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\r\nwhere $__timeFilter(date)\r\nand (finance_categories.name = 'College Fund')",
+          "rawSql": "SELECT \r\n  category.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom transaction\r\nJOIN category ON transaction.category_id = category.id\r\nwhere $__timeFilter(date)\r\nand (category.name = 'College Fund')",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1926,7 +1926,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  finance_categories.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom finance_transactions\r\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\r\nwhere $__timeFilter(date)\r\nand (finance_categories.name = 'Home Services')",
+          "rawSql": "SELECT \r\n  category.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom transaction\r\nJOIN category ON transaction.category_id = category.id\r\nwhere $__timeFilter(date)\r\nand (category.name = 'Home Services')",
           "refId": "A",
           "sql": {
             "columns": [
@@ -2050,7 +2050,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  finance_categories.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom finance_transactions\r\nJOIN finance_categories ON finance_transactions.category = finance_categories.id\r\nwhere $__timeFilter(date)\r\nand (finance_categories.name = 'Internet')",
+          "rawSql": "SELECT \r\n  category.name \"Name\",\r\n  sum(amount) as \"Total\"\r\nfrom transaction\r\nJOIN category ON transaction.category_id = category.id\r\nwhere $__timeFilter(date)\r\nand (category.name = 'Internet')",
           "refId": "A",
           "sql": {
             "columns": [

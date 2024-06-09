@@ -1,4 +1,3 @@
-version: '3'
 services:
   transaction_importer_spring:
     image: transaction_importer_spring

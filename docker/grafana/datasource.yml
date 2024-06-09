@@ -9,5 +9,5 @@ datasources:
     secureJsonData:
       password: example
     orgId: 1
-    url: transaction_importer_db:3306
+    url: transaction_importer_spring_db:3306
     isDefault: true
