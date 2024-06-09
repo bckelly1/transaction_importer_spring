@@ -1,4 +1,4 @@
-package com.brian.transaction_importer_spring.instituton.usbank;
+package com.brian.transaction_importer_spring.institution.usbank;
 
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;

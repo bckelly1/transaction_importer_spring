@@ -2,8 +2,8 @@ package com.brian.transaction_importer_spring.service;
 
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.enums.KnownInstitution;
-import com.brian.transaction_importer_spring.instituton.fidelity.FidelityAccountImporter;
-import com.brian.transaction_importer_spring.instituton.first_tech.FirstTechAccountImporter;
+import com.brian.transaction_importer_spring.institution.fidelity.FidelityAccountImporter;
+import com.brian.transaction_importer_spring.institution.first_tech.FirstTechAccountImporter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

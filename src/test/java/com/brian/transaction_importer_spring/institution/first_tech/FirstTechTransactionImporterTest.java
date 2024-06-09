@@ -3,8 +3,6 @@ package com.brian.transaction_importer_spring.institution.first_tech;
 import com.brian.transaction_importer_spring.entity.Account;
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;
-import com.brian.transaction_importer_spring.instituton.first_tech.FirstTechAccountImporter;
-import com.brian.transaction_importer_spring.instituton.first_tech.FirstTechTransactionImporter;
 import com.brian.transaction_importer_spring.repository.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

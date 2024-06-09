@@ -2,7 +2,6 @@ package com.brian.transaction_importer_spring.institution.fidelity;
 
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;
-import com.brian.transaction_importer_spring.instituton.fidelity.FidelityTransactionImporter;
 import com.brian.transaction_importer_spring.repository.AccountRepository;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
 import com.brian.transaction_importer_spring.repository.TransactionRepository;

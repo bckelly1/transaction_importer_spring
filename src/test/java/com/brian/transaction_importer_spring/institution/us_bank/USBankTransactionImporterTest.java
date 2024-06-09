@@ -2,7 +2,7 @@ package com.brian.transaction_importer_spring.institution.us_bank;
 
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;
-import com.brian.transaction_importer_spring.instituton.usbank.USBankTransactionImporter;
+import com.brian.transaction_importer_spring.institution.usbank.USBankTransactionImporter;
 import com.brian.transaction_importer_spring.repository.AccountRepository;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
 import com.brian.transaction_importer_spring.repository.TransactionRepository;

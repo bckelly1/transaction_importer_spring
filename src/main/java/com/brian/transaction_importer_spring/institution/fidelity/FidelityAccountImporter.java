@@ -1,4 +1,4 @@
-package com.brian.transaction_importer_spring.instituton.fidelity;
+package com.brian.transaction_importer_spring.institution.fidelity;
 
 import com.brian.transaction_importer_spring.dto.AccountToAccountHistory;
 import com.brian.transaction_importer_spring.entity.Account;
@@ -11,7 +11,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDate;

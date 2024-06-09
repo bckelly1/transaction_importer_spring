@@ -1,4 +1,4 @@
-package com.brian.transaction_importer_spring.instituton.first_tech;
+package com.brian.transaction_importer_spring.institution.first_tech;
 
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;

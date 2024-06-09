@@ -37,7 +37,7 @@ notifications, which can also be parsed and inserted into finance_accounts table
 There is a good chance that the import will fail for your bank. There are parsers per-bank that extract the transaction
 information out of the email. Every bank structures the contents of their email differently. This would be an excellent
 opportunity for a ML model to extract the information from the email. But for now...
-You'll have to [write your own parser](https://github.com/bckelly1/transaction_importer/tree/master/src/institution_parser).
+You'll have to [write your own parser](https://github.com/bckelly1/transaction_importer_spring/blob/master/src/main/java/com/brian/transaction_importer_spring/institution/fidelity/FidelityTransactionImporter.java).
 
 ## Background
 This started when Intuit shut down Mint. I was already unhappy that Mint was unable to handle my 2FA for my bank accounts
