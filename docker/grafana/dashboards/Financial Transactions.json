@@ -18,6 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 22,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -111,13 +112,14 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
       },
       "targets": [
         {
-          "dataset": "finance_dashboards_example",
+          "dataset": "transaction_importer",
           "datasource": {
             "type": "mysql",
             "uid": "${DS_MYSQL}"
@@ -126,7 +128,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT\n  date AS \"time\",\n  description,\n  transaction_type,\n  -(amount) as debit\nFROM transaction\nwhere transaction_type = 'debit'\nAND $__timeFilter(date)\nORDER BY date",
+          "rawSql": "SELECT\n  date AS \"time\",\n  description,\n  transaction_type,\n  -(amount) as debit\nFROM transaction\nJOIN category ON transaction.category_id = category.id\nwhere transaction_type = 'debit'\nand category.name like $Category \nAND $__timeFilter(date)\nORDER BY date",
           "refId": "A",
           "sql": {
             "columns": [
@@ -147,7 +149,7 @@
           }
         },
         {
-          "dataset": "finance_dashboards_example",
+          "dataset": "transaction_importer",
           "datasource": {
             "type": "mysql",
             "uid": "${DS_MYSQL}"
@@ -236,10 +238,10 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
-          "dataset": "finance_dashboards_example",
+          "dataset": "transaction_importer",
           "datasource": {
             "type": "mysql",
             "uid": "${DS_MYSQL}"
@@ -319,10 +321,10 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
-          "dataset": "finance_dashboards_example",
+          "dataset": "transaction_importer",
           "datasource": {
             "type": "mysql",
             "uid": "${DS_MYSQL}"
@@ -331,7 +333,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \namount as \"Amount\"\nfrom transaction\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nand transaction_type = 'credit'\nand (category.name = 'Income'\nor category.parent_id = 71)",
+          "rawSql": "SELECT \namount as \"Amount\"\nfrom transaction\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nand transaction_type = 'credit'\nand (category.name = 'Income'\nor category.parent_id = 71)\nand category.name like $Category ",
           "refId": "B",
           "sql": {
             "columns": [
@@ -404,10 +406,10 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
-          "dataset": "finance_dashboards_example",
+          "dataset": "transaction_importer",
           "datasource": {
             "type": "mysql",
             "uid": "${DS_MYSQL}"
@@ -416,7 +418,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \namount as \"Amount\"\nfrom transaction\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nand transaction_type = 'debit'\nand category.name != 'Transfer'\nand category.name != 'Credit Card Payment'",
+          "rawSql": "SELECT \namount as \"Amount\"\nfrom transaction\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nand transaction_type = 'debit'\nand category.name != 'Transfer'\nand category.name != 'Credit Card Payment'\nand category.name like $Category ",
           "refId": "B",
           "sql": {
             "columns": [
@@ -496,10 +498,10 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
-          "dataset": "finance_dashboards_example",
+          "dataset": "transaction_importer",
           "datasource": {
             "type": "mysql",
             "uid": "${DS_MYSQL}"
@@ -637,15 +639,15 @@
         "showHeader": true,
         "sortBy": [
           {
-            "desc": false,
-            "displayName": "Amount"
+            "desc": true,
+            "displayName": "Time"
           }
         ]
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
-          "dataset": "finance_dashboards_example",
+          "dataset": "transaction_importer",
           "datasource": {
             "type": "mysql",
             "uid": "${DS_MYSQL}"
@@ -654,7 +656,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \ndate as \"time\",\n-(amount) as \"Amount\",\ndescription as Description,\naccount.name \"Account Name\",\ncategory.name as \"Category\",\ninstitution.name \"Institution\"\nfrom transaction\nJOIN vendor ON transaction.vendor_id = vendor.id\nJOIN account ON transaction.account_id = account.id\nJOIN institution ON account.institution_id = institution.id\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nand transaction_type IN('debit', 'Debit')\nand category.name != 'Transfer'\norder by date desc",
+          "rawSql": "SELECT \ndate as \"time\",\n-(amount) as \"Amount\",\ndescription as Description,\naccount.name \"Account Name\",\ncategory.name as \"Category\",\ninstitution.name \"Institution\"\nfrom transaction\nJOIN vendor ON transaction.vendor_id = vendor.id\nJOIN account ON transaction.account_id = account.id\nJOIN institution ON account.institution_id = institution.id\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nand transaction_type IN('debit', 'Debit')\nand category.name != 'Transfer'\nand category.name like $Category \norder by date desc",
           "refId": "B",
           "sql": {
             "columns": [
@@ -799,15 +801,15 @@
         "showHeader": true,
         "sortBy": [
           {
-            "desc": false,
-            "displayName": "Amount"
+            "desc": true,
+            "displayName": "Time"
           }
         ]
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
-          "dataset": "finance_dashboards_example",
+          "dataset": "transaction_importer",
           "datasource": {
             "type": "mysql",
             "uid": "${DS_MYSQL}"
@@ -816,7 +818,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \ndate as \"time\",\namount as \"Amount\",\ndescription as Description,\n#vendor.name as \"Merchant\",\naccount.name \"Account Name\",\ncategory.name \"Category\",\ninstitution.name \"Institution\"\nfrom transaction\nJOIN vendor ON transaction.vendor_id = vendor.id\nJOIN account ON transaction.account_id = account.id\nJOIN institution ON account.institution_id = institution.id\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nand (category.name = 'Income' OR category.parent_id = 71)\norder by date desc",
+          "rawSql": "SELECT \ndate as \"time\",\namount as \"Amount\",\ndescription as Description,\n#vendor.name as \"Merchant\",\naccount.name \"Account Name\",\ncategory.name \"Category\",\ninstitution.name \"Institution\"\nfrom transaction\nJOIN vendor ON transaction.vendor_id = vendor.id\nJOIN account ON transaction.account_id = account.id\nJOIN institution ON account.institution_id = institution.id\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nand (category.name = 'Income' OR category.parent_id = 71)\nand category.name like $Category\norder by date desc",
           "refId": "B",
           "sql": {
             "columns": [
@@ -903,10 +905,10 @@
           }
         ]
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
-          "dataset": "finance_dashboards_example",
+          "dataset": "transaction_importer",
           "datasource": {
             "type": "mysql",
             "uid": "${DS_MYSQL}"
@@ -915,7 +917,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \n  category.name AS \"Category\",\n  sum(\n    if(transaction_type = 'debit', -(amount), amount)\n    ) as \"Total\"\nfrom transaction\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nand transaction.transaction_type in ('debit', 'Debit')\nGROUP BY category.name\norder by amount desc",
+          "rawSql": "SELECT \n  category.name AS \"Category\",\n  sum(\n    if(transaction_type = 'debit', -(amount), amount)\n    ) as \"Total\"\nfrom transaction\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nand transaction.transaction_type in ('debit', 'Debit')\nand category.name like $Category\nGROUP BY category.name\norder by amount desc",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1050,10 +1052,10 @@
           }
         ]
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
-          "dataset": "finance_dashboards_example",
+          "dataset": "transaction_importer",
           "datasource": {
             "type": "mysql",
             "uid": "${DS_MYSQL}"
@@ -1062,7 +1064,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \n  date as \"time\",\n  sum(\n    if(transaction_type = 'debit', -(amount), amount)\n    ) as \"Total\",\n  vendor.name AS \"Merchant\"\nfrom transaction\n  JOIN vendor ON transaction.vendor_id = vendor.id\nwhere $__timeFilter(date)\nand transaction.transaction_type in ('debit', 'Debit')\nGROUP BY vendor.name\norder by amount desc",
+          "rawSql": "SELECT \n  date as \"time\",\n  sum(\n    if(transaction_type = 'debit', -(amount), amount)\n    ) as \"Total\",\n  vendor.name AS \"Merchant\"\nfrom transaction\n  JOIN vendor ON transaction.vendor_id = vendor.id\n  JOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nand transaction.transaction_type in ('debit', 'Debit')\nand category.name like $Category \nGROUP BY vendor.name\norder by amount desc",
           "refId": "B",
           "sql": {
             "columns": [
@@ -1139,10 +1141,10 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
-          "dataset": "finance_dashboards_example",
+          "dataset": "transaction_importer",
           "datasource": {
             "type": "mysql",
             "uid": "${DS_MYSQL}"
@@ -1252,6 +1254,7 @@
           "values": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
@@ -1259,7 +1262,7 @@
       "pluginVersion": "10.4.0",
       "targets": [
         {
-          "dataset": "finance_dashboards_example",
+          "dataset": "transaction_importer",
           "datasource": {
             "type": "mysql",
             "uid": "${DS_MYSQL}"
@@ -1268,7 +1271,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \n  category.name AS \"Category\",\n  sum(amount) as \"Total\"\nfrom transaction\nJOIN category ON transaction.category_id = category.id\nwhere $__timeFilter(date)\nAND transaction.transaction_type IN ('debit', 'Debit')\nAND category.name != 'Transfer'\nAND category.name != 'Credit Card Payment'\nGROUP BY category.name\norder by amount desc",
+          "rawSql": "select\n    Category,\n    Total\nfrom (\nSELECT category.name AS \"Category\",\n             sum(amount)             as \"Total\"\n      from transaction\n               JOIN category ON transaction.category_id = category.id\n      where transaction.date > now() - interval 1 month\n        AND transaction.transaction_type IN ('debit', 'Debit')\n        AND category.name != 'Transfer'\n        AND category.name != 'Credit Card Payment'\n      GROUP BY category.name) tmp\norder by Total desc\n",
           "refId": "B",
           "sql": {
             "columns": [
@@ -1316,8 +1319,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1398,10 +1400,10 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "11.0.0",
       "targets": [
         {
-          "dataset": "finance_dashboards_example",
+          "dataset": "transaction_importer",
           "datasource": {
             "type": "mysql",
             "uid": "${DS_MYSQL}"
@@ -1442,7 +1444,7 @@
     "list": [
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "mysql",
           "value": "P430005175C4C7810"
         },
@@ -1452,21 +1454,47 @@
         "name": "DS_MYSQL",
         "options": [],
         "query": "mysql",
+        "queryValue": "",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "type": "datasource"
+      },
+      {
+        "allValue": "'%%'",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "select name from category;",
+        "hide": 0,
+        "includeAll": true,
+        "multi": false,
+        "name": "Category",
+        "options": [],
+        "query": "select name from category;",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "2024-02-28 00:00:00",
-    "to": "2024-03-15 00:00:00"
+    "from": "now-30d",
+    "to": "now"
   },
+  "timeRangeUpdatedDuringEditOrView": false,
   "timepicker": {},
   "timezone": "",
   "title": "Financial Transactions",
-  "uid": "bfc4f69d-b862-435b-908a-4ebfa3e1b106",
-  "version": 1,
+  "uid": "bfc4f69d-b862-435b-908a-4ebfa3e1b108",
+  "version": 4,
   "weekStart": ""
 }

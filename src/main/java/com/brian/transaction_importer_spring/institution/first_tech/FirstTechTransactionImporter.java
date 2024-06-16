@@ -35,7 +35,7 @@ public class FirstTechTransactionImporter {
     // With Bank accounts, you have to determine if the money is going in (credit) or going out (debit)
     //    For First Tech, you can either determine that by looking for the parentheses () or the Credit/Debit label
     public String determineTransactionStyle(Document document) {
-        String token = document.select("div[.transactions-table-header]").text().strip().split(" ")[0];
+        String token = document.select("div.transactions-table-header").text().strip().split(" ")[0];
         if (token.equals("Deposits"))
            return "Credit";
         else if (token.equals("Withdrawals"))
@@ -92,7 +92,7 @@ public class FirstTechTransactionImporter {
         return parseHtml(mailMessage);
     }
 
-    public Transaction handleTransactionRow(Element element, MailMessage mailMessage) {
+    public Transaction handleTransactionRow(Element element, MailMessage mailMessage, String accountNumber) {
         Timestamp transactionDate = new Timestamp(Long.parseLong(mailMessage.getHeaders().get("Custom-Epoch")) * 1000L);
         String messageId = mailMessage.getHeaders().get("Message-ID");
         String transactionDetailsOriginal = element.select("td.details").text().strip();
@@ -117,13 +117,13 @@ public class FirstTechTransactionImporter {
         transaction.setAmount(amount);
         transaction.setTransactionType(transactionType);
         transaction.setCategory(categoryRepository.findByName(category));
-        if (sourceAccount != null) {
+        if (transfer) {
             transaction.setMerchant(vendorRepository.findOrCreate(sourceAccount)); // source_account if transfer else merchant
         }
         else {
             transaction.setMerchant(vendorRepository.findOrCreate(merchant)); // source_account if transfer else merchant
         }
-        transaction.setAccount(accountRepository.findByAlias(sourceAccount));
+        transaction.setAccount(accountRepository.findByAlias(accountNumber));
         transaction.setNotes("First Tech");
 
         return transaction;
@@ -148,9 +148,9 @@ public class FirstTechTransactionImporter {
         Transaction[] transactions = new Transaction[transactionElements.size()];
         for(int i = 0; i < transactionElements.size(); i++) {
             Element transactionElement = transactionElements.get(i);
-            Transaction transaction = handleTransactionRow(transactionElement, mailMessage);
+            Transaction transaction = handleTransactionRow(transactionElement, mailMessage, accountNumber);
             if (!Objects.equals(transaction_style, transaction.getTransactionType()))
-                log.error("Transaction style does not match parsed transaction type from transaction!");
+                log.error("Transaction style {} does not match parsed transaction type from transaction {}", transaction_style, transaction.getTransactionType());
             if (transaction.getMerchant() == null) {
                 transaction.setMerchant(vendorRepository.findOrCreate(accountName));
                 transaction.setAccount(accountRepository.findByAlias(accountNumber));  // TODO: possibly redundant?
