@@ -20,4 +20,13 @@ public class CategoryInfererServiceTest {
 
         assertEquals(expectedOutput, output);
     }
+
+    @Test
+    void inferCategoryCustomRuleFile() {
+        String input = "";
+        String output = categoryInfererService.getCategory(input);
+        String expectedOutput = Category.PAYCHECK;
+
+        assertEquals(expectedOutput, output);
+    }
 }

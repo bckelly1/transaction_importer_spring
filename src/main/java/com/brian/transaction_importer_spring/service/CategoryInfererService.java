@@ -1,8 +1,18 @@
 package com.brian.transaction_importer_spring.service;
 import com.brian.transaction_importer_spring.constants.Category;
+import com.brian.transaction_importer_spring.entity.CustomRule;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.util.Arrays;
+
 @Service
+@Log4j2
 public class CategoryInfererService {
     public String getCategory(String text) {
         text = text.toLowerCase();
@@ -343,6 +353,54 @@ public class CategoryInfererService {
         if (text.contains("xcel"))
             return Category.UTILITIES;
 
+        return applyCustomRules(text);
+    }
+
+    public String applyCustomRules(String text) {
+        CustomRule[] customRules = retrieveCustomRules();
+        if (customRules == null) {
+            return Category.UNKNOWN;
+        }
+
+        for (CustomRule customRule : customRules) {
+            if(text.contains(customRule.getRuleString())) {
+                return customRule.getCategoryName();
+            }
+        }
+
         return Category.UNKNOWN;
+    }
+
+    private CustomRule[] retrieveCustomRules() {
+        String rulesFileContents;
+        String customRulesFile = "custom_rules_file.json";
+
+        URL resource = Thread.currentThread().getContextClassLoader().getResource(customRulesFile);
+        if(resource == null) {
+            log.info("No custom rules file detected");
+            return null;
+        }
+        else{
+            try (InputStream resourceAsStream = resource.openStream()) {
+                rulesFileContents = new String(resourceAsStream.readAllBytes());
+                log.info("Loading custom rules for rules file");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        if (rulesFileContents.isEmpty()){
+            return null;
+        }
+
+        CustomRule[] myObjects = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            myObjects = objectMapper.readValue(rulesFileContents, CustomRule[].class);
+        } catch (Exception e) {
+            log.error("Failed to parse custom rules file {} with exception: {}", rulesFileContents, e);
+        }
+
+        return myObjects;
     }
 }
