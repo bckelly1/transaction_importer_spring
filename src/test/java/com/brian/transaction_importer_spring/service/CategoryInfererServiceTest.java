@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class CategoryInfererServiceTest {
+
     @Autowired
     private CategoryInfererService categoryInfererService;
 
@@ -17,6 +18,15 @@ public class CategoryInfererServiceTest {
         String input = "Corner Store";
         String output = categoryInfererService.getCategory(input);
         String expectedOutput = Category.GAS_AND_FUEL;
+
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    void inferCategoryCustomRuleFile() {
+        String input = "money";
+        String output = categoryInfererService.getCategory(input);
+        String expectedOutput = Category.PAYCHECK;
 
         assertEquals(expectedOutput, output);
     }
