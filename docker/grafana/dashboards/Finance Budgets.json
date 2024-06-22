@@ -30,7 +30,7 @@
       "title": "Finances",
       "tooltip": "",
       "type": "link",
-      "url": "https://grafana.setupjustforme.com/d/bfc4f69d-b862-435b-908a-4ebfa3e1b106/financial-transactions"
+      "url": "https://localhost/d/bfc4f69d-b862-435b-908a-4ebfa3e1b106/financial-transactions"
     }
   ],
   "liveNow": false,
