@@ -4,7 +4,6 @@ import com.brian.transaction_importer_spring.entity.Transaction;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.sql.Timestamp;
 
 @Getter
