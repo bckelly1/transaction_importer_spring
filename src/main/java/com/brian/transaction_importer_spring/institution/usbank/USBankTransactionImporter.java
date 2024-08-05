@@ -30,7 +30,7 @@ public class USBankTransactionImporter {
 
     private Transaction handleTransactions(MailMessage mailMessage) {
         String body = cleanBody(mailMessage.getBody());
-        String[] lines = body.split("\r\n\r\n");
+        String[] lines = body.split("\n");
         String originalDescription = cleanOriginalDescription(lines[3]);
         String shortDescription = shortenedDescription(originalDescription);
 
@@ -61,6 +61,10 @@ public class USBankTransactionImporter {
     private String cleanBody(String body) {
         while (body.contains("\r\n")) {
             body = body.replace("\r\n", "\n");
+        }
+
+        while(body.contains("\n\n")) {
+            body = body.replace("\n\n", "\n");
         }
 
         return body;

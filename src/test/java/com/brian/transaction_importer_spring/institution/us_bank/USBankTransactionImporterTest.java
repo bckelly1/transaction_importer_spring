@@ -22,7 +22,9 @@ import java.util.Map;
 
 @SpringBootTest
 class USBankTransactionImporterTest {
-    private static final String transactionEmailText = String.join(File.separator, "examples", "us_bank_transaction.html");
+    private static final String internationalTransactionEmailText = String.join(File.separator, "examples", "us_bank_international_transaction.txt");
+
+    private static final String transactionEmailText = String.join(File.separator, "examples", "us_bank_transaction.txt");
 
     @MockBean
     VendorRepository vendorRepository;
@@ -79,8 +81,21 @@ class USBankTransactionImporterTest {
 
         String contents = loadFileContents(transactionEmailText);
         MailMessage mailMessage = createMockMailMessage();
-        mailMessage.setBody(convertHtmlToText(contents));
-        mailMessage.setHtml(contents);
+        mailMessage.setBody(contents);
+
+        usBankTransactionImporter.handleTransactionEmail(mailMessage);
+    }
+
+    @Test
+    void usbankInternationalTransactionParseTest() {
+        Mockito.when(categoryRepository.findByName(Mockito.any())).thenReturn(null);
+        Mockito.when(accountRepository.findByAlias(Mockito.any())).thenReturn(null);
+        Mockito.when(vendorRepository.findOrCreate(Mockito.any())).thenReturn(null);
+        Mockito.when(transactionRepository.save(Mockito.any(Transaction.class))).thenReturn(null);
+
+        String contents = loadFileContents(internationalTransactionEmailText);
+        MailMessage mailMessage = createMockMailMessage();
+        mailMessage.setBody(contents);
 
         usBankTransactionImporter.handleTransactionEmail(mailMessage);
     }
