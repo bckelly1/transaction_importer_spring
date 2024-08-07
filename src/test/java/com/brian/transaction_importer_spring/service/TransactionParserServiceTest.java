@@ -5,6 +5,7 @@ import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;
 import com.brian.transaction_importer_spring.institution.fidelity.FidelityTransactionImporter;
 import com.brian.transaction_importer_spring.institution.first_tech.FirstTechTransactionImporter;
+import com.brian.transaction_importer_spring.institution.usbank.USBankTransactionImporter;
 import com.brian.transaction_importer_spring.repository.AccountHistoryRepository;
 import com.brian.transaction_importer_spring.repository.AccountRepository;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
@@ -46,6 +47,9 @@ public class TransactionParserServiceTest {
 
     @MockBean
     FirstTechTransactionImporter firstTechTransactionImporter;
+
+    @MockBean
+    USBankTransactionImporter usBankTransactionImporter;
 
     @Autowired
     TransactionParserService transactionParserService;
@@ -106,6 +110,20 @@ public class TransactionParserServiceTest {
 
         MailMessage mailMessage = createMockMailMessage();
         mailMessage.getHeaders().put("From", "First Tech Alerts");
+        transactionParserService.parseTransaction(mailMessage);
+    }
+
+    @Test
+    void parseInstitutionTest_parseUSBank() {
+        Mockito.when(categoryRepository.findByName(Mockito.any())).thenReturn(null);
+        Mockito.when(accountRepository.findByAlias(Mockito.any())).thenReturn(null);
+        Mockito.when(vendorRepository.findOrCreate(Mockito.any())).thenReturn(null);
+        Mockito.when(transactionRepository.save(Mockito.any(Transaction.class))).thenReturn(null);
+        Transaction transaction = new Transaction();
+        Mockito.when(usBankTransactionImporter.handleTransactionEmail(Mockito.any())).thenReturn(transaction);
+
+        MailMessage mailMessage = createMockMailMessage();
+        mailMessage.getHeaders().put("From", "U.S. Bank Alerts");
         transactionParserService.parseTransaction(mailMessage);
     }
 
