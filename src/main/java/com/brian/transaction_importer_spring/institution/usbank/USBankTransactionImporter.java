@@ -49,7 +49,7 @@ public class USBankTransactionImporter {
         transaction.setDescription(shortDescription);
         transaction.setOriginalDescription(originalDescription);
         transaction.setAmount(amount);
-        transaction.setTransactionType("debit");
+        transaction.setTransactionType("Debit");
         transaction.setCategory(categoryRepository.findByName(category));
         transaction.setMerchant(vendorRepository.findOrCreate(merchant));
         transaction.setAccount(accountRepository.findByAlias(cardNumber));
