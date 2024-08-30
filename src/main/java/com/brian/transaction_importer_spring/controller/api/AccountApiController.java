@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,5 +24,15 @@ public class AccountApiController {
         }
 
         return new AccountDTO(account);
+    }
+
+    @GetMapping("/accounts")
+    public List<AccountDTO> findAllAccounts() {
+        List<Account> accounts = accountRepository.findAll();
+        List<AccountDTO> dtos = new ArrayList<>();
+        for (Account account : accounts) {
+            dtos.add(new AccountDTO(account));
+        }
+        return dtos;
     }
 }

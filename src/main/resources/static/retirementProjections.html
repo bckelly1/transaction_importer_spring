@@ -1,0 +1,72 @@
+<html>
+<head>
+    <title>Retirement Projections</title>
+</head>
+<body>
+<h1>Retirement Projections</h1>
+<form id="retirementForm">
+    <label for="balance">Current Balance:</label>
+    <input type="text" id="balance" name="balance" /><br />
+
+    <label for="contribution">Annual Contribution:</label>
+    <input type="number" id="contribution" name="contribution" /><br />
+
+    <label for="rateOfReturn">Expected Rate of Return (%):</label>
+    <input type="number" id="rateOfReturn" name="rateOfReturn" /><br />
+
+    <label for="currentAge">Current Age:</label>
+    <input type="number" id="currentAge" name="currentAge" /><br />
+
+    <label for="retirementAge">Retirement Age:</label>
+    <input type="number" id="retirementAge" name="retirementAge" /><br />
+
+    <button type="button" id="calculate">Calculate Projection</button>
+</form>
+<div id="projectionResult"></div>
+<div id="yearlyBalance">
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('/accounts')
+            .then(response => response.json())
+            .then(data => {
+                const investmentAccounts = data.filter(account => account.type === 'investment');
+                const totalBalance = investmentAccounts.reduce((sum, account) => sum + account.balance, 0);
+                document.getElementById('balance').value = totalBalance.toFixed(2);
+            })
+            .catch(error => console.error('Error fetching balance:', error));
+    });
+
+    function calculateProjection() {
+        const balance = parseFloat(document.getElementById('balance').value);
+        const contribution = parseFloat(document.getElementById('contribution').value);
+        const rateOfReturn = parseFloat(document.getElementById('rateOfReturn').value) / 100;
+        const currentAge = parseInt(document.getElementById('currentAge').value);
+        const retirementAge = parseInt(document.getElementById('retirementAge').value);
+
+        const yearsToRetirement = retirementAge - currentAge;
+        let futureValue = balance;
+
+        let list = document.getElementById("yearlyBalance")
+        let currentBalance = document.createElement('div');
+        currentBalance.value = balance;
+        list.appendChild(currentBalance);
+        document.getElementById("yearlyBalance")
+        for (let i = 0; i < yearsToRetirement; i++) {
+            futureValue = futureValue * (1 + rateOfReturn) + contribution;
+            let newBalance = document.createElement('div');
+            newBalance.innerText = `Balance at ${currentAge + i}: $${futureValue.toFixed(2)}`;
+            list.appendChild(newBalance)
+        }
+
+        document.getElementById('projectionResult').innerText =
+            `Projected Balance at Retirement: $${futureValue.toFixed(2)}`;
+    }
+
+    document.getElementById('calculate').addEventListener('click', calculateProjection);
+
+</script>
+</body>
+</html>
