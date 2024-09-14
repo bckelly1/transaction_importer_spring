@@ -8,10 +8,19 @@
             font-size: large;
             font-weight: bold;
         }
+
+        @supports (-moz-appearance:none) {
+            select
+            {
+                -moz-appearance:none !important;
+                background: transparent url('data:image/gif;base64,R0lGODlhBgAGAKEDAFVVVX9/f9TU1CgmNyH5BAEKAAMALAAAAAAGAAYAAAIODA4hCDKWxlhNvmCnGwUAOw==') right center no-repeat !important;
+                background-position: calc(100% - 5px) center !important;
+            }
+        }
     </style>
 </head>
 <body>
-<h1>Last 10 Transactions</h1>
+<h1>Single Transaction</h1>
 <p><a href="/">Index Page</a></p>
 <table>
     <thead>
@@ -22,26 +31,61 @@
         <th>Amount</th>
         <th>Transaction Type</th>
         <th>Category</th>
-        <th>Vendor</th>
-<!--        <th>Account</th>-->
+        <th>Merchant</th>
+        <th>Account</th>
         <th>Mail Message Id</th>
         <th>Notes</th>
     </tr>
     </thead>
-    <tbody>
-    <tr>
-        <td th:text="${transaction.getId()}"></td>
-        <td th:text="${transaction.getDate()}"></td>
-        <td th:text="${transaction.getDescription()}"></td>
-        <td th:text="${transaction.getAmount()}"></td>
-        <td th:text="${transaction.getTransactionType()}"></td>
-        <td th:include="categoryDropdownList :: selectCategoriesList(${transaction.getCategory().getId()})"></td>
-        <td th:text="${transaction.getMerchant().getName()}"></td>
-<!--        <td th:text="${transaction.getAccount().getName()}"></td>-->
-        <td th:text="${transaction.getMailMessageId()}"></td>
-        <td th:text="${transaction.getNotes()}"></td>
-    </tr>
-    </tbody>
+    <form id="transactionForm">
+        <tbody>
+        <tr>
+            <td><input name="id" th:value="${transaction.getId()}" type="hidden"></td>
+            <td><input name="date" th:value="${#dates.format(transaction.getDate(), 'yyyy-MM-dd HH:mm:ss')}"
+                       type="datetime"></td>
+            <td><input name="description" th:value="${transaction.getDescription()}" type="text"></td>
+            <td><input name="amount" th:value="${#numbers.formatDecimal(transaction.getAmount(), 1, 2)}" type="number"></td>
+            <td><input name="transactionType" th:value="${transaction.getTransactionType()}" type="text"></td>
+            <td th:include="categoryDropdownList :: selectCategoriesList(${transaction.getCategory().getId()})"></td>
+            <td><input name="merchant" th:value="${transaction.getMerchant().getName()}" type="text"></td>
+            <td><input name="accountName" th:value="${transaction.getAccount().getName()}" type="text"></td>
+            <td><input name="mailMessageId" th:value="${transaction.getMailMessageId()}" type="text"></td>
+            <td><input name="notes" th:value="${transaction.getNotes()}" type="text"></td>
+        </tr>
+        </tbody>
+        <button type="submit">Submit</button>
+    </form>
 </table>
+<script>
+    document.getElementById('transactionForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the form from submitting the traditional way
+
+        // Create a JSON object from form data
+        const formData = new FormData(event.target);
+        const data = {};
+        formData.forEach((value, key) => {
+            data[key] = value;
+        });
+
+        // Send the data as a JSON payload
+        fetch(`/transaction/${data.id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Success:', result);
+                // Handle success - maybe show a success message or redirect
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle error - show an error message
+            });
+    });
+</script>
+
 </body>
 </html>

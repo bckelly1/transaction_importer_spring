@@ -24,7 +24,7 @@ public class TransactionService {
     }
 
     public Optional<Transaction> updateTransaction(Long id, TransactionDTO transactionDTO) {
-        Category category = categoryRepository.findByName(transactionDTO.getCategoryName());
+        Category category = categoryRepository.findById(transactionDTO.getCategoryId());
 
         return transactionRepository.findById(id).map(transaction -> {
             transaction.setCategory(category);
