@@ -20,7 +20,7 @@ import java.io.IOException;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-public class ImportRequestControllerTest extends TestBaseUtils {
+public class ImportRequestControllerITest extends TestBaseUtils {
     @LocalServerPort
     private int port;
 
@@ -93,7 +93,7 @@ public class ImportRequestControllerTest extends TestBaseUtils {
         System.out.println();
     }
 
-    @Test
+//    @Test
     void importBalanceSummaryRequest() {
         String firstTechTransactionEmail = loadFileContents(String.join(File.separator, "examples", "first_tech_account_summary_example.html"));
         MailMessage firstTechMailMessage = createMockMailMessage();

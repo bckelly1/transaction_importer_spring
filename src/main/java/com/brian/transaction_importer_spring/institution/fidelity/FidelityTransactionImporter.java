@@ -65,7 +65,7 @@ public class FidelityTransactionImporter {
         transaction.setDate(date);
         transaction.setOriginalDescription(originalDescription);
         transaction.setAmount(amount);
-        transaction.setTransactionType("debit");
+        transaction.setTransactionType("Debit");
         transaction.setMerchant(vendorRepository.findOrCreate(merchant));
         transaction.setCategory(categoryRepository.findByName(category));
         transaction.setAccount(accountRepository.findByAlias(cardNumber));

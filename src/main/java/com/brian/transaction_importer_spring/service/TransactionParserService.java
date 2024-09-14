@@ -54,7 +54,7 @@ public class TransactionParserService {
         else if(fromField.contains("first tech")) {
             return KnownInstitution.FIRST_TECH;
         }
-        else if(fromField.contains("us bank")) {
+        else if(fromField.contains("u.s. bank")) {
             return KnownInstitution.US_BANK;
         }
         else if(fromField.contains("home depot")) {
