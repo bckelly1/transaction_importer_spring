@@ -1,5 +1,6 @@
 package com.brian.transaction_importer_spring.controller;
 
+import com.brian.transaction_importer_spring.entity.Category;
 import com.brian.transaction_importer_spring.entity.Transaction;
 import com.brian.transaction_importer_spring.repository.CategoryRepository;
 import com.brian.transaction_importer_spring.repository.TransactionRepository;
@@ -30,6 +31,15 @@ public class TransactionController {
     public String showEntities(Model model) {
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("transactions", transactionRepository.findTop10ByOrderByIdDesc());
+        return "transactions";
+    }
+
+    @GetMapping("/transactions/unknown")
+    public String getUnknownTransactions(Model model) {
+        model.addAttribute("categories", categoryRepository.findAll());
+
+        Category unknown = categoryRepository.findByName("Unknown");
+        model.addAttribute("transactions", transactionRepository.findTransactionByCategory(unknown));
         return "transactions";
     }
 }
