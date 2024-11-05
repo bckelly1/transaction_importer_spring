@@ -41,9 +41,26 @@ public class FidelityTransactionImporter {
     // Fidelity is super annoying. The actual body of the message isn't structured well at all.
     //   International transactions have a slightly different email template and has to be parsed differently.
     public Transaction handleTransaction(MailMessage mailMessage) {
-        Transaction transaction = new Transaction();
         ArrayList<String> lines = parseMailMessage(mailMessage);
 
+        // Determine which version of the transaction email
+        if (mailMessage.getSubject().contains("A charge was authorized")) {
+            return parseChargeWasAuthorized(mailMessage, lines);
+        }
+
+        if (mailMessage.getSubject().contains("Transaction")) {
+            return parseStandardTransaction(mailMessage, lines);
+        }
+
+        if (mailMessage.getSubject().contains("card was not present")) {
+            return parseCardWasNotPresent(mailMessage, lines);
+        }
+
+        throw new RuntimeException("Could not determine transaction style");
+    }
+
+    private Transaction parseStandardTransaction(MailMessage mailMessage, ArrayList<String> lines) {
+        Transaction transaction = new Transaction();
         String[] cardNumberSplit = lines.get(0).split(" ");
         String cardNumber = cardNumberSplit[cardNumberSplit.length - 1].strip();
 
@@ -54,6 +71,76 @@ public class FidelityTransactionImporter {
         Timestamp date = new Timestamp(Long.parseLong(mailMessage.getHeaders().get("Custom-Epoch")) * 1000L);
         Double amount = Double.parseDouble(findCurrencyToken(tokens).replace("$", ""));  //TODO: Not super proud of this
         String merchant = originalDescription.split(" at ")[1];
+        String category = categoryInfererService.getCategory(merchant);
+
+        log.info("Card Number: {}", cardNumber);
+        log.info("amount: {}", amount);
+        log.info("date: {}", date);
+        log.info("detail: {}\n", originalDescription);
+
+        transaction.setDescription(merchant);
+        transaction.setDate(date);
+        transaction.setOriginalDescription(originalDescription);
+        transaction.setAmount(amount);
+        transaction.setTransactionType("Debit");
+        transaction.setMerchant(vendorRepository.findOrCreate(merchant));
+        transaction.setCategory(categoryRepository.findByName(category));
+        transaction.setAccount(accountRepository.findByAlias(cardNumber));
+        transaction.setNotes("Fidelity");
+        transaction.setMailMessageId(messageId);
+
+        log.info(transaction);
+
+        return transaction;
+    }
+
+    private Transaction parseChargeWasAuthorized(MailMessage mailMessage, ArrayList<String> lines) {
+        Transaction transaction = new Transaction();
+        String[] cardNumberSplit = lines.get(6).split(" ");
+        String cardNumber = cardNumberSplit[5].strip();
+
+        String descriptionLine = lines.get(4);
+        String originalDescription = descriptionLine.substring(0, descriptionLine.length() - 1);
+        String[] tokens = originalDescription.strip().split(" ");
+        String messageId = mailMessage.getHeaders().get("Message-ID");
+        Timestamp date = new Timestamp(Long.parseLong(mailMessage.getHeaders().get("Custom-Epoch")) * 1000L);
+        Double amount = Double.parseDouble(findCurrencyToken(tokens).replace("$", ""));  //TODO: Not super proud of this
+        String merchant = originalDescription.split(" at ")[1].replace(".", "");
+        String category = categoryInfererService.getCategory(merchant);
+
+        log.info("Card Number: {}", cardNumber);
+        log.info("amount: {}", amount);
+        log.info("date: {}", date);
+        log.info("detail: {}\n", originalDescription);
+
+        transaction.setDescription(merchant);
+        transaction.setDate(date);
+        transaction.setOriginalDescription(originalDescription);
+        transaction.setAmount(amount);
+        transaction.setTransactionType("Debit");
+        transaction.setMerchant(vendorRepository.findOrCreate(merchant));
+        transaction.setCategory(categoryRepository.findByName(category));
+        transaction.setAccount(accountRepository.findByAlias(cardNumber));
+        transaction.setNotes("Fidelity");
+        transaction.setMailMessageId(messageId);
+
+        log.info(transaction);
+
+        return transaction;
+    }
+
+    private Transaction parseCardWasNotPresent(MailMessage mailMessage, ArrayList<String> lines) {
+        Transaction transaction = new Transaction();
+        String[] cardNumberSplit = lines.get(4).split(" ");
+        String cardNumber = cardNumberSplit[5].strip();
+
+        String descriptionLine = lines.get(4);
+        String originalDescription = descriptionLine.split(" today")[0];
+        String[] tokens = originalDescription.strip().split(" ");
+        String messageId = mailMessage.getHeaders().get("Message-ID");
+        Timestamp date = new Timestamp(Long.parseLong(mailMessage.getHeaders().get("Custom-Epoch")) * 1000L);
+        Double amount = Double.parseDouble(findCurrencyToken(tokens).replace("$", ""));  //TODO: Not super proud of this
+        String merchant = originalDescription.split(" at ")[1].replace(".", "");
         String category = categoryInfererService.getCategory(merchant);
 
         log.info("Card Number: {}", cardNumber);
