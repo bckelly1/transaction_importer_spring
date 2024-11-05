@@ -4,6 +4,7 @@ import com.brian.transaction_importer_spring.config.MailConfig;
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +24,20 @@ public class ImportService {
     private final BalanceImporterService balanceImporterService;
 
     public List<Transaction> beginTransactionImport(){
-        MailMessage[] unreadMessages = gmailService.getUnreadMessages("Transaction", mailConfig.getTransactionLabel());
+        MailMessage[] transactionUnreadMessages = gmailService.getUnreadMessages("Transaction", mailConfig.getTransactionLabel());
+        MailMessage[] chargeWasAuthorizedUnreadMessages = gmailService.getUnreadMessages("A charge was authorized", mailConfig.getTransactionLabel());
+        MailMessage[] cardNotPresentUnreadMessages = gmailService.getUnreadMessages("card was not present", mailConfig.getTransactionLabel());
 
+        List<Transaction> transactions = handleTransactions(transactionUnreadMessages);
+        transactions.addAll(handleTransactions(chargeWasAuthorizedUnreadMessages));
+        transactions.addAll(handleTransactions(cardNotPresentUnreadMessages));
+
+        return transactions;
+    }
+
+    private @NotNull List<Transaction> handleTransactions(MailMessage[] allMessages) {
         List<Transaction> transactionList = new ArrayList<>();
-        for (MailMessage unreadMessage : unreadMessages) {
+        for (MailMessage unreadMessage : allMessages) {
             Transaction[] transactions = transactionParserService.parseTransaction(unreadMessage);
             gmailService.markAsRead(unreadMessage);
             transactionList.addAll(List.of(transactions));
