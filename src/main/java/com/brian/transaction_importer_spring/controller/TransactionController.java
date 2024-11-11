@@ -42,4 +42,11 @@ public class TransactionController {
         model.addAttribute("transactions", transactionRepository.findTransactionByCategory(unknown));
         return "transactions";
     }
+
+    @GetMapping("/transaction/{transactionId}/delete")
+    public String deleteTransaction(@PathVariable(value="transactionId") Long transactionId, Model model) {
+        System.out.println("Received delete transaction request for " + transactionId);
+//        transactionRepository.deleteById(transactionId);
+        return showEntities(model);
+    }
 }
