@@ -60,7 +60,7 @@ class FidelityTransactionImporterTest {
     private MailMessage createMockMailMessage() {
         String to = "to@example.com";
         String from = "from@example.com";
-        String subject = "subject";
+        String subject = "Transaction";
         String body = "";
         String html = "";
         String messageId = "messageId";
