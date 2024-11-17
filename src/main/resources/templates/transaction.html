@@ -138,16 +138,14 @@
         let id = document.getElementById("transactionId").getAttribute("value");
         console.log(`Found id ${id}`);
 
-        fetch(`/transaction/${id}/delete`)
+        fetch(`/transaction/${id}/delete`, {
+            method: "POST"
+        })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.json(); // or response.text() based on expected response format
-            })
-            .then(data => {
-                console.log('Data received:', data);
-                // Do something with the data received from the server
+                window.location.replace("/transactions")
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
