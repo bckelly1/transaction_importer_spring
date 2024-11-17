@@ -76,7 +76,7 @@
     <form id="transactionForm">
         <tbody>
         <tr>
-            <td><input name="id" th:value="${transaction.getId()}" type="hidden"></td>
+            <td><input name="id" th:value="${transaction.getId()}" id="transactionId" type="hidden"></td>
             <td><input name="date" th:value="${#dates.format(transaction.getDate(), 'yyyy-MM-dd HH:mm:ss')}"
                        type="datetime"></td>
             <td><input name="description" th:value="${transaction.getDescription()}" type="text"></td>
@@ -90,6 +90,7 @@
         </tr>
         </tbody>
         <button type="submit">Submit</button>
+        <button type="reset" onclick="deleteTransaction()">Delete</button>
     </form>
 </table>
 
@@ -132,6 +133,25 @@
                 displayErrorMessage(error)
             });
     });
+
+    function deleteTransaction() {
+        let id = document.getElementById("transactionId").getAttribute("value");
+        console.log(`Found id ${id}`);
+
+        fetch(`/transaction/${id}/delete`, {
+            method: "POST"
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                window.location.replace("/transactions")
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
 </script>
 
 <div id="error-overlay" class="error-overlay" style="display: none;">
