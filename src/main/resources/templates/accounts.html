@@ -25,7 +25,12 @@
 <!--        <td th:text="${entity.institution}"></td>-->
         <td th:text="${entity.getBalance()}"></td>
         <td th:text="${entity.getAlias()}"></td>
-        <td th:text="${entity.getType()}"></td>
+        <td th:text="${entity.getType()}"
+            th:if="${entity.getType() != 'mortgage'}">
+        </td>
+        <td th:if="${entity.getType() == 'mortgage'}">
+            <a th:href="@{/mortgageCalculator/?accountId=${entity.getId()}}">View Mortgage Details</a>
+        </td>
 <!--        TODO last_updated column name wrong-->
         <td th:text="${entity.getLast_updated()}"></td>
     </tr>
