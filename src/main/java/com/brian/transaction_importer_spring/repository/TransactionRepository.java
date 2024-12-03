@@ -13,7 +13,7 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findAll();
 
-    List<Transaction> findTop10ByOrderByIdDesc();
+    List<Transaction> findTop20ByOrderByIdDesc();
 
     Transaction findById(long id);
 

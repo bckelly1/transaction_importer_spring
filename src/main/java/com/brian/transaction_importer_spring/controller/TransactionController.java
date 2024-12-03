@@ -33,7 +33,7 @@ public class TransactionController {
     @GetMapping("/transactions")
     public String showEntities(Model model) {
         model.addAttribute("categories", categoryRepository.findAll());
-        model.addAttribute("transactions", transactionRepository.findTop10ByOrderByIdDesc());
+        model.addAttribute("transactions", transactionRepository.findTop20ByOrderByIdDesc());
         return "transactions";
     }
 
