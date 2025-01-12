@@ -25,7 +25,7 @@ public class TransactionApiController {
 
     @GetMapping("/transaction/")
     public List<Transaction> listTransactions() {
-        List<Transaction> transactions = transactionRepository.findTop10ByOrderByIdDesc();
+        List<Transaction> transactions = transactionRepository.findTop100ByOrderByIdDesc();
         if (transactions.isEmpty()) {
             return null;
         }
