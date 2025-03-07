@@ -15,7 +15,7 @@ public class CategoryApiController {
     private final CategoryRepository categoryRepository;
 
     @GetMapping("/category/{id}")
-    public CategoryDTO findAccountJsonById(@PathVariable Long id) {
+    public CategoryDTO findAccountJsonById(@PathVariable final Long id) {
         Category category = categoryRepository.findById(id).get();
         if (categoryRepository == null) {
             return null;

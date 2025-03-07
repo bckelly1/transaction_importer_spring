@@ -12,7 +12,7 @@ public class InstitutionDTO {
     private Long id;
     private String name;
 
-    public InstitutionDTO(Institution institution) {
+    public InstitutionDTO(final Institution institution) {
         this.id = institution.getId();
         this.name = institution.getName();
     }

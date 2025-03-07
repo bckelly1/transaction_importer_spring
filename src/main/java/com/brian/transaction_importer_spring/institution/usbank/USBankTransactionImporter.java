@@ -25,11 +25,11 @@ public class USBankTransactionImporter {
 
     private final AccountRepository accountRepository;
 
-    public Transaction handleTransactionEmail(MailMessage mailMessage) {
+    public Transaction handleTransactionEmail(final MailMessage mailMessage) {
         return handleTransactions(mailMessage);
     }
 
-    private Transaction handleTransactions(MailMessage mailMessage) {
+    private Transaction handleTransactions(final MailMessage mailMessage) {
         String body = cleanBody(mailMessage.getBody());
         String[] lines = body.split("\n");
         String originalDescription = cleanOriginalDescription(lines[3]);
@@ -59,19 +59,20 @@ public class USBankTransactionImporter {
         return transaction;
     }
 
-    private String cleanBody(String body) {
-        while (body.contains("\r\n")) {
-            body = body.replace("\r\n", "\n");
+    private String cleanBody(final String body) {
+        String bodyModified = body;
+        while (bodyModified.contains("\r\n")) {
+            bodyModified = bodyModified.replace("\r\n", "\n");
         }
 
-        while (body.contains("\n\n")) {
-            body = body.replace("\n\n", "\n");
+        while (bodyModified.contains("\n\n")) {
+            bodyModified = bodyModified.replace("\n\n", "\n");
         }
 
-        return body;
+        return bodyModified;
     }
 
-    private String cleanOriginalDescription(String line) {
+    private String cleanOriginalDescription(final String line) {
         String originalDescription = String.join(" ", line.split(" "));
 
         while (originalDescription.contains("  ")) {
@@ -82,12 +83,12 @@ public class USBankTransactionImporter {
         return originalDescription;
     }
 
-    private String shortenedDescription(String description) {
+    private String shortenedDescription(final String description) {
         String firstSection = description.split("\\. A ")[0];
         return firstSection.split(" at ")[1];
     }
 
-    private Double findAmount(String description) {
+    private Double findAmount(final String description) {
         for (String token : description.split(" ")) {
             if (token.contains("$")) {
                 return Double.parseDouble(token.replace("$", ""));

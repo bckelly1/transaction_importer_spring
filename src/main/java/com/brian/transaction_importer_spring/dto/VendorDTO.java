@@ -13,7 +13,7 @@ public class VendorDTO {
     private String name;
     private String aliases;
 
-    public VendorDTO(Vendor vendor) {
+    public VendorDTO(final Vendor vendor) {
         this.id = vendor.getId();
         this.name = vendor.getName();
         this.aliases = vendor.getAliases();

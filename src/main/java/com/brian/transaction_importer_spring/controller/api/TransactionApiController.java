@@ -34,7 +34,7 @@ public class TransactionApiController {
     }
 
     @GetMapping("/transaction/{id}")
-    public TransactionDTO findTransactionJsonById(@PathVariable Long id) {
+    public TransactionDTO findTransactionJsonById(@PathVariable final Long id) {
         Transaction transaction = transactionRepository.findById(id).get();
         if (transaction == null) {
             return null;
@@ -44,7 +44,7 @@ public class TransactionApiController {
     }
 
     @PostMapping("/transaction/{id}")
-    public TransactionDTO updateTransaction(@PathVariable Long id, @RequestBody TransactionDTO transactionDTO) {
+    public TransactionDTO updateTransaction(@PathVariable final Long id, @RequestBody final TransactionDTO transactionDTO) {
         Optional<Transaction> updatedTransaction = transactionService.updateTransaction(id, transactionDTO);
         if (updatedTransaction.isPresent()) {
             return new TransactionDTO(updatedTransaction.get());

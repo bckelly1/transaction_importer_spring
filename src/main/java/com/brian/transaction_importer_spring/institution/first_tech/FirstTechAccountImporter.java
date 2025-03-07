@@ -28,7 +28,7 @@ public class FirstTechAccountImporter {
     private final AccountHistoryRepository accountHistoryRepository;
 
     // In the main body of the email, figure out which account we are extracting the balance of.
-    public MinimumAccount[] parseAccountInfo(Document document) {
+    public MinimumAccount[] parseAccountInfo(final Document document) {
         String title = document.body().select("h1#title").text().strip();
         log.info("Title: {}", title);
         Elements accounts = document.body().select("strong");
@@ -43,7 +43,7 @@ public class FirstTechAccountImporter {
 
 
     // For each account in the email, extract the account details
-    MinimumAccount parseAccount(Element account) {
+    MinimumAccount parseAccount(final Element account) {
         Element accountParent = account.parent();
         String accountName = account.text().strip().split(" - ")[0];
         String accountNumber = account.text().strip().split(" - ")[1].replace("*", "").replace("#", "");
@@ -57,7 +57,7 @@ public class FirstTechAccountImporter {
     }
 
     // Extract all account details from the balance summary email
-    public void handleBalanceSummary(String text) {
+    public void handleBalanceSummary(final String text) {
         Document soup = Jsoup.parse(text);
         MinimumAccount[] minimumAccounts = parseAccountInfo(soup);
         for (MinimumAccount minimumAccount : minimumAccounts) {

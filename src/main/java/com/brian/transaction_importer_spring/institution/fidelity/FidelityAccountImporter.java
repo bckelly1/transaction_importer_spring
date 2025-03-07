@@ -27,7 +27,7 @@ public class FidelityAccountImporter {
 
     private final AccountHistoryRepository accountHistoryRepository;
 
-    public void handleBalanceSummary(String summaryEmailText) {
+    public void handleBalanceSummary(final String summaryEmailText) {
         Document document = Jsoup.parse(summaryEmailText);
         Elements elements = document.select("td:contains(XXXXX)");
         Element element = elements.getLast();
@@ -53,7 +53,7 @@ public class FidelityAccountImporter {
             log.error("Error parsing the date: {}", e.getMessage());
         }
 
-        account.setLast_updated(timestamp);
+        account.setLastUpdated(timestamp);
         accountRepository.save(account);
 
         AccountHistory accountHistory = AccountToAccountHistory.parse(account);

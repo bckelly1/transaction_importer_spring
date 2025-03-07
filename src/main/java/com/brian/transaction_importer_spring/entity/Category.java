@@ -37,7 +37,7 @@ public class Category {
 
     @Override
     public String toString() {
-        return "{\"Name\": \"" + name + "\"," +
-                "\"Id\": " + id + "}";
+        return "{\"Name\": \"" + name + "\","
+                + "\"Id\": " + id + "}";
     }
 }

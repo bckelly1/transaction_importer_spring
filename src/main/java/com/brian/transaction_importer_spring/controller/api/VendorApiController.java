@@ -15,7 +15,7 @@ public class VendorApiController {
     private final VendorRepository vendorRepository;
 
     @GetMapping("/vendor/{id}")
-    public VendorDTO findTransactionJsonById(@PathVariable Long id) {
+    public VendorDTO findTransactionJsonById(@PathVariable final Long id) {
         Vendor vendor = vendorRepository.findById(id).get();
         if (vendor == null) {
             return null;

@@ -4,7 +4,9 @@ import com.brian.transaction_importer_spring.entity.Account;
 import com.brian.transaction_importer_spring.entity.AccountHistory;
 
 public class AccountToAccountHistory {
-    public static AccountHistory parse(Account account) {
+    private AccountToAccountHistory(){}
+
+    public static AccountHistory parse(final Account account) {
         AccountHistory accountHistory = new AccountHistory();
         accountHistory.setAccount(account);
         accountHistory.setBalance(account.getBalance());

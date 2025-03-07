@@ -15,7 +15,7 @@ public class AccountApiController {
     private final AccountRepository accountRepository;
 
     @GetMapping("/account/{id}")
-    public AccountDTO findAccountJsonById(@PathVariable Long id) {
+    public AccountDTO findAccountJsonById(@PathVariable final Long id) {
         Account account = accountRepository.findById(id).get();
         if (account == null) {
             return null;

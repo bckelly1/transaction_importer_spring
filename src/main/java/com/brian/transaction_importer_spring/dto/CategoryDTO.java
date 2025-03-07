@@ -13,7 +13,8 @@ public class CategoryDTO {
     private String name;
     private String parentCategoryName;
     private Long parentCategoryId;
-    public CategoryDTO(Category category) {
+
+    public CategoryDTO(final Category category) {
         this.id = category.getId();
         this.name = category.getName();
         if (category.getParent() != null) {

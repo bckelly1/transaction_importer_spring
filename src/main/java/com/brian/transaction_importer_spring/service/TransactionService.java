@@ -23,7 +23,7 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
-    public Optional<Transaction> updateTransaction(Long id, TransactionDTO transactionDTO) {
+    public Optional<Transaction> updateTransaction(final Long id, final TransactionDTO transactionDTO) {
         Category category = categoryRepository.findById(transactionDTO.getCategoryId());
 
         return transactionRepository.findById(id).map(transaction -> {

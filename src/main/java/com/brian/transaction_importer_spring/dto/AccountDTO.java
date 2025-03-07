@@ -18,15 +18,15 @@ public class AccountDTO {
     private Double balance;
     private String alias;
     private String type;
-    private Timestamp last_updated; // TODO: wrong field name
+    private Timestamp lastUpdated;
 
-    public AccountDTO(Account account) {
+    public AccountDTO(final Account account) {
         this.id = account.getId();
         this.name = account.getName();
         this.balance = account.getBalance();
         this.alias = account.getAlias();
         this.type = account.getType();
         this.institutionName = account.getInstitution().getName();
-        this.last_updated = account.getLastUpdated();
+        this.lastUpdated = account.getLastUpdated();
     }
 }

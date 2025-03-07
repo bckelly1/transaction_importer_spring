@@ -29,7 +29,7 @@ public class TransactionDTO {
     private String mailMessageId;
     private String notes;
 
-    public TransactionDTO(Transaction transaction) {
+    public TransactionDTO(final Transaction transaction) {
         this.id = transaction.getId();
         this.amount = transaction.getAmount();
         this.accountName = transaction.getAccount().getName();

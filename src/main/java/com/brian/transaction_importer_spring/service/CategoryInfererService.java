@@ -13,349 +13,349 @@ import java.net.URL;
 @Service
 @Log4j2
 public class CategoryInfererService {
-    public String getCategory(String text) {
-        text = text.toLowerCase();
-        if (text.contains("airlines"))
+    public String getCategory(final String text) {
+        String test = text.toLowerCase();
+        if (test.contains("airlines"))
             return Category.AIR_TRAVEL;
-        if (text.contains("southwest"))
+        if (test.contains("southwest"))
             return Category.AIR_TRAVEL;
-        if (text.contains("american"))
+        if (test.contains("american"))
             return Category.AIR_TRAVEL;
 
-        if (text.contains("liquor"))
+        if (test.contains("liquor"))
             return Category.ALCOHOL_AND_BARS;
-        if (text.contains("brewing"))
+        if (test.contains("brewing"))
             return Category.ALCOHOL_AND_BARS;
-        if (text.contains("sports station"))
+        if (test.contains("sports station"))
             return Category.ALCOHOL_AND_BARS;
-        if (text.contains("firework"))
+        if (test.contains("firework"))
             return Category.AMUSEMENT;
-        if (text.contains("zoo"))
+        if (test.contains("zoo"))
             return Category.AMUSEMENT;
-        if (text.contains("toll"))
+        if (test.contains("toll"))
             return Category.AUTO_AND_TRANSPORT;
-        if (text.contains("driver"))
+        if (test.contains("driver"))
             return Category.AUTO_AND_TRANSPORT;
-        if (text.contains("vehicle"))
+        if (test.contains("vehicle"))
             return Category.AUTO_AND_TRANSPORT;
-        if (text.contains("ssfcu"))
+        if (test.contains("ssfcu"))
             return Category.AUTO_PAYMENT;
-        if (text.contains("icpayment"))
+        if (test.contains("icpayment"))
             return Category.AUTO_PAYMENT;
-        if (text.contains("just between friends"))
+        if (test.contains("just between friends"))
             return Category.BABY_SUPPLIES;
-        if (text.contains("momentpath"))
+        if (test.contains("momentpath"))
             return Category.BABYSITTER_AND_DAYCARE;
-        if (text.contains("overdraft"))
+        if (test.contains("overdraft"))
             return Category.BANK_FEE;
-        if (text.contains("barnes & noble"))
+        if (test.contains("barnes & noble"))
             return Category.BOOKS;
-        if (text.contains("friends of the lvld li"))
+        if (test.contains("friends of the lvld li"))
             return Category.BOOKS_AND_SUPPLIES;
-        if (text.contains("check"))
+        if (test.contains("check"))
             return Category.CHECK;
-        if (text.contains("footwear"))
+        if (test.contains("footwear"))
             return Category.CLOTHING;
-        if (text.contains("jcpenney"))
+        if (test.contains("jcpenney"))
             return Category.CLOTHING;
-        if (text.contains("529"))
+        if (test.contains("529"))
             return Category.COLLEGE_FUND;
-        if (text.contains("cardmember"))
+        if (test.contains("cardmember"))
             return Category.CREDIT_CARD_PAYMENT;
-        if (text.contains("dentist"))
+        if (test.contains("dentist"))
             return Category.DENTIST;
-        if (text.contains("dmd"))
+        if (test.contains("dmd"))
             return Category.DENTIST;
-        if (text.contains("clinic"))
+        if (test.contains("clinic"))
             return Category.DOCTOR;
-        if (text.contains("medicine"))
+        if (test.contains("medicine"))
             return Category.DOCTOR;
-        if (text.contains("health"))
+        if (test.contains("health"))
             return Category.DOCTOR;
-        if (text.contains("labcorp"))
+        if (test.contains("labcorp"))
             return Category.DOCTOR;
-        if (text.contains("pathology"))
+        if (test.contains("pathology"))
             return Category.DOCTOR;
-        if (text.contains("test"))
+        if (test.contains("test"))
             return Category.EDUCATION;
-        if (text.contains("exam"))
+        if (test.contains("exam"))
             return Category.EDUCATION;
-        if (text.contains("univers"))
+        if (test.contains("univers"))
             return Category.EDUCATION;
-        if (text.contains("steam"))
+        if (test.contains("steam"))
             return Category.ENTERTAINMENT;
-        if (text.contains("games"))
+        if (test.contains("games"))
             return Category.ENTERTAINMENT;
-        if (text.contains("gog.com (text.contains("))
+        if (test.contains("gog.com (test.contains("))
             return Category.ENTERTAINMENT;
-        if (text.contains("gog  (text.contains("))
+        if (test.contains("gog  (test.contains("))
             return Category.ENTERTAINMENT;
-        if (text.contains("steamgames"))
+        if (test.contains("steamgames"))
             return Category.ENTERTAINMENT;
-        if (text.contains("playstation"))
+        if (test.contains("playstation"))
             return Category.ENTERTAINMENT;
-        if (text.contains("google"))
+        if (test.contains("google"))
             return Category.ENTERTAINMENT;
-        if (text.contains("newegg"))
+        if (test.contains("newegg"))
             return Category.ELECTRONICS_AND_SOFTWARE;
-        if (text.contains("apple"))
+        if (test.contains("apple"))
             return Category.ELECTRONICS_AND_SOFTWARE;
-        if (text.contains("jetbrains"))
+        if (test.contains("jetbrains"))
             return Category.ELECTRONICS_AND_SOFTWARE;
-        if (text.contains("ui.com"))
+        if (test.contains("ui.com"))
             return Category.ELECTRONICS_AND_SOFTWARE;
-        if (text.contains("robotic"))
+        if (test.contains("robotic"))
             return Category.ELECTRONICS_AND_SOFTWARE;
-        if (text.contains("home assistant cloud"))
+        if (test.contains("home assistant cloud"))
             return Category.ELECTRONICS_AND_SOFTWARE;
-        if (text.contains("optical"))
+        if (test.contains("optical"))
             return Category.EYECARE;
-        if (text.contains("eye")) // Might be too generic;
+        if (test.contains("eye")) // Might be too generic;
             return Category.EYECARE;
-        if (text.contains("associates in family e"))
+        if (test.contains("associates in family e"))
             return Category.EYECARE;
-        if (text.contains("five guys"))
+        if (test.contains("five guys"))
             return Category.FAST_FOOD;
-        if (text.contains("burgers"))
+        if (test.contains("burgers"))
             return Category.FAST_FOOD;
-        if (text.contains("pizza"))
+        if (test.contains("pizza"))
             return Category.FAST_FOOD;
-        if (text.contains("coffee"))
+        if (test.contains("coffee"))
             return Category.FAST_FOOD;
-        if (text.contains("donut"))
+        if (test.contains("donut"))
             return Category.FAST_FOOD;
-        if (text.contains("starbucks"))
+        if (test.contains("starbucks"))
             return Category.FAST_FOOD;
-        if (text.contains("bar"))
+        if (test.contains("bar"))
             return Category.FAST_FOOD;
-        if (text.contains("cafe"))
+        if (test.contains("cafe"))
             return Category.FAST_FOOD;
-        if (text.contains("grill"))
+        if (test.contains("grill"))
             return Category.FAST_FOOD;
-        if (text.contains("arby\"s"))
+        if (test.contains("arby\"s"))
             return Category.FAST_FOOD;
-        if (text.contains("arbys"))
+        if (test.contains("arbys"))
             return Category.FAST_FOOD;
-        if (text.contains("pizz"))
+        if (test.contains("pizz"))
             return Category.FAST_FOOD;
-        if (text.contains("wingshack"))
+        if (test.contains("wingshack"))
             return Category.FAST_FOOD;
-        if (text.contains("freddys"))
+        if (test.contains("freddys"))
             return Category.FAST_FOOD;
-        if (text.contains("krazy karl"))
+        if (test.contains("krazy karl"))
             return Category.FAST_FOOD;
-        if (text.contains("good times"))
+        if (test.contains("good times"))
             return Category.FAST_FOOD;
-        if (text.contains("dominos"))
+        if (test.contains("dominos"))
             return Category.FAST_FOOD;
-        if (text.contains("domino\"s"))
+        if (test.contains("domino\"s"))
             return Category.FAST_FOOD;
-        if (text.contains("cake"))
+        if (test.contains("cake"))
             return Category.FAST_FOOD;
-        if (text.contains("dairy queen"))
+        if (test.contains("dairy queen"))
             return Category.FAST_FOOD;
-        if (text.contains("qdoba"))
+        if (test.contains("qdoba"))
             return Category.FAST_FOOD;
-        if (text.contains("dairy delite"))
+        if (test.contains("dairy delite"))
             return Category.FAST_FOOD;
-        if (text.contains("baskin (text.contains("))
+        if (test.contains("baskin (test.contains("))
             return Category.FAST_FOOD;
-        if (text.contains("ice cream"))
+        if (test.contains("ice cream"))
             return Category.FAST_FOOD;
-        if (text.contains("freeze dried"))
+        if (test.contains("freeze dried"))
             return Category.FAST_FOOD;
-        if (text.contains("fee"))
+        if (test.contains("fee"))
             return Category.FEES_AND_CHARGES;
-        if (text.contains("honey"))
+        if (test.contains("honey"))
             return Category.FOOD_AND_DINING;
-        if (text.contains("uber eats"))
+        if (test.contains("uber eats"))
             return Category.FOOD_DELIVERY;
-        if (text.contains("doordash"))
+        if (test.contains("doordash"))
             return Category.FOOD_DELIVERY;
-        if (text.contains("grubhub"))
+        if (test.contains("grubhub"))
             return Category.FOOD_DELIVERY;
-        if (text.contains("ikea"))
+        if (test.contains("ikea"))
             return Category.FURNISHINGS;
-        if (text.contains("homegoods"))
+        if (test.contains("homegoods"))
             return Category.FURNISHINGS;
-        if (text.contains("kum&go"))
+        if (test.contains("kum&go"))
             return Category.GAS_AND_FUEL;
-        if (text.contains("corner store"))
+        if (test.contains("corner store"))
             return Category.GAS_AND_FUEL;
-        if (text.contains("conoco"))
+        if (test.contains("conoco"))
             return Category.GAS_AND_FUEL;
-        if (text.contains("sams"))
+        if (test.contains("sams"))
             return Category.GROCERIES;
-        if (text.contains("hellofresh"))
+        if (test.contains("hellofresh"))
             return Category.GROCERIES;
-        if (text.contains("fruits"))
+        if (test.contains("fruits"))
             return Category.GROCERIES;
-        if (text.contains("king soopers"))
+        if (test.contains("king soopers"))
             return Category.GROCERIES;
-        if (text.contains("safeway"))
+        if (test.contains("safeway"))
             return Category.GROCERIES;
-        if (text.contains("grocery"))
+        if (test.contains("grocery"))
             return Category.GROCERIES;
-        if (text.contains("market"))
+        if (test.contains("market"))
             return Category.GROCERIES;
-        if (text.contains("cherry"))
+        if (test.contains("cherry"))
             return Category.GROCERIES;
-        if (text.contains("sprouts"))
+        if (test.contains("sprouts"))
             return Category.GROCERIES;
-        if (text.contains("head zep"))
+        if (test.contains("head zep"))
             return Category.HAIR;
-        if (text.contains("cookie cutters"))
+        if (test.contains("cookie cutters"))
             return Category.HAIR;
-        if (text.contains("hair"))
+        if (test.contains("hair"))
             return Category.HAIR;
-        if (text.contains("state farm"))
+        if (test.contains("state farm"))
             return Category.HOME_INSURANCE;
-        if (text.contains("ace h"))
+        if (test.contains("ace h"))
             return Category.HOME_IMPROVEMENT;
-        if (text.contains("home depot"))
+        if (test.contains("home depot"))
             return Category.HOME_IMPROVEMENT;
-        if (text.contains("sears"))
+        if (test.contains("sears"))
             return Category.HOME_IMPROVEMENT;
-        if (text.contains("lowes"))
+        if (test.contains("lowes"))
             return Category.HOME_IMPROVEMENT;
-        if (text.contains("atgpay online"))
+        if (test.contains("atgpay online"))
             return Category.HOME_OWNERS_ASSOC;
-        if (text.contains("quality inn"))
+        if (test.contains("quality inn"))
             return Category.HOTEL;
-        if (text.contains("dividend"))
+        if (test.contains("dividend"))
             // TODO: Not sure if this should be interest or dividend for bank interest deposits;
             return Category.INTEREST_INCOME;
-        if (text.contains("pulse"))
+        if (test.contains("pulse"))
             return Category.INTERNET;
-        if (text.contains("comcast"))
+        if (test.contains("comcast"))
             return Category.INTERNET;
-        if (text.contains("invest"))
+        if (test.contains("invest"))
             return Category.INVESTMENTS;
-        if (text.contains("parks"))
+        if (test.contains("parks"))
             return Category.KIDS_ACTIVITIES;
-        if (text.contains("lawn"))
+        if (test.contains("lawn"))
             return Category.LAWN_AND_GARDEN;
-        if (text.contains("seed"))
+        if (test.contains("seed"))
             return Category.LAWN_AND_GARDEN;
-        if (text.contains("landscape"))
+        if (test.contains("landscape"))
             return Category.LAWN_AND_GARDEN;
-        if (text.contains("brecks"))
+        if (test.contains("brecks"))
             return Category.LAWN_AND_GARDEN;
-        if (text.contains("seeds"))
+        if (test.contains("seeds"))
             return Category.LAWN_AND_GARDEN;
-        if (text.contains("garlic"))
+        if (test.contains("garlic"))
             return Category.LAWN_AND_GARDEN;
-        if (text.contains("kvan bourgondien (text.contains("))
+        if (test.contains("kvan bourgondien (test.contains("))
             return Category.LAWN_AND_GARDEN;
-        if (text.contains("garden"))
+        if (test.contains("garden"))
             return Category.LAWN_AND_GARDEN;
-        if (text.contains("nursery"))
+        if (test.contains("nursery"))
             return Category.LAWN_AND_GARDEN;
-        if (text.contains("thrivent"))
+        if (test.contains("thrivent"))
             return Category.LIFE_INSURANCE;
-        if (text.contains("mint mobile (text.contains("))
+        if (test.contains("mint mobile (test.contains("))
             return Category.MOBILE_PHONE;
-        if (text.contains("office depot"))
+        if (test.contains("office depot"))
             return Category.OFFICE_SUPPLIES;
-        if (text.contains("parking"))
+        if (test.contains("parking"))
             return Category.PARKING;
-        if (text.contains("cat"))
+        if (test.contains("cat"))
             return Category.PETS;
-        if (text.contains("dog"))
+        if (test.contains("dog"))
             return Category.PETS;
-        if (text.contains("humane society"))
+        if (test.contains("humane society"))
             return Category.PETS;
-        if (text.contains("petco"))
+        if (test.contains("petco"))
             return Category.PET_FOOD_AND_SUPPLIES;
-        if (text.contains("optum"))
+        if (test.contains("optum"))
             return Category.PHARMACY;
-        if (text.contains("pharmacy"))
+        if (test.contains("pharmacy"))
             return Category.PHARMACY;
-        if (text.contains("print"))
+        if (test.contains("print"))
             return Category.PRINTING;
-        if (text.contains("avis.com"))
+        if (test.contains("avis.com"))
             return Category.RENTAL_CAR_AND_TAXI;
-        if (text.contains("noodles"))
+        if (test.contains("noodles"))
             return Category.RESTAURANTS;
-        if (text.contains("olive garden"))
+        if (test.contains("olive garden"))
             return Category.RESTAURANTS;
-        if (text.contains("food service"))
+        if (test.contains("food service"))
             return Category.RESTAURANTS;
-        if (text.contains("texas roadhouse"))
+        if (test.contains("texas roadhouse"))
             return Category.RESTAURANTS;
-        if (text.contains("pho (text.contains("))
+        if (test.contains("pho (test.contains("))
             return Category.RESTAURANTS;
-        if (text.contains("wok"))
+        if (test.contains("wok"))
             return Category.RESTAURANTS;
-        if (text.contains("sala thai"))
+        if (test.contains("sala thai"))
             return Category.RESTAURANTS;
-        if (text.contains("santiagos mexican res"))
+        if (test.contains("santiagos mexican res"))
             return Category.RESTAURANTS;
-        if (text.contains("cafe mexicali"))
+        if (test.contains("cafe mexicali"))
             return Category.RESTAURANTS;
-        if (text.contains("nordys"))
+        if (test.contains("nordys"))
             return Category.RESTAURANTS;
-        if (text.contains("bakery"))
+        if (test.contains("bakery"))
             return Category.RESTAURANTS;
-        if (text.contains("door 222"))
+        if (test.contains("door 222"))
             return Category.RESTAURANTS;
-        if (text.contains("casa real"))
+        if (test.contains("casa real"))
             return Category.RESTAURANTS;
-        if (text.contains("marys mountain"))
+        if (test.contains("marys mountain"))
             return Category.RESTAURANTS;
-        if (text.contains("restaurant"))
+        if (test.contains("restaurant"))
             return Category.RESTAURANTS;
-        if (text.contains("mcdonald"))
+        if (test.contains("mcdonald"))
             return Category.RESTAURANTS;
-        if (text.contains("washme cw (text.contains("))
+        if (test.contains("washme cw (test.contains("))
             return Category.SERVICE_AND_PARTS;
-        if (text.contains("batteries+bulbs"))
+        if (test.contains("batteries+bulbs"))
             return Category.SERVICE_AND_PARTS;
-        if (text.contains("usps"))
+        if (test.contains("usps"))
             return Category.SHIPPING;
-        if (text.contains("us postal service"))
+        if (test.contains("us postal service"))
             return Category.SHIPPING;
-        if (text.contains("jax"))
+        if (test.contains("jax"))
             return Category.SHOPPING;
-        if (text.contains("rei"))
+        if (test.contains("rei"))
             return Category.SHOPPING;
-        if (text.contains("walgreens"))
+        if (test.contains("walgreens"))
             return Category.SHOPPING;
-        if (text.contains("amzn mktp"))
+        if (test.contains("amzn mktp"))
             return Category.SHOPPING;
-        if (text.contains("walmart"))
+        if (test.contains("walmart"))
             return Category.SHOPPING;
-        if (text.contains("target"))
+        if (test.contains("target"))
             return Category.SHOPPING;
-        if (text.contains("wal-mart"))
+        if (test.contains("wal-mart"))
             return Category.SHOPPING;
-        if (text.contains("wm supercenter"))
+        if (test.contains("wm supercenter"))
             return Category.SHOPPING;
-        if (text.contains("amazon"))
+        if (test.contains("amazon"))
             return Category.SHOPPING;
-        if (text.contains("etsy (text.contains("))
+        if (test.contains("etsy (test.contains("))
             return Category.SHOPPING;
-        if (text.contains("scheels"))
+        if (test.contains("scheels"))
             return Category.SHOPPING;
-        if (text.contains("turbotax"))
+        if (test.contains("turbotax"))
             return Category.TAXES;
-        if (text.contains("taxes"))
+        if (test.contains("taxes"))
             return Category.TAXES;
-        if (text.contains("bricks & minifigs"))
+        if (test.contains("bricks & minifigs"))
             return Category.TOYS;
-        if (text.contains("transfer"))
+        if (test.contains("transfer"))
             return Category.TRANSFER;
-        if (text.contains("travel"))
+        if (test.contains("travel"))
             return Category.TRAVEL;
-        if (text.contains("city"))
+        if (test.contains("city"))
             return Category.UTILITIES;
-        if (text.contains("xcel"))
+        if (test.contains("xcel"))
             return Category.UTILITIES;
 
-        return applyCustomRules(text);
+        return applyCustomRules(test);
     }
 
-    public String applyCustomRules(String text) {
+    public String applyCustomRules(final String text) {
         CustomRule[] customRules = retrieveCustomRules();
         if (customRules == null) {
             return Category.UNKNOWN;

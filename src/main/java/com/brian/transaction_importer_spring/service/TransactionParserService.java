@@ -27,7 +27,7 @@ public class TransactionParserService {
     private final USBankTransactionImporter usBankTransactionImporter;
 
 
-    public Transaction[] parseTransaction(MailMessage mailMessage) {
+    public Transaction[] parseTransaction(final MailMessage mailMessage) {
         KnownInstitution knownInstitution = parseInstitution(mailMessage);
         Transaction[] transactions = null;
         if (knownInstitution == KnownInstitution.FIDELITY) {
@@ -45,7 +45,7 @@ public class TransactionParserService {
         return transactions;
     }
 
-    private KnownInstitution parseInstitution(MailMessage mailMessage) {
+    private KnownInstitution parseInstitution(final MailMessage mailMessage) {
         String fromField = mailMessage.getHeaders().get("From").toLowerCase();
         if (fromField.contains("fidelity")) {
             return KnownInstitution.FIDELITY;

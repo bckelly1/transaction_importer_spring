@@ -15,6 +15,7 @@ import jakarta.mail.search.FlagTerm;
 import jakarta.mail.search.MessageIDTerm;
 import jakarta.mail.search.SearchTerm;
 import jakarta.mail.search.SubjectTerm;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,9 +30,9 @@ import java.util.Properties;
 @RequiredArgsConstructor
 @Slf4j
 public class GmailService {
-    final MailConfig mailConfig;
+    private final MailConfig mailConfig;
 
-    public MailMessage[] getUnreadMessages(String filter, String label) {
+    public MailMessage[] getUnreadMessages(final String filter, final String label) {
         // Gmail IMAP properties
         Properties properties = new Properties();
         properties.setProperty("mail.store.protocol", "imaps");
@@ -72,7 +73,7 @@ public class GmailService {
 
     // When store.close() is called, the messages in the array are no longer accessible. We need to copy out (or process)
     //   the messages, so we can work on them independently.
-    private MailMessage[] parseMailMessages(Message[] messages, String label) {
+    private MailMessage[] parseMailMessages(final Message[] messages, final String label) {
         MailMessage[] mailMessages = new MailMessage[messages.length];
         for (int i = 0; i < messages.length; i++) {
             MailMessage mailMessage = parseMailMessage(messages[i], label);
@@ -81,7 +82,7 @@ public class GmailService {
         return mailMessages;
     }
 
-    private MailMessage parseMailMessage(Message message, String label) {
+    private MailMessage parseMailMessage(final Message message, final String label) {
         try {
             Map<String, String> headers = parseHeaders(message);
             String from = headers.get("From");
@@ -97,7 +98,7 @@ public class GmailService {
         }
     }
 
-    private String getTextBody(Message message) throws IOException, MessagingException {
+    private String getTextBody(final Message message) throws IOException, MessagingException {
         if (message.getContent().getClass() == MimeMultipart.class) {
             MimeMultipart content = ((MimeMultipart) message.getContent());
             int length = content.getCount();
@@ -110,7 +111,7 @@ public class GmailService {
         return message.getContent().toString();
     }
 
-    private String getHtmlBody(Message message) throws IOException, MessagingException {
+    private String getHtmlBody(final Message message) throws IOException, MessagingException {
         if (message.getContent().getClass() == MimeMultipart.class) {
             MimeMultipart content = ((MimeMultipart) message.getContent());
             int length = content.getCount();
@@ -123,7 +124,7 @@ public class GmailService {
         return message.getContent().toString();
     }
 
-    private Map<String, String> parseHeaders(Message message) throws MessagingException {
+    private Map<String, String> parseHeaders(final Message message) throws MessagingException {
         Map<String, String> headers = new HashMap<>();
         Iterator<Header> iterator = message.getAllHeaders().asIterator();
         while (iterator.hasNext()) {
@@ -138,7 +139,7 @@ public class GmailService {
         return headers;
     }
 
-    public void markAsRead(MailMessage mailMessage) {
+    public void markAsRead(final MailMessage mailMessage) {
         // Gmail IMAP properties
         Properties properties = new Properties();
         properties.setProperty("mail.store.protocol", "imaps");

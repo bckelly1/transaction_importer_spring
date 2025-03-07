@@ -34,7 +34,7 @@ public class FirstTechTransactionImporter {
 
     // With Bank accounts, you have to determine if the money is going in (credit) or going out (debit)
     //    For First Tech, you can either determine that by looking for the parentheses () or the Credit/Debit label
-    public String determineTransactionStyle(Document document) {
+    public String determineTransactionStyle(final Document document) {
         String token = document.select("div.transactions-table-header").text().strip().split(" ")[0];
         if (token.equals("Deposits")) {
             return "Credit";
@@ -50,7 +50,7 @@ public class FirstTechTransactionImporter {
 
     // Is the money just moving between two user-owned accounts? While that does count as a Credit/Debit, in the grand scheme
     //   Of things, it doesn't affect the budget.  Mark the transaction as a transfer and it will be ignored.
-    public boolean isTransfer(String title) {
+    public boolean isTransfer(final String title) {
         if (title.contains("Regular Payment Transfer")) {
             return false;
         } else if (title.contains("Transfer")) {
@@ -64,38 +64,39 @@ public class FirstTechTransactionImporter {
     // Credit card payments do and don't matter. They do matter because the money is literally leaving your bank account. On
     //   The other hand, you already spent the money, so the money is "gone" already, so we can think of the credit card
     //   Payment more as a transfer than as "money going out".  Let the rage debate commence.
-    public boolean isCreditCardPayment(String title) {
+    public boolean isCreditCardPayment(final String title) {
         // Fidelity is a bit obnoxious about this. No email on payments. Have to infer it when the money goes out.
         return (title.contains("CARDMEMBER SERV")) && title.contains("WEB PYMT");
     }
 
     // Example input: Deposit Transfer From ******1234
     // Output: 1234
-    public String transfer_source_account(String title) {
+    public String transferSourceAccount(final String title) {
         String[] tokens = title.split(" ");
         for (String token : tokens) {
-            if (token.contains("*"))
+            if (token.contains("*")) {
                 return token.replace("*", "");
+            }
         }
         return "Unknown Source Account";
     }
 
-    public String determineSourceAccount(boolean isTransfer, String transactionDetailsOriginal, String merchant) {
+    public String determineSourceAccount(final boolean isTransfer, final String transactionDetailsOriginal, final String merchant) {
         if (isTransfer) {
             if (isCreditCardPayment(transactionDetailsOriginal)) {
                 return merchant;
             }
-            return transfer_source_account(transactionDetailsOriginal);
+            return transferSourceAccount(transactionDetailsOriginal);
         }
         return merchant;
     }
 
     // Main handling of the transaction email. Read the transaction and extract transaction details from the text.
-    public Transaction[] handleTransactionEmail(MailMessage mailMessage) {
+    public Transaction[] handleTransactionEmail(final MailMessage mailMessage) {
         return parseHtml(mailMessage);
     }
 
-    public Transaction handleTransactionRow(Element element, MailMessage mailMessage, String accountNumber) {
+    public Transaction handleTransactionRow(final Element element, final MailMessage mailMessage, final String accountNumber) {
         Timestamp transactionDate = new Timestamp(Long.parseLong(mailMessage.getHeaders().get("Custom-Epoch")) * 1000L);
         String messageId = mailMessage.getHeaders().get("Message-ID");
         String transactionDetailsOriginal = element.select("td.details").text().strip();
@@ -133,7 +134,7 @@ public class FirstTechTransactionImporter {
 
 
     // Parse the email's HTML text and extract relevant transaction info from it.
-    public Transaction[] parseHtml(MailMessage mailMessage) {
+    public Transaction[] parseHtml(final MailMessage mailMessage) {
         Document soup = Jsoup.parse(mailMessage.getHtml());
         String title = soup.body().select("h1#title").text().strip();
         String accountName = soup.body().select("strong").get(0).text().strip().split(" - ")[0];
@@ -145,14 +146,15 @@ public class FirstTechTransactionImporter {
         log.info("Account Number: {}", accountNumber);
         log.info("Balance: {}", balance);
 
-        String transaction_style = determineTransactionStyle(soup);
+        String transactionStyle = determineTransactionStyle(soup);
         Elements transactionElements = soup.body().select("tr.transaction-row");
         Transaction[] transactions = new Transaction[transactionElements.size()];
         for (int i = 0; i < transactionElements.size(); i++) {
             Element transactionElement = transactionElements.get(i);
             Transaction transaction = handleTransactionRow(transactionElement, mailMessage, accountNumber);
-            if (!Objects.equals(transaction_style, transaction.getTransactionType()))
-                log.error("Transaction style {} does not match parsed transaction type from transaction {}", transaction_style, transaction.getTransactionType());
+            if (!Objects.equals(transactionStyle, transaction.getTransactionType())) {
+                log.error("Transaction style {} does not match parsed transaction type from transaction {}", transactionStyle, transaction.getTransactionType());
+            }
             if (transaction.getMerchant() == null) {
                 transaction.setMerchant(vendorRepository.findOrCreate(accountName));
                 transaction.setAccount(accountRepository.findByAlias(accountNumber));  // TODO: possibly redundant?
@@ -162,7 +164,7 @@ public class FirstTechTransactionImporter {
         return transactions;
     }
 
-    private double extractAmount(Element element) {
+    private double extractAmount(final Element element) {
         String transactionAmount = element.select("td.trans-amount").text().strip().replace("$", "").replace(",", "");
         double amount;
         String transactionType;
@@ -177,7 +179,7 @@ public class FirstTechTransactionImporter {
         return amount;
     }
 
-    private String extractTransactionType(Element element) {
+    private String extractTransactionType(final Element element) {
         String transactionAmount = element.select("td.trans-amount").text().strip().replace("$", "").replace(",", "");
         String transactionType;
         if (transactionAmount.contains("(")) {
@@ -189,7 +191,7 @@ public class FirstTechTransactionImporter {
         return transactionType;
     }
 
-    private String extractMerchant(String transactionDetailsOriginal) {
+    private String extractMerchant(final String transactionDetailsOriginal) {
         String merchant;
         if (transactionDetailsOriginal.contains("Transfer") && transactionDetailsOriginal.contains("Dividend")) {
             merchant = "First Tech";
@@ -203,7 +205,7 @@ public class FirstTechTransactionImporter {
         return merchant;
     }
 
-    private String extractDescription(String transactionDetailsOriginal) {
+    private String extractDescription(final String transactionDetailsOriginal) {
         String[] transactionTokens = transactionDetailsOriginal.split(" ");
         return String.join(" ", Arrays.copyOfRange(transactionTokens, 2, transactionTokens.length));
     }

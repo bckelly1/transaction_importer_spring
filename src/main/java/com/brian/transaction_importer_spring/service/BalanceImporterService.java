@@ -18,7 +18,7 @@ public class BalanceImporterService {
     private final FidelityAccountImporter fidelityAccountImporter;
 
 
-    public void parseBalanceSummary(MailMessage[] mailMessages) {
+    public void parseBalanceSummary(final MailMessage[] mailMessages) {
         for (MailMessage mailMessage : mailMessages) {
             KnownInstitution knownInstitution = parseInstitution(mailMessage);
             if (knownInstitution == KnownInstitution.FIDELITY) {
@@ -31,7 +31,7 @@ public class BalanceImporterService {
         }
     }
 
-    private KnownInstitution parseInstitution(MailMessage mailMessage) {
+    private KnownInstitution parseInstitution(final MailMessage mailMessage) {
         String fromField = mailMessage.getHeaders().get("From").toLowerCase();
         if (fromField.contains("fidelity")) {
             return KnownInstitution.FIDELITY;

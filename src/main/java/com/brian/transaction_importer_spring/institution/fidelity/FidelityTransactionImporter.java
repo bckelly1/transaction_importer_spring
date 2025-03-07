@@ -28,7 +28,7 @@ public class FidelityTransactionImporter {
 
     private final AccountRepository accountRepository;
 
-    private String findCurrencyToken(String[] description) {
+    private String findCurrencyToken(final String[] description) {
         for (String word : description) {
             if (word.contains("$")) {
                 return word;
@@ -40,7 +40,7 @@ public class FidelityTransactionImporter {
 
     // Fidelity is super annoying. The actual body of the message isn't structured well at all.
     //   International transactions have a slightly different email template and has to be parsed differently.
-    public Transaction handleTransaction(MailMessage mailMessage) {
+    public Transaction handleTransaction(final MailMessage mailMessage) {
         ArrayList<String> lines = parseMailMessage(mailMessage);
 
         // Determine which version of the transaction email
@@ -59,7 +59,7 @@ public class FidelityTransactionImporter {
         throw new RuntimeException("Could not determine transaction style");
     }
 
-    private Transaction parseStandardTransaction(MailMessage mailMessage, ArrayList<String> lines) {
+    private Transaction parseStandardTransaction(final MailMessage mailMessage, final ArrayList<String> lines) {
         Transaction transaction = new Transaction();
         String[] cardNumberSplit = lines.get(0).split(" ");
         String cardNumber = cardNumberSplit[cardNumberSplit.length - 1].strip();
@@ -94,7 +94,7 @@ public class FidelityTransactionImporter {
         return transaction;
     }
 
-    private Transaction parseChargeWasAuthorized(MailMessage mailMessage, ArrayList<String> lines) {
+    private Transaction parseChargeWasAuthorized(final MailMessage mailMessage, final ArrayList<String> lines) {
         Transaction transaction = new Transaction();
         String[] cardNumberSplit = lines.get(6).split(" ");
         String cardNumber = cardNumberSplit[5].strip();
@@ -129,7 +129,7 @@ public class FidelityTransactionImporter {
         return transaction;
     }
 
-    private Transaction parseCardWasNotPresent(MailMessage mailMessage, ArrayList<String> lines) {
+    private Transaction parseCardWasNotPresent(final MailMessage mailMessage, final ArrayList<String> lines) {
         Transaction transaction = new Transaction();
         String[] cardNumberSplit = lines.get(4).split(" ");
         String cardNumber = cardNumberSplit[5].strip();
@@ -164,7 +164,7 @@ public class FidelityTransactionImporter {
         return transaction;
     }
 
-    public ArrayList<String> parseMailMessage(MailMessage mailMessage) {
+    public ArrayList<String> parseMailMessage(final MailMessage mailMessage) {
         String body = mailMessage.getBody();
         Document document = Jsoup.parse(body);
         String content = document.wholeText();

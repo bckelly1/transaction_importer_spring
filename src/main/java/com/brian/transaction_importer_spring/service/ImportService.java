@@ -34,7 +34,7 @@ public class ImportService {
         return transactions;
     }
 
-    private @NotNull List<Transaction> handleTransactions(MailMessage[] allMessages) {
+    private @NotNull List<Transaction> handleTransactions(final MailMessage[] allMessages) {
         List<Transaction> transactionList = new ArrayList<>();
         for (MailMessage unreadMessage : allMessages) {
             Transaction[] transactions = transactionParserService.parseTransaction(unreadMessage);
@@ -54,7 +54,7 @@ public class ImportService {
         markRead(fidelityMessages);
     }
 
-    private void markRead(MailMessage[] mailMessages) {
+    private void markRead(final MailMessage[] mailMessages) {
         for (MailMessage mailMessage : mailMessages) {
             gmailService.markAsRead(mailMessage);
         }

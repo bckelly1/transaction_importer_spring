@@ -15,7 +15,7 @@ public class InstitutionApiController {
     private final InstitutionRepository institutionRepository;
 
     @GetMapping("/institution/{id}")
-    public InstitutionDTO findInstitutionJsonById(@PathVariable Long id) {
+    public InstitutionDTO findInstitutionJsonById(@PathVariable final Long id) {
         Institution institution = institutionRepository.findById(id).get();
         if (institution == null) {
             return null;

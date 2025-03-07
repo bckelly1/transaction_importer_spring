@@ -23,7 +23,7 @@ public class TransactionController {
 
 
     @GetMapping("/transaction/{transactionId}/")
-    public String getTransaction(@PathVariable(value = "transactionId") Long transactionId, Model model) {
+    public String getTransaction(@PathVariable(value = "transactionId") final Long transactionId, Model model) {
         model.addAttribute("categories", categoryRepository.findAll());
         Transaction transaction = transactionRepository.findById(transactionId).get();
         model.addAttribute("transaction", transaction);
@@ -48,7 +48,7 @@ public class TransactionController {
 
     @PostMapping("/transaction/{transactionId}/delete")
     @ResponseBody
-    public ResponseEntity<Void> deleteTransaction(@PathVariable(value = "transactionId") Long transactionId) {
+    public ResponseEntity<Void> deleteTransaction(@PathVariable(value = "transactionId") final Long transactionId) {
         System.out.println("Received delete transaction request for " + transactionId);
         transactionRepository.deleteById(transactionId);
 
