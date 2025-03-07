@@ -75,7 +75,7 @@
     <form id="transactionForm">
         <tbody>
         <tr>
-            <td><input name="id" th:value="${transaction.getId()}" id="transactionId" type="hidden"></td>
+            <td><input id="transactionId" name="id" th:value="${transaction.getId()}" type="hidden"></td>
             <td><input name="date" th:value="${#dates.format(transaction.getDate(), 'yyyy-MM-dd HH:mm:ss')}"
                        type="datetime"></td>
             <td><input name="description" th:value="${transaction.getDescription()}" type="text"></td>
@@ -90,7 +90,7 @@
         </tr>
         </tbody>
         <button type="submit">Submit</button>
-        <button type="reset" onclick="deleteTransaction()">Delete</button>
+        <button onclick="deleteTransaction()" type="reset">Delete</button>
     </form>
 </table>
 
@@ -154,7 +154,7 @@
 
 </script>
 
-<div id="error-overlay" class="error-overlay" style="display: none;">
+<div class="error-overlay" id="error-overlay" style="display: none;">
     <div class="error-message-box">
         <p id="error-message">An error occurred</p>
         <button class="error-button" onclick="hideErrorMessage()">Close</button>

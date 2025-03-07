@@ -7,8 +7,8 @@
 <div th:fragment="selectInstitutionsList(currentValue)">
     <!--        For some reason id and name fields are required to make the list select the original value as default.-->
     <select class="form-control" id="institutionsDropDownList" name="institutionsDropDownList">
-        <option th:each="option : ${institutions}" th:value="${option.getId()}"
-                th:selected="${currentValue == option.getId()}" th:text="${option.getName()}"></option>
+        <option th:each="option : ${institutions}" th:selected="${currentValue == option.getId()}"
+                th:text="${option.getName()}" th:value="${option.getId()}"></option>
     </select>
 </div>
 </body>

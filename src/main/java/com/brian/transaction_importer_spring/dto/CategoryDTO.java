@@ -9,6 +9,10 @@ import lombok.Setter;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL) // Only include non-null fields in the JSON
 public class CategoryDTO {
+    private Long id;
+    private String name;
+    private String parentCategoryName;
+    private Long parentCategoryId;
     public CategoryDTO(Category category) {
         this.id = category.getId();
         this.name = category.getName();
@@ -17,10 +21,4 @@ public class CategoryDTO {
             this.parentCategoryId = category.getParent().getId();
         }
     }
-
-    private Long id;
-    private String name;
-
-    private String parentCategoryName;
-    private Long parentCategoryId;
 }

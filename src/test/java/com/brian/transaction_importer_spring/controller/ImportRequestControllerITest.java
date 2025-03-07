@@ -22,17 +22,14 @@ import java.io.IOException;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
 public class ImportRequestControllerITest extends TestBaseUtils {
-    @LocalServerPort
-    private int port;
-
-    @Autowired
-    private TestRestTemplate restTemplate;
-
-    @Autowired
-    private MailConfig mailConfig;
-
     @Mock
     GmailService gmailService;
+    @LocalServerPort
+    private int port;
+    @Autowired
+    private TestRestTemplate restTemplate;
+    @Autowired
+    private MailConfig mailConfig;
 
     @Test
     void importTransactionsRequestTest() {
