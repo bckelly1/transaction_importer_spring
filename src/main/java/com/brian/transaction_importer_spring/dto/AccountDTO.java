@@ -27,6 +27,6 @@ public class AccountDTO {
         this.alias  = account.getAlias();
         this.type = account.getType();
         this.institutionName = account.getInstitution().getName();
-        this.last_updated = account.getLast_updated();
+        this.last_updated = account.getLastUpdated();
     }
 }

@@ -8,7 +8,7 @@ public class AccountToAccountHistory {
         AccountHistory accountHistory = new AccountHistory();
         accountHistory.setAccount(account);
         accountHistory.setBalance(account.getBalance());
-        accountHistory.setTimestamp(account.getLast_updated());
+        accountHistory.setTimestamp(account.getLastUpdated());
 
         return accountHistory;
     }
