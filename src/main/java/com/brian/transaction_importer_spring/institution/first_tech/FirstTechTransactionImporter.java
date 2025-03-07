@@ -122,8 +122,7 @@ public class FirstTechTransactionImporter {
         transaction.setCategory(categoryRepository.findByName(category));
         if (transfer) {
             transaction.setMerchant(vendorRepository.findOrCreate(sourceAccount)); // source_account if transfer else merchant
-        }
-        else {
+        } else {
             transaction.setMerchant(vendorRepository.findOrCreate(merchant)); // source_account if transfer else merchant
         }
         transaction.setAccount(accountRepository.findByAlias(accountNumber));
@@ -170,8 +169,7 @@ public class FirstTechTransactionImporter {
         if (transactionAmount.contains("(")) {
             amount = Double.parseDouble(transactionAmount.replace("(", "").replace(")", ""));
             transactionType = "Debit";
-        }
-        else {
+        } else {
             amount = Double.parseDouble(transactionAmount);
             transactionType = "Credit";
         }
@@ -184,8 +182,7 @@ public class FirstTechTransactionImporter {
         String transactionType;
         if (transactionAmount.contains("(")) {
             transactionType = "Debit";
-        }
-        else {
+        } else {
             transactionType = "Credit";
         }
 

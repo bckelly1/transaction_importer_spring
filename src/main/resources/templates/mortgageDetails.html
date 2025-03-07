@@ -2,18 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Amortization Schedule</title>
     <style>
         table {
             width: 100%;
             border-collapse: collapse;
         }
+
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: right;
         }
+
         th {
             background-color: #f2f2f2;
         }
@@ -42,13 +44,13 @@
     </thead>
     <tbody>
     <tr>
-        <td th:text="${account.getName()}" id="name"></td>
-        <td th:text="${account.getBalance()}" id="current-balance"></td>
-        <td th:text="${mortgageDetails.getTermInYears()}" id="term-in-years"></td>
-        <td th:text="${mortgageDetails.getInterestRate()}" id="interest-rate"></td>
-        <td th:text="${mortgageDetails.getOriginationDate()}" id="origination-date"></td>
-        <td th:text="${mortgageDetails.getLoanAmount()}" id="loan-amount"></td>
-<!--        <td th:text="${mortgageDetails.getPayoffDate()}"></td>-->
+        <td id="name" th:text="${account.getName()}"></td>
+        <td id="current-balance" th:text="${account.getBalance()}"></td>
+        <td id="term-in-years" th:text="${mortgageDetails.getTermInYears()}"></td>
+        <td id="interest-rate" th:text="${mortgageDetails.getInterestRate()}"></td>
+        <td id="origination-date" th:text="${mortgageDetails.getOriginationDate()}"></td>
+        <td id="loan-amount" th:text="${mortgageDetails.getLoanAmount()}"></td>
+        <!--        <td th:text="${mortgageDetails.getPayoffDate()}"></td>-->
     </tr>
     </tbody>
 </table>

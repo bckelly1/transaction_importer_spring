@@ -6,9 +6,11 @@
         body {
             background-color: #333333;
         }
+
         th {
             color: white;
         }
+
         td {
             color: white;
         }
@@ -29,7 +31,7 @@
     <tr th:each="entity : ${categories}">
         <td th:text="${entity.getId()}"></td>
         <td th:text="${entity.getName()}"></td>
-<!--        TODO parent_category is the wrong name-->
+        <!--        TODO parent_category is the wrong name-->
         <td th:text="${entity.getParent()}"></td>
     </tr>
     </tbody>

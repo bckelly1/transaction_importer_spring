@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -111,10 +111,15 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
+                        <configuration>
+                            <configLocation>
+                                https://raw.githubusercontent.com/checkstyle/checkstyle/master/src/main/resources/google_checks.xml
+                            </configLocation>
+                        </configuration>
                     </execution>
                 </executions>
                 <configuration>
-                    <configLocation>checkstyle.xml</configLocation> <!-- Your checkstyle configuration file -->
+                    <!--                    <configLocation>checkstyle.xml</configLocation> &lt;!&ndash; Your checkstyle configuration file &ndash;&gt;-->
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput> <!-- Print results to console -->
                     <failOnViolation>true</failOnViolation>

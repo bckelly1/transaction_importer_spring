@@ -6,9 +6,11 @@
         body {
             background-color: #333333;
         }
+
         th {
             color: white;
         }
+
         td {
             color: white;
         }
@@ -22,7 +24,7 @@
     <tr>
         <th>ID</th>
         <th>Name</th>
-<!--        <th>Institution</th>-->
+        <!--        <th>Institution</th>-->
         <th>Balance</th>
         <th>Alias</th>
         <th>Type</th>
@@ -33,7 +35,7 @@
     <tr th:each="entity : ${accounts}">
         <td th:text="${entity.getId()}"></td>
         <td th:text="${entity.getName()}"></td>
-<!--        <td th:text="${entity.institution}"></td>-->
+        <!--        <td th:text="${entity.institution}"></td>-->
         <td th:text="${entity.getBalance()}"></td>
         <td th:text="${entity.getAlias()}"></td>
         <td th:text="${entity.getType()}"></td>

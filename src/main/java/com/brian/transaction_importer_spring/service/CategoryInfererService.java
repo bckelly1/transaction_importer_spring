@@ -1,4 +1,5 @@
 package com.brian.transaction_importer_spring.service;
+
 import com.brian.transaction_importer_spring.constants.Category;
 import com.brian.transaction_importer_spring.entity.CustomRule;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,9 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
-import java.util.Arrays;
 
 @Service
 @Log4j2
@@ -224,7 +223,7 @@ public class CategoryInfererService {
         if (text.contains("quality inn"))
             return Category.HOTEL;
         if (text.contains("dividend"))
-        // TODO: Not sure if this should be interest or dividend for bank interest deposits;
+            // TODO: Not sure if this should be interest or dividend for bank interest deposits;
             return Category.INTEREST_INCOME;
         if (text.contains("pulse"))
             return Category.INTERNET;

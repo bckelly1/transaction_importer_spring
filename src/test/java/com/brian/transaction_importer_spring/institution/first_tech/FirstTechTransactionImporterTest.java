@@ -3,7 +3,11 @@ package com.brian.transaction_importer_spring.institution.first_tech;
 import com.brian.transaction_importer_spring.entity.Account;
 import com.brian.transaction_importer_spring.entity.MailMessage;
 import com.brian.transaction_importer_spring.entity.Transaction;
-import com.brian.transaction_importer_spring.repository.*;
+import com.brian.transaction_importer_spring.repository.AccountHistoryRepository;
+import com.brian.transaction_importer_spring.repository.AccountRepository;
+import com.brian.transaction_importer_spring.repository.CategoryRepository;
+import com.brian.transaction_importer_spring.repository.TransactionRepository;
+import com.brian.transaction_importer_spring.repository.VendorRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +56,7 @@ public class FirstTechTransactionImporterTest {
         try (InputStream is = classloader.getResourceAsStream(fileName)) {
             if (is != null) {
                 return new String(is.readAllBytes());
-            }
-            else{
+            } else {
                 throw new RuntimeException("Problem reading file: " + fileName);
             }
         } catch (IOException e) {

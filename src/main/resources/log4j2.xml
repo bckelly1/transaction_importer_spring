@@ -9,6 +9,6 @@
         <Root level="INFO">
             <AppenderRef ref="Console"/>
         </Root>
-<!--        <logger name="org.thymeleaf" level="DEBUG"/>-->
+        <!--        <logger name="org.thymeleaf" level="DEBUG"/>-->
     </Loggers>
 </Configuration>

@@ -91,8 +91,7 @@ public class GmailService {
             String html = getHtmlBody(message);
             String messageId = headers.get("Message-ID").replace("<", "").replace(">", "");
             return new MailMessage(from, to, subject, body, html, messageId, label, headers);
-        }
-        catch (IOException | MessagingException e) {
+        } catch (IOException | MessagingException e) {
             log.error("Error parsing mail message", e);
             return null;
         }
