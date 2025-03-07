@@ -11,9 +11,8 @@
         }
 
         @supports (-moz-appearance:none) {
-            select
-            {
-                -moz-appearance:none !important;
+            select {
+                -moz-appearance: none !important;
                 background: transparent url('data:image/gif;base64,R0lGODlhBgAGAKEDAFVVVX9/f9TU1CgmNyH5BAEKAAMALAAAAAAGAAYAAAIODA4hCDKWxlhNvmCnGwUAOw==') right center no-repeat !important;
                 background-position: calc(100% - 5px) center !important;
             }
@@ -80,7 +79,8 @@
             <td><input name="date" th:value="${#dates.format(transaction.getDate(), 'yyyy-MM-dd HH:mm:ss')}"
                        type="datetime"></td>
             <td><input name="description" th:value="${transaction.getDescription()}" type="text"></td>
-            <td><input name="amount" th:value="${#numbers.formatDecimal(transaction.getAmount(), 1, 2)}" type="number"></td>
+            <td><input name="amount" th:value="${#numbers.formatDecimal(transaction.getAmount(), 1, 2)}" type="number">
+            </td>
             <td><input name="transactionType" th:value="${transaction.getTransactionType()}" type="text"></td>
             <td th:include="categoryDropdownList :: selectCategoriesList(${transaction.getCategory().getId()})"></td>
             <td><input name="merchant" th:value="${transaction.getMerchant().getName()}" type="text"></td>

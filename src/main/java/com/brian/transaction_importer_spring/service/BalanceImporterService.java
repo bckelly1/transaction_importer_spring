@@ -18,8 +18,6 @@ public class BalanceImporterService {
     private final FidelityAccountImporter fidelityAccountImporter;
 
 
-
-
     public void parseBalanceSummary(MailMessage[] mailMessages) {
         for (MailMessage mailMessage : mailMessages) {
             KnownInstitution knownInstitution = parseInstitution(mailMessage);

@@ -62,8 +62,7 @@ public class TransactionParserServiceTest {
         try (InputStream is = classloader.getResourceAsStream(fileName)) {
             if (is != null) {
                 return new String(is.readAllBytes());
-            }
-            else{
+            } else {
                 throw new RuntimeException("Problem reading file: " + fileName);
             }
         } catch (IOException e) {

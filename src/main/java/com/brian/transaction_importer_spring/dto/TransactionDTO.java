@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+
 import java.sql.Timestamp;
 
 @Getter
@@ -28,7 +29,7 @@ public class TransactionDTO {
     private String mailMessageId;
     private String notes;
 
-    public TransactionDTO (Transaction transaction) {
+    public TransactionDTO(Transaction transaction) {
         this.id = transaction.getId();
         this.amount = transaction.getAmount();
         this.accountName = transaction.getAccount().getName();

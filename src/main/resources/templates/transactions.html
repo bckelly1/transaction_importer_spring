@@ -6,9 +6,11 @@
         body {
             background-color: #333333;
         }
+
         th {
             color: white;
         }
+
         td {
             color: white;
         }
@@ -27,7 +29,7 @@
         <th>Transaction Type</th>
         <th>Category</th>
         <th>Vendor</th>
-<!--        <th>Account</th>-->
+        <!--        <th>Account</th>-->
         <th>Mail Message Id</th>
         <th>Notes</th>
     </tr>
@@ -41,7 +43,7 @@
         <td th:text="${entity.getTransactionType()}"></td>
         <td th:text="${entity.getCategory().getName()}"></td>
         <td th:text="${entity.getMerchant().getName()}"></td>
-<!--        <td th:text="${entity.getAccount().getName()}"></td>-->
+        <!--        <td th:text="${entity.getAccount().getName()}"></td>-->
         <td th:text="${entity.getMailMessageId()}"></td>
         <td th:text="${entity.getNotes()}"></td>
     </tr>

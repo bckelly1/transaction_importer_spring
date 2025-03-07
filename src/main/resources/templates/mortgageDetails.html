@@ -9,11 +9,13 @@
             width: 100%;
             border-collapse: collapse;
         }
+
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: right;
         }
+
         th {
             background-color: #f2f2f2;
         }
@@ -48,7 +50,7 @@
         <td th:text="${mortgageDetails.getInterestRate()}" id="interest-rate"></td>
         <td th:text="${mortgageDetails.getOriginationDate()}" id="origination-date"></td>
         <td th:text="${mortgageDetails.getLoanAmount()}" id="loan-amount"></td>
-<!--        <td th:text="${mortgageDetails.getPayoffDate()}"></td>-->
+        <!--        <td th:text="${mortgageDetails.getPayoffDate()}"></td>-->
     </tr>
     </tbody>
 </table>

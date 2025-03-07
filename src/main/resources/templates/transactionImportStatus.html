@@ -9,7 +9,7 @@
 <table>
     <thead>
     <tr>
-<!--        <th>ID</th>-->
+        <!--        <th>ID</th>-->
         <th>Date</th>
         <th>Description</th>
         <th>Amount</th>
@@ -23,7 +23,7 @@
     </thead>
     <tbody>
     <tr th:each="entity : ${transactions}">
-<!--        <td th:text="${entity.id}"></td>-->
+        <!--        <td th:text="${entity.id}"></td>-->
         <td th:text="${entity.getDate()}"></td>
         <td th:text="${entity.getDescription()}"></td>
         <td th:text="${entity.getAmount()}"></td>
