@@ -363,7 +363,7 @@ public class CategoryInfererService {
         }
 
         for (CustomRule customRule : customRules) {
-            if(text.contains(customRule.getRuleString())) {
+            if (text.contains(customRule.getRuleString())) {
                 return customRule.getCategoryName();
             }
         }
@@ -376,11 +376,10 @@ public class CategoryInfererService {
         String customRulesFile = "custom_rules_file.json";
 
         URL resource = Thread.currentThread().getContextClassLoader().getResource(customRulesFile);
-        if(resource == null) {
+        if (resource == null) {
             log.info("No custom rules file detected");
             return null;
-        }
-        else{
+        } else {
             try (InputStream resourceAsStream = resource.openStream()) {
                 rulesFileContents = new String(resourceAsStream.readAllBytes());
                 log.info("Loading custom rules for rules file");
@@ -389,7 +388,7 @@ public class CategoryInfererService {
             }
         }
 
-        if (rulesFileContents.isEmpty()){
+        if (rulesFileContents.isEmpty()) {
             return null;
         }
 

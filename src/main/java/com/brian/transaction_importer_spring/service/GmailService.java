@@ -99,11 +99,11 @@ public class GmailService {
     }
 
     private String getTextBody(Message message) throws IOException, MessagingException {
-        if(message.getContent().getClass() == MimeMultipart.class) {
+        if (message.getContent().getClass() == MimeMultipart.class) {
             MimeMultipart content = ((MimeMultipart) message.getContent());
             int length = content.getCount();
-            for(int i = 0; i < length; i++) {
-                if(content.getBodyPart(i).isMimeType("text/plain")) {
+            for (int i = 0; i < length; i++) {
+                if (content.getBodyPart(i).isMimeType("text/plain")) {
                     return content.getBodyPart(i).getContent().toString();
                 }
             }
@@ -112,11 +112,11 @@ public class GmailService {
     }
 
     private String getHtmlBody(Message message) throws IOException, MessagingException {
-        if(message.getContent().getClass() == MimeMultipart.class) {
+        if (message.getContent().getClass() == MimeMultipart.class) {
             MimeMultipart content = ((MimeMultipart) message.getContent());
             int length = content.getCount();
-            for(int i = 0; i < length; i++) {
-                if(content.getBodyPart(i).isMimeType("text/html")) {
+            for (int i = 0; i < length; i++) {
+                if (content.getBodyPart(i).isMimeType("text/html")) {
                     return content.getBodyPart(i).getContent().toString();
                 }
             }
@@ -127,13 +127,12 @@ public class GmailService {
     private Map<String, String> parseHeaders(Message message) throws MessagingException {
         Map<String, String> headers = new HashMap<>();
         Iterator<Header> iterator = message.getAllHeaders().asIterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             Header header = iterator.next();
-            if(header.getName().equals("ARC-Seal")) {
+            if (header.getName().equals("ARC-Seal")) {
                 String epoch = header.getValue().split("; ")[2].split("=")[1];
                 headers.put("Custom-Epoch", epoch);
-            }
-            else{
+            } else {
                 headers.put(header.getName(), header.getValue());
             }
         }
@@ -158,7 +157,7 @@ public class GmailService {
             //Should only be one record
             SearchTerm searchTerm = new MessageIDTerm(mailMessage.getMessageId());
             Message[] findMessages = inbox.search(searchTerm);
-            for(Message message : findMessages) {
+            for (Message message : findMessages) {
                 message.setFlag(Flags.Flag.SEEN, true);
             }
         } catch (MessagingException e) {

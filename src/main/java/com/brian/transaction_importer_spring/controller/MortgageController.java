@@ -17,7 +17,7 @@ public class MortgageController {
     private final MortgageDetailsRepository mortgageDetailsRepository;
 
     @GetMapping("/mortgage/{account_id}")
-    public String mortgageDetails(@PathVariable(value="account_id") Long accountId, Model model) {
+    public String mortgageDetails(@PathVariable(value = "account_id") Long accountId, Model model) {
         System.out.println("Received mortgage details request for " + accountId);
 
         model.addAttribute("account", accountRepository.findById(accountId).get());

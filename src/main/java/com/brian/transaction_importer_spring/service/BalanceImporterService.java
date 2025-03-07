@@ -21,15 +21,13 @@ public class BalanceImporterService {
 
 
     public void parseBalanceSummary(MailMessage[] mailMessages) {
-        for(MailMessage mailMessage : mailMessages) {
+        for (MailMessage mailMessage : mailMessages) {
             KnownInstitution knownInstitution = parseInstitution(mailMessage);
-            if(knownInstitution == KnownInstitution.FIDELITY) {
+            if (knownInstitution == KnownInstitution.FIDELITY) {
                 fidelityAccountImporter.handleBalanceSummary(mailMessage.getHtml());
-            }
-            else if (knownInstitution == KnownInstitution.FIRST_TECH) {
+            } else if (knownInstitution == KnownInstitution.FIRST_TECH) {
                 firstTechAccountImporter.handleBalanceSummary(mailMessage.getHtml());
-            }
-            else {
+            } else {
                 throw new IllegalStateException("No summary handler for institution " + knownInstitution);
             }
         }
@@ -37,16 +35,13 @@ public class BalanceImporterService {
 
     private KnownInstitution parseInstitution(MailMessage mailMessage) {
         String fromField = mailMessage.getHeaders().get("From").toLowerCase();
-        if(fromField.contains("fidelity")) {
+        if (fromField.contains("fidelity")) {
             return KnownInstitution.FIDELITY;
-        }
-        else if(fromField.contains("first tech")) {
+        } else if (fromField.contains("first tech")) {
             return KnownInstitution.FIRST_TECH;
-        }
-        else if(fromField.contains("us bank")) {
+        } else if (fromField.contains("us bank")) {
             return KnownInstitution.US_BANK;
-        }
-        else if(fromField.contains("home depot")) {
+        } else if (fromField.contains("home depot")) {
             return KnownInstitution.HOME_DEPOT;
         }
         throw new IllegalStateException("Unknown institution: " + fromField);

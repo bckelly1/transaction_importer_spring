@@ -23,7 +23,7 @@ public class ImportService {
 
     private final BalanceImporterService balanceImporterService;
 
-    public List<Transaction> beginTransactionImport(){
+    public List<Transaction> beginTransactionImport() {
         MailMessage[] transactionUnreadMessages = gmailService.getUnreadMessages("Transaction", mailConfig.getTransactionLabel());
         MailMessage[] chargeWasAuthorizedUnreadMessages = gmailService.getUnreadMessages("A charge was authorized", mailConfig.getTransactionLabel());
         MailMessage[] cardNotPresentUnreadMessages = gmailService.getUnreadMessages("card was not present", mailConfig.getTransactionLabel());
@@ -45,7 +45,7 @@ public class ImportService {
         return transactionList;
     }
 
-    public void beginBalanceSummaryImport(){
+    public void beginBalanceSummaryImport() {
         MailMessage[] firstTechMessages = gmailService.getUnreadMessages("Balance Summary Alert", mailConfig.getBalanceLabel());
         balanceImporterService.parseBalanceSummary(firstTechMessages);
         markRead(firstTechMessages);
@@ -56,7 +56,7 @@ public class ImportService {
     }
 
     private void markRead(MailMessage[] mailMessages) {
-        for(MailMessage mailMessage : mailMessages) {
+        for (MailMessage mailMessage : mailMessages) {
             gmailService.markAsRead(mailMessage);
         }
     }

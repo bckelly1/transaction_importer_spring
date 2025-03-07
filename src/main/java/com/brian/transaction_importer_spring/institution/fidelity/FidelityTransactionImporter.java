@@ -29,7 +29,7 @@ public class FidelityTransactionImporter {
     private final AccountRepository accountRepository;
 
     private String findCurrencyToken(String[] description) {
-        for(String word : description) {
+        for (String word : description) {
             if (word.contains("$")) {
                 return word;
             }

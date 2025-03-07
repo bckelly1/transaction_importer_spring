@@ -12,7 +12,7 @@ public class CategoryDTO {
     public CategoryDTO(Category category) {
         this.id = category.getId();
         this.name = category.getName();
-        if(category.getParent() != null) {
+        if (category.getParent() != null) {
             this.parentCategoryName = category.getParent().getName();
             this.parentCategoryId = category.getParent().getId();
         }

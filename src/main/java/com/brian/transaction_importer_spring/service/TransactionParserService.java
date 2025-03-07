@@ -30,11 +30,10 @@ public class TransactionParserService {
     public Transaction[] parseTransaction(MailMessage mailMessage) {
         KnownInstitution knownInstitution = parseInstitution(mailMessage);
         Transaction[] transactions = null;
-        if(knownInstitution == KnownInstitution.FIDELITY) {
+        if (knownInstitution == KnownInstitution.FIDELITY) {
             Transaction transaction = fidelityParser.handleTransaction(mailMessage);
             transactions = new Transaction[]{transaction};
-        }
-        else if (knownInstitution == KnownInstitution.FIRST_TECH) {
+        } else if (knownInstitution == KnownInstitution.FIRST_TECH) {
             transactions = firstTechTransactionImporter.handleTransactionEmail(mailMessage);
         } else if (knownInstitution == KnownInstitution.US_BANK) {
             Transaction transaction = usBankTransactionImporter.handleTransactionEmail(mailMessage);
@@ -48,16 +47,13 @@ public class TransactionParserService {
 
     private KnownInstitution parseInstitution(MailMessage mailMessage) {
         String fromField = mailMessage.getHeaders().get("From").toLowerCase();
-        if(fromField.contains("fidelity")) {
+        if (fromField.contains("fidelity")) {
             return KnownInstitution.FIDELITY;
-        }
-        else if(fromField.contains("first tech")) {
+        } else if (fromField.contains("first tech")) {
             return KnownInstitution.FIRST_TECH;
-        }
-        else if(fromField.contains("u.s. bank")) {
+        } else if (fromField.contains("u.s. bank")) {
             return KnownInstitution.US_BANK;
-        }
-        else if(fromField.contains("home depot")) {
+        } else if (fromField.contains("home depot")) {
             return KnownInstitution.HOME_DEPOT;
         }
         throw new IllegalStateException("Unknown institution: " + fromField);

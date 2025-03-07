@@ -33,7 +33,7 @@ public class FirstTechAccountImporter {
         log.info("Title: {}", title);
         Elements accounts = document.body().select("strong");
         MinimumAccount[] parsedAccounts = new MinimumAccount[accounts.size()];
-        for(int i = 0; i < accounts.size(); i++) {
+        for (int i = 0; i < accounts.size(); i++) {
             Element account = accounts.get(i);
             parsedAccounts[i] = parseAccount(account);
         }
@@ -60,10 +60,10 @@ public class FirstTechAccountImporter {
     public void handleBalanceSummary(String text) {
         Document soup = Jsoup.parse(text);
         MinimumAccount[] minimumAccounts = parseAccountInfo(soup);
-        for(MinimumAccount minimumAccount : minimumAccounts) {
+        for (MinimumAccount minimumAccount : minimumAccounts) {
             Account account = accountRepository.findByAlias(minimumAccount.getNumber());
             account.setBalance(minimumAccount.getBalance());
-            account.setLast_updated(new Timestamp(System.currentTimeMillis()));
+            account.setLastUpdated(new Timestamp(System.currentTimeMillis()));
             accountRepository.save(account);
 
             AccountHistory accountHistory = AccountToAccountHistory.parse(account);

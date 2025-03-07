@@ -63,7 +63,7 @@ public class USBankTransactionImporter {
             body = body.replace("\r\n", "\n");
         }
 
-        while(body.contains("\n\n")) {
+        while (body.contains("\n\n")) {
             body = body.replace("\n\n", "\n");
         }
 
@@ -73,7 +73,7 @@ public class USBankTransactionImporter {
     private String cleanOriginalDescription(String line) {
         String originalDescription = String.join(" ", line.split(" "));
 
-        while(originalDescription.contains("  ")) {
+        while (originalDescription.contains("  ")) {
             originalDescription = originalDescription.replace("  ", " ");
         }
 
@@ -87,8 +87,8 @@ public class USBankTransactionImporter {
     }
 
     private Double findAmount(String description) {
-        for(String token : description.split(" ")) {
-            if(token.contains("$")) {
+        for (String token : description.split(" ")) {
+            if (token.contains("$")) {
                 return Double.parseDouble(token.replace("$", ""));
             }
         }
@@ -103,12 +103,11 @@ public class USBankTransactionImporter {
     private String findMerchant(final String description) {
         String[] tokens = description.split(" ");
         String merchant = "";
-        for(int i = 7; i < tokens.length; i++) { // TODO: Could do an overrun
+        for (int i = 7; i < tokens.length; i++) { // TODO: Could do an overrun
             String token = tokens[i];
-            if(merchant.isEmpty()) {
+            if (merchant.isEmpty()) {
                 merchant = token;
-            }
-            else{
+            } else {
                 merchant = String.join(" ", merchant, token);
             }
         }

@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 public class TransactionDTO {
     private Long id;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp date;
     private String description;
     private String originalDescription;
@@ -28,7 +28,7 @@ public class TransactionDTO {
     private String mailMessageId;
     private String notes;
 
-    public TransactionDTO(Transaction transaction) {
+    public TransactionDTO (Transaction transaction) {
         this.id = transaction.getId();
         this.amount = transaction.getAmount();
         this.accountName = transaction.getAccount().getName();

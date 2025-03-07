@@ -36,25 +36,28 @@ public class FirstTechTransactionImporter {
     //    For First Tech, you can either determine that by looking for the parentheses () or the Credit/Debit label
     public String determineTransactionStyle(Document document) {
         String token = document.select("div.transactions-table-header").text().strip().split(" ")[0];
-        if (token.equals("Deposits"))
-           return "Credit";
-        else if (token.equals("Withdrawals"))
+        if (token.equals("Deposits")) {
+            return "Credit";
+        } else if (token.equals("Withdrawals")) {
             return "Debit";
-        else
+        } else {
             //TODO: Problem !
             log.error("Could not determine transaction style!");
-        return "Unknown";
+            return "Unknown";
+        }
     }
 
 
     // Is the money just moving between two user-owned accounts? While that does count as a Credit/Debit, in the grand scheme
     //   Of things, it doesn't affect the budget.  Mark the transaction as a transfer and it will be ignored.
     public boolean isTransfer(String title) {
-        if (title.contains("Regular Payment Transfer"))
-           return false;
-        else if (title.contains("Transfer"))
+        if (title.contains("Regular Payment Transfer")) {
+            return false;
+        } else if (title.contains("Transfer")) {
             return true;
-        else return isCreditCardPayment(title);
+        } else {
+            return isCreditCardPayment(title);
+        }
     }
 
 
@@ -70,7 +73,7 @@ public class FirstTechTransactionImporter {
     // Output: 1234
     public String transfer_source_account(String title) {
         String[] tokens = title.split(" ");
-        for(String token : tokens) {
+        for (String token : tokens) {
             if (token.contains("*"))
                 return token.replace("*", "");
         }
@@ -78,8 +81,8 @@ public class FirstTechTransactionImporter {
     }
 
     public String determineSourceAccount(boolean isTransfer, String transactionDetailsOriginal, String merchant) {
-        if(isTransfer) {
-            if(isCreditCardPayment(transactionDetailsOriginal)) {
+        if (isTransfer) {
+            if (isCreditCardPayment(transactionDetailsOriginal)) {
                 return merchant;
             }
             return transfer_source_account(transactionDetailsOriginal);
@@ -146,7 +149,7 @@ public class FirstTechTransactionImporter {
         String transaction_style = determineTransactionStyle(soup);
         Elements transactionElements = soup.body().select("tr.transaction-row");
         Transaction[] transactions = new Transaction[transactionElements.size()];
-        for(int i = 0; i < transactionElements.size(); i++) {
+        for (int i = 0; i < transactionElements.size(); i++) {
             Element transactionElement = transactionElements.get(i);
             Transaction transaction = handleTransactionRow(transactionElement, mailMessage, accountNumber);
             if (!Objects.equals(transaction_style, transaction.getTransactionType()))
@@ -191,12 +194,11 @@ public class FirstTechTransactionImporter {
 
     private String extractMerchant(String transactionDetailsOriginal) {
         String merchant;
-        if (transactionDetailsOriginal.contains("Transfer") && transactionDetailsOriginal.contains("Dividend")
-        ) {
+        if (transactionDetailsOriginal.contains("Transfer") && transactionDetailsOriginal.contains("Dividend")) {
             merchant = "First Tech";
         } else if (transactionDetailsOriginal.contains("CARDMEMBER SERV")) {
             merchant = "Fidelity";
-        } else{
+        } else {
             String[] transactionTokens = transactionDetailsOriginal.split(" ");
             merchant = String.join(" ", Arrays.copyOfRange(transactionTokens, 2, transactionTokens.length));
         }
