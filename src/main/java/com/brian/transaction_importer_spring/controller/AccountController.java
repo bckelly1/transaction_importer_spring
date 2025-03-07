@@ -12,7 +12,7 @@ public class AccountController {
 
     private final AccountRepository accountRepository;
 
-    @GetMapping("/accounts/")
+    @GetMapping("/accounts")
     public String showAccounts(Model model) {
         model.addAttribute("accounts", accountRepository.findAll());
         return "accounts";

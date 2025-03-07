@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amortization Schedule</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: right;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+
+        body {
+            background-color: #333333;
+        }
+
+        .strikethrough {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+<h1>Mortgage Details</h1>
+<p><a href="/">Index Page</a></p>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Balance</th>
+        <th>Interest Rate</th>
+        <th>Origination Date</th>
+        <th>Payoff Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${account.getName()}" id="name"></td>
+        <td th:text="${account.getBalance()}" id="current-balance"></td>
+        <td th:text="${mortgageDetails.getTermInYears()}" id="term-in-years"></td>
+        <td th:text="${mortgageDetails.getInterestRate()}" id="interest-rate"></td>
+        <td th:text="${mortgageDetails.getOriginationDate()}" id="origination-date"></td>
+        <td th:text="${mortgageDetails.getLoanAmount()}" id="loan-amount"></td>
+<!--        <td th:text="${mortgageDetails.getPayoffDate()}"></td>-->
+    </tr>
+    </tbody>
+</table>
+
+<button onclick="generateAmortizationSchedule()">Generate Schedule</button>
+<h3>Amortization Table</h3>
+<table id="amortizationTable">
+    <thead>
+    <tr>
+        <th>Payment Number</th>
+        <th>Payment</th>
+        <th>Principal Payment</th>
+        <th>Interest Payment</th>
+        <th>Remaining Balance</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Amortization rows will be inserted here -->
+    </tbody>
+</table>
+
+<script>
+    function generateAmortizationSchedule() {
+        const balance = parseFloat(document.getElementById('current-balance').innerText);
+        const loanAmount = parseFloat(document.getElementById('loan-amount').innerText);
+        const interestRate = parseFloat(document.getElementById('interest-rate').innerText) / 100 / 12;
+        const loanTerm = parseInt(document.getElementById('term-in-years').innerText);
+
+        // Calculate the number of payments
+        const numPayments = loanTerm * 12;
+
+        // Monthly Payment formula
+        const monthlyPayment = loanAmount * (interestRate * Math.pow(1 + interestRate, numPayments)) / (Math.pow(1 + interestRate, numPayments) - 1);
+
+        // Prepare the table body
+        const tableBody = document.getElementById('amortizationTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = ''; // Clear the table first
+
+        let remainingBalance = loanAmount;
+
+        for (let i = 1; i <= numPayments; i++) {
+            const interestPayment = remainingBalance * interestRate;
+            const principalPayment = monthlyPayment - interestPayment;
+            remainingBalance -= principalPayment;
+
+            const row = tableBody.insertRow();
+
+            row.insertCell(0).innerText = i; // Payment Number
+            row.insertCell(1).innerText = monthlyPayment.toFixed(2); // Payment
+            row.insertCell(2).innerText = principalPayment.toFixed(2); // Principal Payment
+            row.insertCell(3).innerText = interestPayment.toFixed(2); // Interest Payment
+            row.insertCell(4).innerText = remainingBalance.toFixed(2); // Remaining Balance
+
+            // Apply the strike-through class if remaining balance is less than the loan amount
+            if (remainingBalance > balance) {
+                row.classList.add('strikethrough');
+            }
+        }
+    }
+
+    // Generate the default schedule when page loads
+    window.onload = generateAmortizationSchedule;
+</script>
+</body>
+</html>
