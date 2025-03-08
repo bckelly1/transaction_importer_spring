@@ -33,7 +33,13 @@
     </thead>
     <tbody>
     <tr th:each="entity : ${accounts}">
-        <td th:text="${entity.getId()}"></td>
+        <td>
+            <span th:if="${entity.getType() == 'mortgage'}">
+                <a th:href="@{/mortgage/{id}(id=${entity.getId()})}" th:text="${entity.getId()}"></a>
+            </span>
+            <span th:unless="${entity.getType() == 'mortgage'}" th:text="${entity.getId()}"></span>
+        </td>
+
         <td th:text="${entity.getName()}"></td>
         <!--        <td th:text="${entity.institution}"></td>-->
         <td th:text="${entity.getBalance()}"></td>
