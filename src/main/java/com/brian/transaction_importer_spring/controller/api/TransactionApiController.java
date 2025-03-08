@@ -4,6 +4,7 @@ import com.brian.transaction_importer_spring.dto.TransactionDTO;
 import com.brian.transaction_importer_spring.entity.Transaction;
 import com.brian.transaction_importer_spring.repository.TransactionRepository;
 import com.brian.transaction_importer_spring.service.TransactionService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,12 +16,11 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@AllArgsConstructor
 public class TransactionApiController {
 
-    @Autowired
     private TransactionService transactionService;
 
-    @Autowired
     private TransactionRepository transactionRepository;
 
     @GetMapping("/transaction/")

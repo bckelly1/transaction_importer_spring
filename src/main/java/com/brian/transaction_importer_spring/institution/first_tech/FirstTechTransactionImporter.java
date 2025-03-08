@@ -137,9 +137,9 @@ public class FirstTechTransactionImporter {
     public Transaction[] parseHtml(final MailMessage mailMessage) {
         Document soup = Jsoup.parse(mailMessage.getHtml());
         String title = soup.body().select("h1#title").text().strip();
-        String accountName = soup.body().select("strong").get(0).text().strip().split(" - ")[0];
-        String accountNumber = soup.body().select("strong").get(0).text().strip().split(" - ")[1].replace("*", "");
-        String balance = soup.body().select("p:contains(Balance)").get(0).text().split("Balance: ")[1].strip();
+        String accountName = soup.body().select("strong").getFirst().text().strip().split(" - ")[0];
+        String accountNumber = soup.body().select("strong").getFirst().text().strip().split(" - ")[1].replace("*", "");
+        String balance = soup.body().select("p:contains(Balance)").getFirst().text().split("Balance: ")[1].strip();
 
         log.info("Title: {}", title);
         log.info("Account Name: {}", accountName);
