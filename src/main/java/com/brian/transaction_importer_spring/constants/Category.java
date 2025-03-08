@@ -1,7 +1,7 @@
 package com.brian.transaction_importer_spring.constants;
 
 public class Category {
-    private Category() {}
+    private Category() { }
 
     public static final String AUTO_AND_TRANSPORT = "Auto & Transport";
     public static final String AUTO_INSURANCE = "Auto Insurance";

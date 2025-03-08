@@ -111,15 +111,10 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
-                        <configuration>
-                            <configLocation>
-                                https://raw.githubusercontent.com/checkstyle/checkstyle/master/src/main/resources/google_checks.xml
-                            </configLocation>
-                        </configuration>
                     </execution>
                 </executions>
                 <configuration>
-                    <!--                    <configLocation>checkstyle.xml</configLocation> &lt;!&ndash; Your checkstyle configuration file &ndash;&gt;-->
+                    <configLocation>checkstyle.xml</configLocation> <!-- Your checkstyle configuration file -->
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput> <!-- Print results to console -->
                     <failOnViolation>true</failOnViolation>
