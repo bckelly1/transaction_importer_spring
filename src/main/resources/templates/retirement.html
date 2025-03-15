@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirement Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            max-width: 300px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Retirement Savings Calculator</h1>
+
+<label for="currentAge">Current Age:</label>
+<input type="number" id="currentAge" placeholder="Enter your current age">
+
+<label for="retirementAge">Retirement Age:</label>
+<input type="number" id="retirementAge" placeholder="Enter your desired retirement age" value="67">
+
+<label for="currentSavings">Current Savings ($):</label>
+<input type="number" id="currentSavings" th:value="${sumBalance}">
+
+<!--Max out yearly contributions, $24,000-->
+<label for="monthlyContribution">Monthly Contribution ($):</label>
+<input type="number" id="monthlyContribution" placeholder="Enter your monthly savings" value="2000">
+
+<label for="interestRate">Annual Interest Rate (%):</label>
+<input type="number" id="interestRate" placeholder="Enter expected annual interest rate" step="0.1" value="7">
+
+<label for="expectedLifespan">Expected Lifespan:</label>
+<input type="number" id="expectedLifespan" placeholder="Enter expected number of years to age" value="91">
+
+<label for="retirementWithdrawal">Retirement Withdrawal:</label>
+<input type="number" id="retirementWithdrawal" placeholder="Enter expected amount of yearly withdrawal from retirement account" value="100000">
+
+<button onclick="calculateRetirement()">Calculate</button>
+
+<div class="result" id="result"></div>
+
+<p>Pre-Retirement Calculations</p>
+<table id="yearlyDetails" style="display:none;">
+    <thead>
+    <tr>
+        <th>Year</th>
+        <th>Ending Balance ($)</th>
+        <th>Starting Balance ($)</th>
+        <th>Interest Earned ($)</th>
+        <th>Annual Contribution ($)</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<p>Post-Retirement Calculations</p>
+<table id="postRetirementYearlyDetails" style="display:none;">
+    <thead>
+    <tr>
+        <th>Year</th>
+        <th>Ending Balance ($)</th>
+        <th>Starting Balance ($)</th>
+        <th>Interest Earned ($)</th>
+        <th>Annual Disbursement ($)</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    function calculateRetirement() {
+        const currentAge = parseInt(document.getElementById("currentAge").value);
+        const retirementAge = parseInt(document.getElementById("retirementAge").value);
+        const currentSavings = parseFloat(document.getElementById("currentSavings").value);
+        const monthlyContribution = parseFloat(document.getElementById("monthlyContribution").value);
+        const interestRate = parseFloat(document.getElementById("interestRate").value) / 100;
+        const expectedLifespan = parseFloat(document.getElementById("expectedLifespan").value);
+        const retirementWithdrawal = parseFloat(document.getElementById("retirementWithdrawal").value);
+
+        if (isNaN(currentAge) || isNaN(retirementAge) || isNaN(currentSavings) || isNaN(monthlyContribution) || isNaN(interestRate)) {
+            document.getElementById("result").innerHTML = "Please fill in all fields with valid numbers.";
+            return;
+        }
+
+        if (retirementAge <= currentAge) {
+            document.getElementById("result").innerHTML = "Retirement age must be greater than current age.";
+            return;
+        }
+
+        const yearsToSave = retirementAge - currentAge;
+        const monthsToSave = yearsToSave * 12;
+
+        let totalSavings = currentSavings;
+        let yearlyData = [];
+        let totalInterest = 0;
+
+        for (let i = 0; i < yearsToSave; i++) {
+            let annualInterest = 0;
+            let startingBalance = totalSavings;
+
+            // Apply monthly contributions and interest for each month in the year
+            for (let month = 0; month < 12; month++) {
+                totalSavings += monthlyContribution;
+                let monthlyInterest = totalSavings * (interestRate / 12);
+                totalSavings += monthlyInterest;
+                annualInterest += monthlyInterest;
+            }
+
+            // Store the yearly data
+            yearlyData.push({
+                year: currentAge + i + 1,
+                endingBalance: totalSavings.toFixed(2),
+                startingBalance: startingBalance.toFixed(2),
+                interestEarned: annualInterest.toFixed(2),
+                yearlyContribution: 24000,
+            });
+        }
+
+        // Display final balance
+        const finalAmount = totalSavings.toFixed(2);
+        document.getElementById("result").innerHTML = `By age ${retirementAge}, you will have $${finalAmount} saved for retirement.`;
+
+        // Display yearly data
+        const tableBody = document.getElementById("yearlyDetails").getElementsByTagName("tbody")[0];
+        tableBody.innerHTML = ""; // Clear previous table data
+
+        yearlyData.forEach((data) => {
+            const row = tableBody.insertRow();
+            row.insertCell(0).innerText = data.year;
+            row.insertCell(1).innerText = data.endingBalance;
+            row.insertCell(2).innerText = data.startingBalance;
+            row.insertCell(3).innerText = data.interestEarned;
+            row.insertCell(4).innerText = data.yearlyContribution;
+        });
+
+        // Show the table
+        document.getElementById("yearlyDetails").style.display = "table";
+
+        postRetirementCalculator(totalSavings, interestRate, yearsToSave + currentAge, expectedLifespan, retirementWithdrawal)
+    }
+
+    function postRetirementCalculator(initialInvestment, interestRate, retirementAge, expectedLifespan, yearlyWithdrawal) {
+        // Calculate the number of years in retirement
+        const retirementYears = expectedLifespan - retirementAge;
+
+        let balance = initialInvestment;
+
+        // Simulate each year's withdrawal and interest accumulation
+        let yearlyData = []
+        for (let year = 1; year <= retirementYears; year++) {
+            // Apply the interest to the balance
+            const startingBalance = balance;
+            const interest = balance * interestRate;
+            balance += interest
+
+            // Subtract the yearly withdrawal
+            balance -= yearlyWithdrawal;
+            yearlyData.push({
+                year: retirementAge + 1,
+                endingBalance: balance.toFixed(2),
+                startingBalance: startingBalance.toFixed(2),
+                interestEarned: interest.toFixed(2),
+                yearlyWithdrawal: yearlyWithdrawal,
+            })
+
+            // If the balance goes below 0, stop and report how many years the user could withdraw
+            // if (balance < 0) {
+            //     console.log(`Funds ran out after ${year - 1} years of withdrawals.`);
+
+                // Display yearly data
+                const tableBody = document.getElementById("postRetirementYearlyDetails").getElementsByTagName("tbody")[0];
+                tableBody.innerHTML = ""; // Clear previous table data
+
+                yearlyData.forEach((data) => {
+                    const row = tableBody.insertRow();
+                    row.insertCell(0).innerText = data.year;
+                    row.insertCell(1).innerText = data.endingBalance;
+                    row.insertCell(2).innerText = data.startingBalance;
+                    row.insertCell(3).innerText = data.interestEarned;
+                    row.insertCell(4).innerText = data.yearlyWithdrawal;
+                });
+
+                // Show the table
+                document.getElementById("postRetirementYearlyDetails").style.display = "table";
+                // return 0;
+            // }
+        }
+
+        // If we reach here, it means the balance lasted through the full retirement period
+        return balance;
+    }
+
+</script>
+
+</body>
+</html>
