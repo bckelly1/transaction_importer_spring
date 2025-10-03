@@ -22,6 +22,8 @@ public class ImportService {
 
     private final BalanceImporterService balanceImporterService;
 
+    private final PositionImporterService positionImporterService;
+
     public List<Transaction> beginTransactionImport() {
         MailMessage[] transactionUnreadMessages = gmailService.getUnreadMessages("Transaction", mailConfig.getTransactionLabel());
         MailMessage[] chargeWasAuthorizedUnreadMessages = gmailService.getUnreadMessages("A charge was authorized", mailConfig.getTransactionLabel());
@@ -52,6 +54,10 @@ public class ImportService {
         MailMessage[] fidelityMessages = gmailService.getUnreadMessages("Daily Balance", mailConfig.getBalanceLabel());
         balanceImporterService.parseBalanceSummary(fidelityMessages);
         markRead(fidelityMessages);
+
+        MailMessage[] fidelityPositionMessages = gmailService.getUnreadMessages("Position Summary", mailConfig.getBalanceLabel());
+        positionImporterService.parsePositionSummary(fidelityPositionMessages);
+        markRead(fidelityPositionMessages);
     }
 
     private void markRead(final MailMessage[] mailMessages) {
